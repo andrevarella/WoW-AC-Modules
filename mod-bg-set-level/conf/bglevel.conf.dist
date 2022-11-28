@@ -1,0 +1,18 @@
+[worldserver]
+
+########################################
+# Custom BG Level Configuration
+########################################
+#
+#    CustomBGLevel.Enable
+#        Description: Enable Custom BG Level Module
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+#    CustomBGLevel.Level
+#        Description: Level to set players who enter BG
+#        Default:     80
+#
+
+CustomBGLevel.Enable = 1
+CustomBGLevel.Level = 80
