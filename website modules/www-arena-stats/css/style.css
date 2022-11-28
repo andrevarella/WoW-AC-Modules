@@ -1,0 +1,29 @@
+.nav-tabs li {
+  font-weight: bold;
+  font-size: 20px;
+  float: right;
+}
+
+.main-container tr {
+  cursor: pointer;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  background-color: #17313E;
+}
+
+.alliance td, .alliance-member {
+  color: #1A67F4;
+}
+
+.horde td, .horde-member {
+  color: #CD0A0E;
+}
+
+.team-details td {
+  font-size: 18px;
+}
+
+.text-yellow {
+  color: yellow;
+}
