@@ -91,6 +91,13 @@ void sTemplateNPC::LearnTemplateTalents(Player *player)
                     player->learnSpellHighRank(46924); // bladestorm
                     player->learnSpellHighRank(12323); // piercing howl
                 }
+                if ((*itr)->playerSpec == "Fury")
+                {
+                    player->learnSpellHighRank(23881); // bloodthirst
+                    player->learnSpellHighRank(12292); // death wish
+                    player->learnSpellHighRank(60970); // heroic fury
+                    player->learnSpellHighRank(12323); // piercing howl
+                }
                 if ((*itr)->playerSpec == "Protection")
                 {
                     player->learnSpellHighRank(20243); // devastate
@@ -907,11 +914,11 @@ public:
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\Trade_Engineering:30|t|r Reset Talents", GOSSIP_SENDER_MAIN, 31);*/
             break;
         case CLASS_ROGUE:
-            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Assasination Spec", GOSSIP_SENDER_MAIN, 24);
+            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Assassination Spec", GOSSIP_SENDER_MAIN, 24);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_backstab:30|t|r Use Combat Spec", GOSSIP_SENDER_MAIN, 25);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_stealth:30|t|r Use Subtlety Spec", GOSSIP_SENDER_MAIN, 26);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "----------------------------------------------", GOSSIP_SENDER_MAIN, 5000);
-            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Assasination Spec (Talents Only)", GOSSIP_SENDER_MAIN, 124);
+            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_rogue_eviscerate:30|t|r Use Assassination Spec (Talents Only)", GOSSIP_SENDER_MAIN, 124);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_backstab:30|t|r Use Combat Spec (Talents Only)", GOSSIP_SENDER_MAIN, 125);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|cff00ff00|TInterface\\icons\\ability_stealth:30|t|r Use Subtlety Spec (Talents Only)", GOSSIP_SENDER_MAIN, 126);
             /*AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "----------------------------------------------", GOSSIP_SENDER_MAIN, 5000);
@@ -1426,7 +1433,7 @@ public:
 
             // Rogue
         case 124:
-            sTemplateNpcMgr->sTalentsSpec = "Assasination";
+            sTemplateNpcMgr->sTalentsSpec = "Assassination";
             LearnOnlyTalentsAndGlyphs(player, sTemplateNpcMgr->sTalentsSpec);
             CloseGossipMenuFor(player);
             break;
