@@ -80,7 +80,7 @@ class Top_Arena_NPC : public CreatureScript
             {
             case CLASS_WARRIOR:         Class_s = "|TInterface\\icons\\inv_sword_27.png:24|t";        break;
             case CLASS_PALADIN:         Class_s = "|TInterface\\icons\\inv_hammer_01.png:24|t";        break;
-            case CLASS_HUNTER:          Class_s = "||TInterface\\icons\\inv_weapon_bow_07.png:24";         break;
+            case CLASS_HUNTER:          Class_s = "|TInterface\\icons\\inv_weapon_bow_07.png:24|t";         break;
             case CLASS_ROGUE:           Class_s = "|TInterface\\icons\\inv_throwingknife_04.png:24|t";          break;
             case CLASS_PRIEST:          Class_s = "|TInterface\\icons\\inv_staff_30.png:24|t";         break;
             case CLASS_DEATH_KNIGHT:    Class_s = "|TInterface\\icons\\spell_deathknight_classicon.png:24|t";   break;
@@ -158,11 +158,16 @@ class Top_Arena_NPC : public CreatureScript
                             rating = fields[2].Get<uint32>();
                             seasonWins = fields[3].Get<uint32>();
                             seasonLosses = fields[4].Get<uint32>();
+
+                            std::string seasonWinPercentage = getWinPercent(seasonWins, seasonLosses);
                             
                             std::stringstream buffer;
-                            buffer << rank << ". [|r|cffffff00 " << rating << "|cFF000000 ]|r |cff0000ff " << name; // Segunda Pagina
-                            buffer << " |cFF000000(|cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << "|cFF000000)";
+                            buffer << rank  << ". Team: |cff0000ff" << name << " |cFF000000[|r|cffffff00" << rating;        // Primeira linha / pagina
+                            buffer << "|cFF000000] |cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << "|cFF000000" << " (" << seasonWinPercentage << ")"; // no ultimo |cFF000000
                             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, buffer.str(), GOSSIP_SENDER_MAIN, ARENA_START_TEAM_LOOKUP + teamId);
+
+                            // buffer << rank << ". [|r|cffffff00" << rating << "|cFF000000]|r Team:|cff0000ff " << name; // Primeira Pagina
+                            // buffer << " |cFF000000(|cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << "|cFF000000) " << "(" << seasonWinPercentage << ")"; // no ultimo |cFF000000
                             
                             rank++;
                         } while(result->NextRow());
@@ -232,8 +237,8 @@ class Top_Arena_NPC : public CreatureScript
                             std::string name, race, Class;
                             
                             buf.str("");
-                            buf << memberCount << " team " << ((memberCount == 1) ? "member" : " members") << " found:";
-                            AddGossipItemFor(player, GOSSIP_ICON_CHAT, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
+                            // buf << memberCount << " team " << ((memberCount == 1) ? "member" : " members") << " found:"; esconder a mensagem ''X members found: nos times de arena"
+                            // AddGossipItemFor(player, GOSSIP_ICON_CHAT, buf.str(), GOSSIP_SENDER_MAIN, parentOption); same above
                             
                             do {
                                 // populate fields
