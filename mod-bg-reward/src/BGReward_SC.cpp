@@ -62,6 +62,9 @@ public:
             }
         }
 
+        //   !bg->isBattleground())           - p/ skirmish
+        //   bg->isArena() && bg->isRated())  - p/ apenas rated only
+        //
         if (sConfigMgr->GetBoolDefault("Arena.Reward.Enable", true) && bg->isArena() && bg->isRated())
         {
             if (bgTeamId == winnerTeamId)
@@ -87,9 +90,13 @@ public:
     void ArenaRewardItem(Player* player, TeamId bgTeamId, TeamId winnerTeamId, std::string Type, uint32 RewardCount)
     {
         if (bgTeamId == winnerTeamId)
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 29434), RewardCount);
+        {
+            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // 1 Caixa de Arena (x2/x3)
+            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID2." + Type, 43308), 100);        // 50x Honor (ta ganhando 50x honor de lose tbm n sei pq)
+        }
         else
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 29434), RewardCount);
+            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 43308), 50);      // 0 caixas de Arena (x2/x3)
+            // player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID2." + Type, 43308), 50);  // 50 Honor
     }
 };
 
