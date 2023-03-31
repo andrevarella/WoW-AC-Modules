@@ -35,10 +35,10 @@ PvPTitles.AwardTitlesOnLogin = 1
 
 
 # Award feat of strength achievements when players earn titles?
-PvPTitles.AwardFeatOfStrength = 0
+PvPTitles.AwardFeatOfStrength = 1
 
 
-# Award feat of strength achievements when players earn titles?
+# Enable award feat of strength achievements when players earn titles?
 PvPTitles.EnableFeatOfStrength = 1
 
 
