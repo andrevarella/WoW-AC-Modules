@@ -11,8 +11,8 @@
 #
 #    CustomBGLevel.Level
 #        Description: Level to set players who enter BG
-#        Default:     80
+#        Default:     78
 #
 
 CustomBGLevel.Enable = 1
-CustomBGLevel.Level = 80
+CustomBGLevel.Level = 78
