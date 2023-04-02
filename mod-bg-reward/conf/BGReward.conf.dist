@@ -143,7 +143,7 @@ Arena.Reward.LoserTeam.Count = 0
 #    Arena.Reward.Winner.ItemID.2v2
 #       Description: Reward item on arena 2v2.
 #
-#       Default: 32544
+#       Default: 32544 - Arena Case 2v2
 #
 Arena.Reward.Winner.ItemID.2v2 = 32544
 
@@ -152,9 +152,9 @@ Arena.Reward.Winner.ItemID.2v2 = 32544
 #    Arena.Reward.Loser.ItemID.2v2
 #       Description: Reward item on arena 2v2.
 #
-#       Default: 43308 - NAO MUDA! O ITEM QUE TIVER AQUI VAI SER MULTIPLICADO POR 50
+#       Default: 29434 - Badge of Justice
 #
-Arena.Reward.Loser.ItemID.2v2 = 43308
+Arena.Reward.Loser.ItemID.2v2 = 29434
 
 
 ### WIN 3V3 #####################################################################################
@@ -162,7 +162,7 @@ Arena.Reward.Loser.ItemID.2v2 = 43308
 #    Arena.Reward.Winner.ItemID.3v3
 #       Description: Reward item on arena 3v3.
 #
-#       Default: 32548
+#       Default: 32548 - Arena Case x3
 #
 Arena.Reward.Winner.ItemID.3v3 = 32548
 
@@ -172,9 +172,9 @@ Arena.Reward.Winner.ItemID.3v3 = 32548
 #    Arena.Reward.Loser.ItemID.3v3
 #       Description: Reward item on arena 3v3.
 #
-#       Default: 43308 - NAO MUDA! O ITEM QUE TIVER AQUI VAI SER MULTIPLICADO POR 50
+#       Default: 29434 - Badge of Justice
 #
-Arena.Reward.Loser.ItemID.3v3 = 43308
+Arena.Reward.Loser.ItemID.3v3 = 29434
 
 
 ### WIN 5V5 #######################################################################################
@@ -182,50 +182,30 @@ Arena.Reward.Loser.ItemID.3v3 = 43308
 #    Arena.Reward.Winner.ItemID.5v5
 #       Description: Reward item on arena 5v5.
 #
-#       Default: 32548
+#       Default: 29434 - Badge of Justice
 #
-Arena.Reward.Winner.ItemID.5v5 = 32548
+Arena.Reward.Winner.ItemID.5v5 = 29434
 
 ### LOSE 5V5 ######################################################################################
 # Honor Points 
 #    Arena.Reward.Loser.ItemID.5v5
 #       Description: Reward item on arena 5v5.
 #
-#       Default: 43308 - NAO MUDA! O ITEM QUE TIVER AQUI VAI SER MULTIPLICADO POR 50
+#       Default: 29434 - Badge of Justice
 #
-Arena.Reward.Loser.ItemID.5v5 = 43308
+Arena.Reward.Loser.ItemID.5v5 = 29434
 
 
+
+### SKIRMISH REWARD ######################################################################################
+# 
+#    Arena.Reward.Skirmish.ItemID
+#       Description: Reward item on arena skirmish
+#
+#       Default: 32545 - Test Caixa de bg Loss
+#
+Arena.Reward.Skirmish.ItemID = 32545
+
+
+#
 ###################################################################################################
-####### CUSTOM ITEM2 ##############################################################################
-###################################################################################################
-
-####### WIN 2V2 ###################################################################################
-###################################################################################################
-# Arena Case (2x2) (1 em win)
-#    Arena.Reward.Winner.ItemID.2v2
-#       Description: Reward item on arena 2v2.
-#
-#       Default: 43308
-#
-Arena.Reward.Winner.ItemID2.2v2 = 43308
-
-####### WIN 3V3 ####################################################################################
-# Arena Case (3x3) (1 em win)
-#    Arena.Reward.Winner.ItemID.3v3
-#       Description: Reward item on arena 3v3.
-#
-#       Default: 43308
-#
-Arena.Reward.Winner.ItemID2.3v3 = 43308
-
-
-####### WIN 5V5 ####################################################################################
-# Arena Case (5x5) (1 em win)
-#    Arena.Reward.Winner.ItemID.5v5
-#       Description: Reward item on arena 5v5.
-#
-#       Default: 43308
-#
-Arena.Reward.Winner.ItemID2.5v5 = 43308
-

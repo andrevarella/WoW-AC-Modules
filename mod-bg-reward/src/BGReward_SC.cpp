@@ -62,18 +62,17 @@ public:
             }
         }
 
-        //   !bg->isBattleground())           - p/ skirmish
-        //   bg->isArena() && bg->isRated())  - p/ apenas rated only
-        //
-        if (sConfigMgr->GetBoolDefault("Arena.Reward.Enable", true) && bg->isArena() && bg->isRated())
+        if (sConfigMgr->GetBoolDefault("Arena.Reward.Enable", true) && bg->isArena())
         {
             if (bgTeamId == winnerTeamId)
                 RewardCount = sConfigMgr->GetIntDefault("Arena.Reward.WinnerTeam.Count", 2);
             else
                 RewardCount = sConfigMgr->GetIntDefault("Arena.Reward.LoserTeam.Count", 1);
 
-            switch (bg->GetArenaType())
+            if (bg->isRated()) // Rated Arena
             {
+                switch (bg->GetArenaType())
+                {
                 case ARENA_TEAM_2v2:
                     ArenaRewardItem(player, bgTeamId, winnerTeamId, "2v2", RewardCount);
                     break;
@@ -83,8 +82,15 @@ public:
                 case ARENA_TEAM_5v5:
                     ArenaRewardItem(player, bgTeamId, winnerTeamId, "5v5", RewardCount);
                     break;
+                }
+            }
+            else // Skirmish Arena
+            {
+                if (bgTeamId == winnerTeamId)
+                player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1); // caixa de bg loss test
             }
         }
+
     }
 
     void ArenaRewardItem(Player* player, TeamId bgTeamId, TeamId winnerTeamId, std::string Type, uint32 RewardCount)
@@ -92,11 +98,9 @@ public:
         if (bgTeamId == winnerTeamId)
         {
             player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // 1 Caixa de Arena (x2/x3)
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID2." + Type, 43308), 100);        // 50x Honor (ta ganhando 50x honor de lose tbm n sei pq)
         }
         else
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 43308), 50);      // 0 caixas de Arena (x2/x3)
-            // player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID2." + Type, 43308), 50);  // 50 Honor
+            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 29434), RewardCount);  // Badge of Justice
     }
 };
 
