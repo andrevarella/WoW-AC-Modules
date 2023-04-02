@@ -86,8 +86,11 @@ public:
             }
             else // Skirmish Arena
             {
-                if (bgTeamId == winnerTeamId)
-                player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1); // caixa de bg loss test
+                if (player->getLevel() <= 79) // Check player's level
+                {
+                    if (bgTeamId == winnerTeamId)
+                        player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1); // caixa de bg loss test
+                }
             }
         }
 
