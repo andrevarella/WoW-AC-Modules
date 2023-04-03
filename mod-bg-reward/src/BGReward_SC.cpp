@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Battleground.h"
 #include "Configuration/Config.h"
+#include "Chat.h"
 
 class BGScript_BattlegroundsReward : public BGScript
 {
@@ -84,14 +85,71 @@ public:
                     break;
                 }
             }
-            else // Skirmish Arena
+            else // Skirmish Arenas (apenas do lvl 79 pra baixo)
             {
-                if (player->getLevel() <= 79) // Check player's level
+                if (player->getLevel() <= 79)
                 {
-                    if (bgTeamId == winnerTeamId)
-                        player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1); // caixa de bg loss test
+                    // Verifique se o jogador tem a aura com o ID 12345
+                    if (player->HasAura(83025))
+                    {
+                        return;
+                    }
+                    if (bgTeamId == winnerTeamId) // Skirmish <= 79 Win
+                    {
+                        if (rand() % 100 < 75) // 75% de chance de ganhar a caixa de arena skirmish
+                        {
+                            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1);
+                        }
+
+                        float xpMultiplier = 1.0; // // Aplicar multiplicador de XP com base no nível do jogador
+                        if (player->getLevel() >= 74)
+                        {
+                            xpMultiplier = 1.2; // 60k acho
+                        }
+                        if (player->getLevel() >= 77) // 75k atualmente (+50%)
+                        {
+                            xpMultiplier = 1.5;
+                        }
+                        int xpReward = (int)(50000 * xpMultiplier); // 50k XP para quem ganha
+                        player->GiveXP(xpReward, nullptr);
+
+                        int honorPoints = rand() % 36 + 115; // honor reward de 115 ate 150
+                        player->ModifyHonorPoints(honorPoints);
+                        ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
+                        int goldReward = rand() % 11 + 5; // 5 a 15 gold
+                        player->ModifyMoney(goldReward);
+                        ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
+                    }
+                    else // Skirmish Loss (Level <= 79)
+                    {
+                        if (player->HasAura(83025))
+                        {
+                            return;
+                        }
+
+                        // Aplicar multiplicador de XP com base no nível do jogador
+                        float xpMultiplier = 1.0;
+                        if (player->getLevel() >= 74)
+                        {
+                            xpMultiplier = 1.2;
+                        }
+                        if (player->getLevel() >= 77) // 52,5k XP se for 77+
+                        {
+                            xpMultiplier = 1.4;
+                        }
+                        int xpReward = (int)(35000 * xpMultiplier); // 35k XP para quem perde
+                        player->GiveXP(xpReward, nullptr);
+
+                        int honorPoints = rand() % 11 + 70; // honor reward de 70 ate 80
+                        player->ModifyHonorPoints(honorPoints);
+                        ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
+                        int goldReward = rand() % 6 + 4; // 4 a 9 gold
+                        player->ModifyMoney(goldReward);
+                        ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
+                    }
                 }
             }
+
         }
 
     }
@@ -99,11 +157,35 @@ public:
     void ArenaRewardItem(Player* player, TeamId bgTeamId, TeamId winnerTeamId, std::string Type, uint32 RewardCount)
     {
         if (bgTeamId == winnerTeamId)
-        {
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // 1 Caixa de Arena (x2/x3)
+        {   // rated win
+            if (player->HasAura(83025)) // nao dar reward se a arena acabar e o player tiver com a aura 83025 (arena preparation)
+            {
+                return;
+            }
+            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // Caixa de Arena (x2/x3)
+            srand(time(NULL));
+            int honorPoints = rand() % 76 + 175; // 175 até 250 honor  (o valor da esquerda é o que varia de 0 ate X, e o valor da direita é o numero base(minimo). ex: 51 e 100, o valor minimo é 100 e vai até 150
+            player->ModifyHonorPoints(honorPoints);
+            player->GetSession()->SendNotification("You have been awarded %d honor points.", honorPoints);
+            int goldReward = rand() % 11 + 10; // 10 a 20 gold
+            player->ModifyMoney(goldReward);
+            ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
         }
         else
+        {   // rated loss
+            if (player->HasAura(83025)) 
+            {
+                return;
+            }
             player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 29434), RewardCount);  // Badge of Justice
+            srand(time(NULL));
+            int honorPoints = rand() % 31 + 70; // Rated Loss - da entre 70 a 100 honor
+            player->ModifyHonorPoints(honorPoints);
+            player->GetSession()->SendNotification("You have been awarded %d honor points.", honorPoints);
+            int goldReward = rand() % 8 + 5; // 5 a 12 gold
+            player->ModifyMoney(goldReward);
+            ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
+        }
     }
 };
 
