@@ -18,33 +18,39 @@ enum FakeMorphs
     // FAKE_M_GOBLIN = 20582,
     // FAKE_F_GOBLIN = 20583,
 
-    // FAKE_M_UNDEAD missing
-    // FAKE_F_UNDEAD missing
+    // Hordes
+    FAKE_M_BLOOD_ELF      = 20578,
+    FAKE_F_BLOOD_ELF      = 20579,
 
     FAKE_M_FEL_ORC        = 21267,
+    FAKE_M_ORC            = 50560, // precisa do patch
     FAKE_F_ORC            = 20316,
 
+    FAKE_M_TROLL          = 20321,
+    FAKE_F_TROLL          = 50562, // precisa do patch   // FAKE_F_TROLL missing
+
+    FAKE_M_UNDEAD_PLAYER  = 50563, // precisa do patch     - old = // FAKE_M_UNDEAD missing
+    FAKE_F_UNDEAD_PLAYER  = 50564, // precisa do patch     - old = // FAKE_F_UNDEAD missing
+
+    FAKE_M_TAUREN         = 20585,
+    FAKE_F_TAUREN         = 20584,
+
+    // Alliances
+    FAKE_M_HUMAN          = 19723,
+    FAKE_F_HUMAN          = 19724,
+
     FAKE_M_DWARF          = 20317,
-    // FAKE_F_DWARF missing
+    FAKE_F_DWARF          = 50565, // precisa do patch   - old = // FAKE_F_DWARF missing
 
     FAKE_M_NIGHT_ELF      = 20318,
-    // FAKE_F_NIGHT_ELF missing
+    FAKE_F_NIGHT_ELF      = 50569, // precisa do patch   - old = FAKE_F_NIGHT_ELF missing
 
+    FAKE_M_DRAENEI        = 50566, // precisa do patch
     FAKE_F_DRAENEI        = 20323,
     FAKE_M_BROKEN_DRAENEI = 21105,
 
-    FAKE_M_TROLL          = 20321,
-    // FAKE_F_TROLL missing
-
-    FAKE_M_HUMAN          = 19723,
-    FAKE_F_HUMAN          = 19724,
-    FAKE_M_BLOOD_ELF      = 20578,
-    FAKE_F_BLOOD_ELF      = 20579,
-    FAKE_F_GNOME          = 20320,
     FAKE_M_GNOME          = 20580,
-    FAKE_F_TAUREN         = 20584,
-    FAKE_M_TAUREN         = 20585
-
+    FAKE_F_GNOME          = 20320
 };
 
 struct FakePlayer
@@ -90,17 +96,17 @@ struct RaceData
 RaceData const raceData[12] =
 {
     { CLASS_NONE,         { 0 }, { 0 } },
-    { CLASS_WARRIOR,      { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI  },                { RACE_ORC, RACE_TAUREN, RACE_TROLL } },
-    { CLASS_PALADIN,      { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI },                             { RACE_BLOODELF } },
-    { CLASS_HUNTER,       { RACE_DWARF, RACE_DRAENEI },                                         { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF } },
-    { CLASS_ROGUE,        { RACE_HUMAN, RACE_DWARF, RACE_GNOME },                               { RACE_ORC, RACE_TROLL, RACE_BLOODELF } },
-    { CLASS_PRIEST,       { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI  },                            { RACE_TROLL, RACE_BLOODELF } },
-    { CLASS_DEATH_KNIGHT, { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI },                 { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF } },
+    { CLASS_WARRIOR,      { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI, RACE_NIGHTELF  }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_UNDEAD_PLAYER } },
+    { CLASS_PALADIN,      { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI },                             { RACE_BLOODELF, RACE_TAUREN } },
+    { CLASS_HUNTER,       { RACE_DWARF, RACE_DRAENEI, RACE_NIGHTELF },                          { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+    { CLASS_ROGUE,        { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_NIGHTELF },                { RACE_ORC, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+    { CLASS_PRIEST,       { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI, RACE_NIGHTELF, RACE_GNOME  }, { RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+    { CLASS_DEATH_KNIGHT, { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI, RACE_NIGHTELF },  { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
     { CLASS_SHAMAN,       { RACE_DRAENEI },                                                     { RACE_ORC, RACE_TAUREN, RACE_TROLL  } },
-    { CLASS_MAGE,         { RACE_HUMAN, RACE_GNOME },                                           { RACE_BLOODELF, RACE_TROLL } },
-    { CLASS_WARLOCK,      { RACE_HUMAN, RACE_GNOME },                                           { RACE_ORC, RACE_BLOODELF } },
+    { CLASS_MAGE,         { RACE_HUMAN, RACE_GNOME, RACE_NIGHTELF, RACE_DRAENEI },              { RACE_BLOODELF, RACE_TROLL, RACE_UNDEAD_PLAYER } },
+    { CLASS_WARLOCK,      { RACE_HUMAN, RACE_GNOME },                                           { RACE_ORC, RACE_BLOODELF, RACE_UNDEAD_PLAYER, RACE_TROLL } },
     { CLASS_NONE,         { 0 }, { 0 } },
-    { CLASS_DRUID,        { RACE_HUMAN },                                                       { RACE_TAUREN } },
+    { CLASS_DRUID,        { RACE_NIGHTELF },                                                    { RACE_TAUREN } },
 };
 
 struct CFBGRaceInfo
@@ -110,7 +116,7 @@ struct CFBGRaceInfo
     uint8 TeamId;
 };
 
-CFBGRaceInfo const raceInfo[9] =
+CFBGRaceInfo const raceInfo[10] =
 {
     { RACE_HUMAN,    "human",    TEAM_HORDE    },
     { RACE_NIGHTELF, "nightelf", TEAM_HORDE    },
@@ -119,7 +125,7 @@ CFBGRaceInfo const raceInfo[9] =
     { RACE_DRAENEI,  "draenei",  TEAM_HORDE    },
     { RACE_ORC,      "orc",      TEAM_ALLIANCE },
     { RACE_BLOODELF, "bloodelf", TEAM_ALLIANCE },
-    //{ RACE_UNDEAD,   "undead",   TEAM_ALLIANCE },
+    { RACE_UNDEAD_PLAYER,   "undead",   TEAM_ALLIANCE },
     { RACE_TROLL,    "troll",    TEAM_ALLIANCE },
     { RACE_TAUREN,   "tauren",   TEAM_ALLIANCE }
 };

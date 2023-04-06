@@ -269,21 +269,35 @@ uint32 CFBG::GetMorphFromRace(uint8 race, uint8 gender)
 {
     switch (race)
     {
+        // Hordes
         case RACE_BLOODELF:
             return gender == GENDER_MALE ? FAKE_M_BLOOD_ELF : FAKE_F_BLOOD_ELF;
+
         case RACE_ORC:
-            return gender == GENDER_MALE ? FAKE_M_FEL_ORC : FAKE_F_ORC;
+            return gender == GENDER_MALE ? FAKE_M_ORC : FAKE_F_ORC; // FAKE_M_FEL_ORC : FAKE_F_ORC;
+
         case RACE_TROLL:
             return gender == GENDER_MALE ? FAKE_M_TROLL : FAKE_F_BLOOD_ELF;
+
         case RACE_TAUREN:
             return gender == GENDER_MALE ? FAKE_M_TAUREN : FAKE_F_TAUREN;
+
+        case RACE_UNDEAD_PLAYER:
+            return gender == GENDER_MALE ? FAKE_M_UNDEAD_PLAYER : FAKE_F_UNDEAD_PLAYER;
+
+        // Alliances
         case RACE_DRAENEI:
             return gender == GENDER_MALE ? FAKE_M_BROKEN_DRAENEI : FAKE_F_DRAENEI;
+
         case RACE_DWARF:
             return gender == GENDER_MALE ? FAKE_M_DWARF : FAKE_F_HUMAN;
+
         case RACE_GNOME:
             return gender == GENDER_MALE ? FAKE_M_GNOME : FAKE_F_GNOME;
-        case RACE_NIGHTELF: // female is missing and male causes client crashes...
+
+        case RACE_NIGHTELF:                          
+            return gender == GENDER_MALE ? FAKE_M_HUMAN : FAKE_F_HUMAN;    // female is missing and male causes client crashes...
+
         case RACE_HUMAN:
             return gender == GENDER_MALE ? FAKE_M_HUMAN : FAKE_F_HUMAN;
         default:
