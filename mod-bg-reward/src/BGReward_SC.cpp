@@ -166,7 +166,7 @@ public:
             srand(time(NULL));
             int honorPoints = rand() % 76 + 175; // 175 até 250 honor  (o valor da esquerda é o que varia de 0 ate X, e o valor da direita é o numero base(minimo). ex: 51 e 100, o valor minimo é 100 e vai até 150
             player->ModifyHonorPoints(honorPoints);
-            player->GetSession()->SendNotification("You have been awarded %d honor points.", honorPoints);
+            ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
             int goldReward = rand() % 11 + 10; // 10 a 20 gold
             player->ModifyMoney(goldReward);
             ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
@@ -181,7 +181,7 @@ public:
             srand(time(NULL));
             int honorPoints = rand() % 31 + 70; // Rated Loss - da entre 70 a 100 honor
             player->ModifyHonorPoints(honorPoints);
-            player->GetSession()->SendNotification("You have been awarded %d honor points.", honorPoints);
+            ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
             int goldReward = rand() % 8 + 5; // 5 a 12 gold
             player->ModifyMoney(goldReward);
             ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
