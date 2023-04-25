@@ -76,8 +76,8 @@ bool LoginBOAWeapon = 1;
 bool LoginBOAWeapon2 = 1;
 bool LoginBOAWeapon3 = 1;
 bool LoginSkills = 1;
-bool LoginSpecialAbility = 0;
-bool LoginReputation = 1;
+bool LoginMountSpell = 1;
+bool LoginReputation = 0;
 
 class LoginConfig : public WorldScript
 {
@@ -111,7 +111,7 @@ public:
         LoginBOAWeapon2 = sConfigMgr->GetOption<bool>("Login.BoA.Weapon2",1);
         LoginBOAWeapon3 = sConfigMgr->GetOption<bool>("Login.BoA.Weapon3",1);
         LoginSkills = sConfigMgr->GetOption<bool>("Login.Skills", 1);
-        LoginSpecialAbility = sConfigMgr->GetOption<bool>("Login.SpecialAbility", 1);
+        LoginMountSpell = sConfigMgr->GetOption<bool>("Login.MountSpell", 1);
         LoginReputation = sConfigMgr->GetOption<bool>("Login.Reputation", 1);
     }
 };
@@ -161,86 +161,62 @@ public:
                 {
 
                 case CLASS_WARRIOR:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
-                    weapon3 = 10050;
                     break;
 
                 case CLASS_PALADIN:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
                     break;
 
                 case CLASS_HUNTER:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
-                    weapon3 = 44093;
                     break;
 
                 case CLASS_ROGUE:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
                     break;
 
                 case CLASS_PRIEST:
-                    shoulders = 25472;
-                    chest = 25474;
-                    trinket = 10050;
-                    weapon = 10050;
-                    break;
-
-                case CLASS_DEATH_KNIGHT:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
-                    weapon3 = 10050;
+                    break;
+
+                case CLASS_DEATH_KNIGHT:
+                    trinket = 10050;
+                    weapon = 10050;
+                    weapon2 = 10050;
                     break;
 
                 case CLASS_SHAMAN:
-                    shoulders = 25472;
-                    chest = 25474;
-                    trinket = 46978;
+                    // trinket = 46978; // totem of earthen ring
+                    trinket = 10050;
                     weapon = 10050;
-                    shoulders2 = 10050;
-                    chest2 = 48683;
                     weapon2 = 10050;
                     break;
 
                 case CLASS_MAGE:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
+                    weapon2 = 10050;
                     break;
 
                 case CLASS_WARLOCK:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
+                    weapon2 = 10050;
                     break;
 
                 case CLASS_DRUID:
-                    shoulders = 25472;
-                    shoulders2 = 42952;
-                    chest = 25474;
-                    chest2 = 48689;
                     trinket = 10050;
-                    trinket2 = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
                     break;
@@ -389,6 +365,7 @@ public:
                     player->learnSpell(196);	// Axes
                     player->learnSpell(750);	// Plate Mail
                     player->learnSpell(200);	// PoleArms
+                    player->learnSpell(201);	// 1h Sword
                     player->learnSpell(197);	// 2H Axe
                     player->learnSpell(199);	// 2H Mace
                     player->learnSpell(54753);  // Mount White Polar Bear63624
@@ -431,6 +408,7 @@ public:
                     player->learnSpell(8737);	// Mail
                     player->learnSpell(200);	// PoleArms
                     player->learnSpell(227);	// Staves
+                    player->learnSpell(201);	// 1H Sword
                     player->learnSpell(202);	// 2H Sword
                     player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57870);  // Glyph of Mend Pet
@@ -460,20 +438,25 @@ public:
                     break;
 
                 case CLASS_MAGE:
-                    player->learnSpell(201);	// Swords
+                    player->learnSpell(201);	// 1h Swords
                     player->learnSpell(1180);	// Dagger
+                    player->learnSpell(227);	// Staves
                     player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57925);  // Glyph of Slow Fall
                     break;
 
                 case CLASS_WARLOCK:
                     player->learnSpell(201);	// Swords
+                    player->learnSpell(1180);	// Dagger
+                    player->learnSpell(227);	// Staves
                     player->learnSpell(61993);  // Ritual of Summoning
                     player->learnSpell(54753);  // Mount White Polar Bear
                     break;
 
                 case CLASS_PRIEST:
                     player->learnSpell(1180);	// Daggers
+                    player->learnSpell(198);	// Maces
+                    player->learnSpell(227);	// Staves
                     player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57987);  // Glyph of Levitate
                     break;
@@ -496,52 +479,27 @@ public:
                 ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
 
-            // If enabled.. learn special skills abilities
-            if (LoginSpecialAbility)
+            // If enabled, learn mounts based on faction
+            if (LoginMountSpell)
             {
-                // Learn Specialized Skills
-                player->learnSpell(1784);	// Stealth
-                player->learnSpell(921);	// Pick Pocket
-                player->learnSpell(1804);	// Lockpicking
-                player->learnSpell(11305);	// Sprint (3)
-                player->learnSpell(5384);	// Feign Death
-                player->learnSpell(475);	// Remove Curse
-
-                // Add a few teleportation runes
-                player->AddItem(17031, 5);	// Rune of Teleportation
-
-                // Learn Teleports
                 switch (player->GetTeamId())
                 {
 
                 case TEAM_ALLIANCE:
 
-                    // Alliance Teleports
-                    player->learnSpell(3565);	// Darnassus
-                    player->learnSpell(32271);	// Exodar
-                    player->learnSpell(3562);	// Ironforge
-                    player->learnSpell(33690);	// Shattrath
-                    player->learnSpell(3561);	// Stormwind
+                    // Alliance Mount
+                    player->learnSpell(32240);	// Snowy Gryphon
                     break;
 
                 case TEAM_HORDE:
 
-                    // Horde Teleports
-                    player->learnSpell(3567);	// Orgrimmar
-                    player->learnSpell(35715);	// Shattrath
-                    player->learnSpell(32272);	// Silvermoon
-                    player->learnSpell(3566);	// Thunder Bluff
-                    player->learnSpell(3563);	// Undercity
+                    // Horde Mount
+                    player->learnSpell(32243);	// tawny wind rider
                     break;
 
                 default:
                     break;
                 }
-
-                // Inform the player they have new skills
-                std::ostringstream ss;
-                ss << "|cffFF8000[|cFFBDB76BCL|cffFF8000] Your spellbook has been scribed with |cFFBDB76Bspecial abilities|cffFF8000.";
-                ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
 
             // If enabled.. set exalted factions (AzerothCore config for rep not working as of 2017-08-25)
@@ -573,11 +531,6 @@ public:
                 default:
                     break;
                 }
-
-                // Inform the player they have exalted reputations
-                std::ostringstream ss;
-                ss << "|cffFF8000[|cFFBDB76BCL|cffFF8000] Your are now |cFFBDB76BExalted|cffFF8000 with your faction's capital cities.";
-                ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
         }
     }

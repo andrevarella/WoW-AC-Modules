@@ -158,7 +158,7 @@ public:
     {
         if (bgTeamId == winnerTeamId)
         {   // rated win
-            if (player->HasAura(83025)) // nao dar reward se a arena acabar e o player tiver com a aura 83025 (arena preparation)
+            if (player->HasAura(83025)) // Arena Preparation - nao da reward se a arena acabar e o player tiver com Arena Prep
             {
                 return;
             }
@@ -173,7 +173,7 @@ public:
         }
         else
         {   // rated loss
-            if (player->HasAura(83025)) 
+            if (player->HasAura(83025))
             {
                 return;
             }

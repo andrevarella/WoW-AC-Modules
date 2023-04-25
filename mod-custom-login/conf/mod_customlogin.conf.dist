@@ -29,21 +29,21 @@ Login.BoA = 1
 # I prefer the ring and a trinket for new players.
 Login.BoA.Ring = 1
 Login.BoA.Bags = 1
-Login.BoA.Shoulders = 1
-Login.BoA.Shoulders2 = 0
-Login.BoA.Chest = 1
-Login.BoA.Chest2 = 0
 Login.BoA.Trinket = 1
 Login.BoA.Trinket2 = 0
-Login.BoA.Weapon = 0
+Login.BoA.Weapon = 1
 Login.BoA.Weapon2 = 0
 Login.BoA.Weapon3 = 0
+Login.BoA.Shoulders = 0
+Login.BoA.Shoulders2 = 0
+Login.BoA.Chest = 0
+Login.BoA.Chest2 = 0
 
 # New characters start with additional weapon skills? (default: 1)
 Login.Skills = 1
 
 # New characters start with special abilities? (default: 0)
-Login.SpecialAbility = 0
+Login.MountSpell = 1
 
 # New characters start with Exalted reputation for main city factions? (default: 1)
 Login.Reputation = 0

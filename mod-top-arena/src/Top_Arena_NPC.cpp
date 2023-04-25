@@ -23,7 +23,7 @@ enum ArenaRankActionIds {
 };
 
 enum ArenaRankOptions {
-    ARENA_MAX_RESULTS = 30,
+    ARENA_MAX_RESULTS = 20,
 };
 
 enum ArenaGossipText {
@@ -60,16 +60,16 @@ class Top_Arena_NPC : public CreatureScript
             std::string race_s = "Unknown";
             switch (race)
             {
-            case RACE_HUMAN:            race_s = "|TInterface\\icons\\Achievement_character_human_female:24|t";       break;
-            case RACE_ORC:              race_s = "|TInterface\\icons\\Achievement_character_orc_male:24|t";         break;
-            case RACE_DWARF:            race_s = "|TInterface\\icons\\Achievement_character_dwarf_male:24|t";       break;
-            case RACE_NIGHTELF:         race_s = "|TInterface\\icons\\Achievement_character_nightelf_female:24|t";   break;
-            case RACE_UNDEAD_PLAYER:    race_s = "|TInterface\\icons\\Achievement_character_undead_male:24|t";      break;
-            case RACE_TAUREN:           race_s = "|TInterface\\icons\\Achievement_character_tauren_male:24|t";      break;
-            case RACE_GNOME:            race_s = "|TInterface\\icons\\Achievement_character_gnome_female:24|t";       break;
-            case RACE_TROLL:            race_s = "|TInterface\\icons\\Achievement_character_troll_male:24|t";       break;
-            case RACE_BLOODELF:         race_s = "|TInterface\\icons\\Achievement_character_bloodelf_female:24|t";   break;
-            case RACE_DRAENEI:          race_s = "|TInterface\\icons\\Achievement_character_draenei_female:24|t";     break;
+            case RACE_HUMAN:            race_s = "|TInterface\\icons\\Achievement_character_human_female:16|t";       break;
+            case RACE_ORC:              race_s = "|TInterface\\icons\\Achievement_character_orc_male:16|t";         break;
+            case RACE_DWARF:            race_s = "|TInterface\\icons\\Achievement_character_dwarf_male:16|t";       break;
+            case RACE_NIGHTELF:         race_s = "|TInterface\\icons\\Achievement_character_nightelf_female:16|t";   break;
+            case RACE_UNDEAD_PLAYER:    race_s = "|TInterface\\icons\\Achievement_character_undead_male:16|t";      break;
+            case RACE_TAUREN:           race_s = "|TInterface\\icons\\Achievement_character_tauren_male:16|t";      break;
+            case RACE_GNOME:            race_s = "|TInterface\\icons\\Achievement_character_gnome_female:16|t";       break;
+            case RACE_TROLL:            race_s = "|TInterface\\icons\\Achievement_character_troll_male:16|t";       break;
+            case RACE_BLOODELF:         race_s = "|TInterface\\icons\\Achievement_character_bloodelf_female:16|t";   break;
+            case RACE_DRAENEI:          race_s = "|TInterface\\icons\\Achievement_character_draenei_female:16|t";     break;
             }
             return race_s;
         }
@@ -78,28 +78,29 @@ class Top_Arena_NPC : public CreatureScript
             std::string Class_s = "Unknown";
             switch (Class)
             {
-            case CLASS_WARRIOR:         Class_s = "|TInterface\\icons\\inv_sword_27.png:24|t";        break;
-            case CLASS_PALADIN:         Class_s = "|TInterface\\icons\\inv_hammer_01.png:24|t";        break;
-            case CLASS_HUNTER:          Class_s = "|TInterface\\icons\\inv_weapon_bow_07.png:24|t";         break;
-            case CLASS_ROGUE:           Class_s = "|TInterface\\icons\\inv_throwingknife_04.png:24|t";          break;
-            case CLASS_PRIEST:          Class_s = "|TInterface\\icons\\inv_staff_30.png:24|t";         break;
-            case CLASS_DEATH_KNIGHT:    Class_s = "|TInterface\\icons\\spell_deathknight_classicon.png:24|t";   break;
-            case CLASS_SHAMAN:          Class_s = "|TInterface\\icons\\inv_jewelry_talisman_04.png:24|t";         break;
-            case CLASS_MAGE:            Class_s = "|TInterface\\icons\\inv_staff_13.png:24|t";           break;
-            case CLASS_WARLOCK:         Class_s = "|TInterface\\icons\\spell_nature_drowsy.png:24|t";        break;
-            case CLASS_DRUID:           Class_s = "|TInterface\\icons\\inv_misc_monsterclaw_04.png:24|t";          break;
+            case CLASS_WARRIOR:         Class_s = "|TInterface\\icons\\inv_sword_27.png:16|t";        break;
+            case CLASS_PALADIN:         Class_s = "|TInterface\\icons\\inv_hammer_01.png:16|t";        break;
+            case CLASS_HUNTER:          Class_s = "|TInterface\\icons\\inv_weapon_bow_07.png:16|t";         break;
+            case CLASS_ROGUE:           Class_s = "|TInterface\\icons\\inv_throwingknife_04.png:16|t";          break;
+            case CLASS_PRIEST:          Class_s = "|TInterface\\icons\\inv_staff_30.png:16|t";         break;
+            case CLASS_DEATH_KNIGHT:    Class_s = "|TInterface\\icons\\spell_deathknight_classicon.png:16|t";   break;
+            case CLASS_SHAMAN:          Class_s = "|TInterface\\icons\\inv_jewelry_talisman_04.png:16|t";         break;
+            case CLASS_MAGE:            Class_s = "|TInterface\\icons\\inv_staff_13.png:16|t";           break;
+            case CLASS_WARLOCK:         Class_s = "|TInterface\\icons\\spell_nature_drowsy.png:16|t";        break;
+            case CLASS_DRUID:           Class_s = "|TInterface\\icons\\inv_misc_monsterclaw_04.png:16|t";          break;
             }
             return Class_s;
         }
 
         //TO DO
-
-        /*std::string getPlayerStatus(ObjectGuid guid) {
-            Player *player = ObjectAccessor::FindPlayer(guid);
+        /*std::string getPlayerStatus(uint32 guid) {
+            ObjectGuid objGuid(guid);
+            Player* player = ObjectAccessor::FindPlayer(objGuid);
             if(!player)
                 return "Offline";
             return "Online";
-        }*/
+        }
+        */
         
         std::string getWinPercent(uint32 wins, uint32 losses) {
             uint32 totalGames = wins + losses;
@@ -162,13 +163,10 @@ class Top_Arena_NPC : public CreatureScript
                             std::string seasonWinPercentage = getWinPercent(seasonWins, seasonLosses);
                             
                             std::stringstream buffer;
-                            buffer << rank  << ". Team: |cff0000ff" << name << " |cFF000000[|r|cffffff00" << rating;        // Primeira linha / pagina
-                            buffer << "|cFF000000] |cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << "|cFF000000" << " (" << seasonWinPercentage << ")"; // no ultimo |cFF000000
+                            buffer << "Team #" << rank << ": |cFF4B0082" << name << "|r [|cffffff00" << rating;  // Primeira linha / pagina
+                            buffer << "|r]   \n                  |cFF228B22" << seasonWins << "|r - |cFFFF6347" << seasonLosses << "" << "|r (|cFF008B8B" << seasonWinPercentage << "|r)"; // "\n ______________________________________";
                             AddGossipItemFor(player, GOSSIP_ICON_BATTLE, buffer.str(), GOSSIP_SENDER_MAIN, ARENA_START_TEAM_LOOKUP + teamId);
 
-                            // buffer << rank << ". [|r|cffffff00" << rating << "|cFF000000]|r Team:|cff0000ff " << name; // Primeira Pagina
-                            // buffer << " |cFF000000(|cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << "|cFF000000) " << "(" << seasonWinPercentage << ")"; // no ultimo |cFF000000
-                            
                             rank++;
                         } while(result->NextRow());
                         
@@ -223,11 +221,11 @@ class Top_Arena_NPC : public CreatureScript
                         std::string weekWinPercentage = getWinPercent(weekWins, weekLosses);
                         
                         std::stringstream buf;
-                        buf << " Team:|r  |cff0000ff" << name << "\n |cFF000000Rating: |r|cffffff00" << rating << "   |cFF000000(Rank " << rank << " in " << type << "v" << type << ")"
-                            "\n Week: |cFF008B8B " << weekWins << "|cFF000000-|cFF008B8B" << weekLosses << "|cFF000000 (" << weekWinPercentage << ") " "| Season: |cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << " |cFF000000(" << seasonWinPercentage << ")" "\n ______________________________________";
+                        buf << " Team:|r  |cFF4B0082" << name << "\n |cFF000000Rating: |r|cffffff00" << rating << " |cFF000000(Rank " << rank << " in " << type << "v" << type << ")"
+                            "\n Week: |cFF228B22" << weekWins << " |r- |cFFFF6347" << weekLosses << " |r(" << weekWinPercentage << ") " "|r| Season: |cFF228B22" << seasonWins << "|r - |cFFFF6347" << seasonLosses << " |r(" << seasonWinPercentage << "|r)" "\n\nMembers:\n";
                         AddGossipItemFor(player, GOSSIP_ICON_BATTLE, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
                         
-                        QueryResult members = CharacterDatabase.Query( "SELECT  a.guid, a.personalRating, a.weekWins, a.weekGames - a.weekWins, a.seasonWins, a.seasonGames - a.seasonWins, c.name, c.race, c.class, c.level FROM arena_team_member a LEFT JOIN characters c ON c.guid = a.guid WHERE arenaTeamId = '{}' ORDER BY a.guid = '{}' DESC, a.seasonGames DESC, c.name ASC", teamId, captainGuid);
+                        QueryResult members = CharacterDatabase.Query( "SELECT  a.guid, a.personalRating, a.weekWins, a.weekGames - a.weekWins, a.seasonWins, a.seasonGames - a.seasonWins, c.name, c.race, c.class, c.level FROM arena_team_member a LEFT JOIN characters c ON c.guid = a.guid WHERE arenaTeamId = '{}' ORDER BY a.personalRating DESC, a.seasonGames DESC, c.name ASC", teamId);
                         if(!members) {
                             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "No team members found...?", GOSSIP_SENDER_MAIN, parentOption);
                         } else {
@@ -266,8 +264,8 @@ class Top_Arena_NPC : public CreatureScript
                                 
                                 // AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
                                 buf.str("");
-                                buf << "" << Class << "" << race << "|r|cff0000ff " << name << "|r|cffffff00 " << personalRating << " Personal Rating"
-                                    "\n\n |cFF000000Week: |cFF008B8B" << weekWins << "|cFF000000-|cFF008B8B" << weekLosses << "|cFF000000 (" << weekWinPercentage << ")" " |cFF000000| Season: |cFF008B8B" << seasonWins << "|cFF000000-|cFF008B8B" << seasonLosses << " |cFF000000(" << seasonWinPercentage << ")";
+                                buf << " " << Class << " " << race << "|r|cff0000ff " << name << "|r|cffffff00 " << personalRating << " Personal Rating"
+                                    "\n |rWeek: |cFF228B22" << weekWins << "|r - |cFFFF6347" << weekLosses << "|r (" << weekWinPercentage << ") " "|r| Season: |cFF228B22" << seasonWins << "|r - |cFFFF6347" << seasonLosses << " |r(" << seasonWinPercentage << ")\n______________________________________";
                                 AddGossipItemFor(player, GOSSIP_ICON_DOT, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
 
                                 memberPos++;

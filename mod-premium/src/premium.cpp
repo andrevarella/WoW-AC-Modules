@@ -17,8 +17,8 @@ enum Vendors
     NPC_ArenaTeam_H = 93072,
     NPC_PETTRAINER_A = 10088,
     NPC_PETTRAINER_H = 10088,
-    NPC_TRANSMOG_A = 190010,
-    NPC_TRANSMOG_H = 190010,
+    NPC_TRANSMOG_A = 94132,
+    NPC_TRANSMOG_H = 94132,
     NPC_REAGENT_A = 80019,
     NPC_REAGENT_H = 80019,
     NPC_FOOD_A = 32403,
@@ -98,7 +98,7 @@ public:
         }
 
         if (sConfigMgr->GetBoolDefault("Transmogrifier", true))
-            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_boss_nexus_prince_shaffar.png:29|t Transmog de Equipamento", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
+            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_boss_nexus_prince_shaffar.png:29|t Transmogrifier", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 17);
 
         if (sConfigMgr->GetOption<bool>("Mount", true))
             AddGossipItemFor(player, GOSSIP_ICON_CHAT_16, "Mount", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);

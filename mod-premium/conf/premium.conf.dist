@@ -12,7 +12,7 @@ PremiumAccount = 1
 #        Description: Enable Morph & demorph option for players
 #        Default:     1  - (Enabled)
 #                     0  - (Disabled)
-Morph = 1
+Morph = 0
 
 #    Mount
 #        Description: Allow Players to use mount
