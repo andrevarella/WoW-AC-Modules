@@ -119,6 +119,7 @@ void sTemplateNPC::LearnTemplateTalents(Player *player)
                 if ((*itr)->playerSpec == "Protection")
                 {
                     player->learnSpellHighRank(20911); // blessing of sanctuary
+					player->learnSpellHighRank(25899); // greater blessing of sanctuary
                     player->learnSpellHighRank(64205); // divine sacrifice
                     player->learnSpellHighRank(20925); // holy shield
                     player->learnSpellHighRank(31935); // avenger's shield

@@ -30,14 +30,14 @@ Login.BoA = 1
 Login.BoA.Ring = 1
 Login.BoA.Bags = 1
 Login.BoA.Trinket = 1
-Login.BoA.Trinket2 = 0
+Login.BoA.Trinket2 = 1
 Login.BoA.Weapon = 1
-Login.BoA.Weapon2 = 0
-Login.BoA.Weapon3 = 0
-Login.BoA.Shoulders = 0
+Login.BoA.Weapon2 = 1
+Login.BoA.Weapon3 = 1
+Login.BoA.Shoulders = 1
 Login.BoA.Shoulders2 = 0
-Login.BoA.Chest = 0
-Login.BoA.Chest2 = 0
+Login.BoA.Chest = 1
+Login.BoA.Chest2 = 1
 
 # New characters start with additional weapon skills? (default: 1)
 Login.Skills = 1
