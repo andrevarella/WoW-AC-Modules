@@ -65,16 +65,12 @@ public:
                 sDuelReset->SaveManaBeforeDuel(player1);
             }
             player1->ResetAllPowers();
-            // Remover DR de CCs
-            player1->ClearDiminishings();
 
             sDuelReset->SaveHealthBeforeDuel(player2);
             if (player2->getPowerType() == POWER_MANA || player2->getClass() == CLASS_DRUID) {
                 sDuelReset->SaveManaBeforeDuel(player2);
             }
             player2->ResetAllPowers();
-            // Remover DR de CCs
-            player2->ClearDiminishings();
         }
     }
 

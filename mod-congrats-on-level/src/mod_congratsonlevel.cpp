@@ -122,7 +122,105 @@ public:
             std::string level;
             uint32 money, item1, item2, spell;
 
-            if (oldLevel < 80 && player->getLevel() == 80)
+            if (oldLevel < 10 && player->getLevel() == 10)
+            {
+                // Level 10
+                const uint32 L101 = sConfigMgr->GetOption<uint32>("Congrats.L101", 0);
+                const uint32 L102 = sConfigMgr->GetOption<uint32>("Congrats.L102", 0);
+                const uint32 L10M = sConfigMgr->GetOption<uint32>("Congrats.L10M", 0);
+                const uint32 L10S = sConfigMgr->GetOption<uint32>("Congrats.L10S", 0);
+
+                level = "10";
+                item1 = L101;
+                item2 = L102;
+                money = L10M;
+                spell = L10S;
+            }
+            else if (oldLevel < 20 && player->getLevel() == 20)
+            {
+                // Level 20
+                const uint32 L201 = sConfigMgr->GetOption<uint32>("Congrats.L201", 0);
+                const uint32 L202 = sConfigMgr->GetOption<uint32>("Congrats.L202", 0);
+                const uint32 L20M = sConfigMgr->GetOption<uint32>("Congrats.L20M", 0);
+                const uint32 L20S = sConfigMgr->GetOption<uint32>("Congrats.L20S", 0);
+
+                level = "20";
+                item1 = L201;
+                item2 = L202;
+                money = L20M;
+                spell = L20S;
+            }
+            else if (oldLevel < 30 && player->getLevel() == 30)
+            {
+                // Level 30
+                const uint32 L301 = sConfigMgr->GetOption<uint32>("Congrats.L301", 0);
+                const uint32 L302 = sConfigMgr->GetOption<uint32>("Congrats.L302", 0);
+                const uint32 L30M = sConfigMgr->GetOption<uint32>("Congrats.L30M", 0);
+                const uint32 L30S = sConfigMgr->GetOption<uint32>("Congrats.L30S", 0);
+
+                level = "30";
+                item1 = L301;
+                item2 = L302;
+                money = L30M;
+                spell = L30S;
+            }
+            else if (oldLevel < 40 && player->getLevel() == 40)
+            {
+                // Level 40
+                const uint32 L401 = sConfigMgr->GetOption<uint32>("Congrats.L401", 0);
+                const uint32 L402 = sConfigMgr->GetOption<uint32>("Congrats.L402", 0);
+                const uint32 L40M = sConfigMgr->GetOption<uint32>("Congrats.L40M", 0);
+                const uint32 L40S = sConfigMgr->GetOption<uint32>("Congrats.L40S", 0);
+
+                level = "40";
+                item1 = L401;
+                item2 = L402;
+                money = L40M;
+                spell = L40S;
+            }
+            else if (oldLevel < 50 && player->getLevel() == 50)
+            {
+                // Level 50
+                const uint32 L501 = sConfigMgr->GetOption<uint32>("Congrats.L501", 0);
+                const uint32 L502 = sConfigMgr->GetOption<uint32>("Congrats.L502", 0);
+                const uint32 L50M = sConfigMgr->GetOption<uint32>("Congrats.L50M", 0);
+                const uint32 L50S = sConfigMgr->GetOption<uint32>("Congrats.L50S", 0);
+
+                level = "50";
+                item1 = L501;
+                item2 = L502;
+                money = L50M;
+                spell = L50S;
+            }
+            else if (oldLevel < 60 && player->getLevel() == 60)
+            {
+                // Level 60
+                const uint32 L601 = sConfigMgr->GetOption<uint32>("Congrats.L601", 0);
+                const uint32 L602 = sConfigMgr->GetOption<uint32>("Congrats.L602", 0);
+                const uint32 L60M = sConfigMgr->GetOption<uint32>("Congrats.L60M", 0);
+                const uint32 L60S = sConfigMgr->GetOption<uint32>("Congrats.L60S", 0);
+
+                level = "60";
+                item1 = L601;
+                item2 = L602;
+                money = L60M;
+                spell = L60S;
+            }
+            else if (oldLevel < 70 && player->getLevel() == 70)
+            {
+                // Level 70
+                const uint32 L701 = sConfigMgr->GetOption<uint32>("Congrats.L701", 0);
+                const uint32 L702 = sConfigMgr->GetOption<uint32>("Congrats.L702", 0);
+                const uint32 L70M = sConfigMgr->GetOption<uint32>("Congrats.L70M", 0);
+                const uint32 L70S = sConfigMgr->GetOption<uint32>("Congrats.L70S", 0);
+
+                level = "70";
+                item1 = L701;
+                item2 = L702;
+                money = L70M;
+                spell = L70S;
+            }
+            else if (oldLevel < 80 && player->getLevel() == 80)
             {
                 // Level 80
                 const uint32 L801 = sConfigMgr->GetOption<uint32>("Congrats.L801", 0);

@@ -119,7 +119,6 @@ void sTemplateNPC::LearnTemplateTalents(Player *player)
                 if ((*itr)->playerSpec == "Protection")
                 {
                     player->learnSpellHighRank(20911); // blessing of sanctuary
-					player->learnSpellHighRank(25899); // greater blessing of sanctuary
                     player->learnSpellHighRank(64205); // divine sacrifice
                     player->learnSpellHighRank(20925); // holy shield
                     player->learnSpellHighRank(31935); // avenger's shield
@@ -150,14 +149,14 @@ void sTemplateNPC::LearnTemplateTalents(Player *player)
                     player->learnSpellHighRank(53209); // chimera shot
                     player->learnSpellHighRank(19503); // scatter shot
                 }
-		        if ((*itr)->playerSpec == "Survival")
-		        {
-			    player->learnSpellHighRank(19434); // aimed shot
-			    player->learnSpellHighRank(19503); // scatter shot
-			    player->learnSpellHighRank(19386); // wyvern sting
-			    player->learnSpellHighRank(3674);  // black arrow
-			    player->learnSpellHighRank(53301); // explosive shot
-	            }
+		    if ((*itr)->playerSpec == "Survival")
+		    {
+			  player->learnSpellHighRank(19434); // aimed shot
+			  player->learnSpellHighRank(19503); // scatter shot
+			  player->learnSpellHighRank(19386); // wyvern sting
+			  player->learnSpellHighRank(3674);  // black arrow
+			  player->learnSpellHighRank(53301); // explosive shot
+	          }
                 break;
             case CLASS_ROGUE:
                 if ((*itr)->playerSpec == "Subtlety")
@@ -297,12 +296,6 @@ void sTemplateNPC::LearnTemplateTalents(Player *player)
                     player->learnSpellHighRank(48181); // haunt
                     player->learnSpellHighRank(18708); // fel domination
                     player->learnSpellHighRank(19028); // soul link
-                }
-                if ((*itr)->playerSpec == "Demonology")
-                {
-                    player->learnSpellHighRank(18708); // fel domination
-                    player->learnSpellHighRank(19028); // soul link
-                    player->learnSpellHighRank(30146); // summon felguard
                 }
                 if ((*itr)->playerSpec == "Destruction")
                 {
