@@ -76,8 +76,8 @@ bool LoginBOAWeapon = 1;
 bool LoginBOAWeapon2 = 1;
 bool LoginBOAWeapon3 = 1;
 bool LoginSkills = 1;
-bool LoginSpecialAbility = 0;
-bool LoginReputation = 1;
+bool LoginMountSpell = 1;
+bool LoginReputation = 0;
 
 class LoginConfig : public WorldScript
 {
@@ -111,7 +111,7 @@ public:
         LoginBOAWeapon2 = sConfigMgr->GetOption<bool>("Login.BoA.Weapon2",1);
         LoginBOAWeapon3 = sConfigMgr->GetOption<bool>("Login.BoA.Weapon3",1);
         LoginSkills = sConfigMgr->GetOption<bool>("Login.Skills", 1);
-        LoginSpecialAbility = sConfigMgr->GetOption<bool>("Login.SpecialAbility", 1);
+        LoginMountSpell = sConfigMgr->GetOption<bool>("Login.MountSpell", 1);
         LoginReputation = sConfigMgr->GetOption<bool>("Login.Reputation", 1);
     }
 };
@@ -161,88 +161,84 @@ public:
                 {
 
                 case CLASS_WARRIOR:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
-                    weapon3 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_PALADIN:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
+                    shoulders = 21177;
                     weapon = 10050;
                     weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_HUNTER:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
+                    shoulders = 31737;
                     weapon = 10050;
-                    weapon2 = 10050;
-                    weapon3 = 44093;
+                    weapon3 = 34760; // Food/Drink lvl 70
                     break;
 
                 case CLASS_ROGUE:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
+                    shoulders = 3775; // Crippling Poison
+                    chest = 22055; // wound poison V (lvl 64)
+                    weapon3 = 22054; // Deadly Poison VII (lvl 70)
+                    trinket2 = 21927; // Instant Poison VII (lvl 68)
+                    chest2 = 34760;
                     break;
 
                 case CLASS_PRIEST:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
+                    shoulders = 17029;
                     weapon = 10050;
+                    weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_DEATH_KNIGHT:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
-                    weapon3 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_SHAMAN:
-                    shoulders = 25472;
-                    chest = 25474;
-                    trinket = 46978;
+                    // trinket = 46978; // totem of earthen ring
+                    trinket = 10050;
                     weapon = 10050;
-                    shoulders2 = 10050;
-                    chest2 = 48683;
                     weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_MAGE:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
+                    shoulders = 17020;
                     weapon = 10050;
+                    weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_WARLOCK:
-                    shoulders = 25472;
-                    chest = 25474;
                     trinket = 10050;
+                    chest = 5565;
+                    shoulders = 6265;
                     weapon = 10050;
+                    weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 case CLASS_DRUID:
-                    shoulders = 25472;
-                    shoulders2 = 42952;
-                    chest = 25474;
-                    chest2 = 48689;
                     trinket = 10050;
-                    trinket2 = 10050;
+                    shoulders = 22148;
                     weapon = 10050;
                     weapon2 = 10050;
+                    weapon3 = 34760;
                     break;
 
                 default:
@@ -257,9 +253,10 @@ public:
                 case CLASS_PRIEST:
                     if (LoginBOATrinket) { player->AddItem(trinket, 2); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
-                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 255); }
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
@@ -270,17 +267,18 @@ public:
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
-                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
                 case CLASS_PALADIN:
-                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOATrinket) { player->AddItem(trinket, 1); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
-                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1000); }
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
@@ -291,28 +289,42 @@ public:
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
-                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
                 case CLASS_HUNTER:
-                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOATrinket) { player->AddItem(trinket, 1); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
-                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 20000); }
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
-                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
+                    if (LoginBOABags) { player->AddItem(bag, 1); }
+                    break;
+
+                case CLASS_MAGE:
+                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOARing) { player->AddItem(ring, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 50); }
+                    if (LoginBOAChest) { player->AddItem(chest, 1); }
+                    if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
+                    if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 200); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
                 case CLASS_ROGUE:
-                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOATrinket) { player->AddItem(trinket, 1); };
+                    if (LoginBOATrinket) { player->AddItem(trinket2, 255); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
-                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
-                    if (LoginBOAChest) { player->AddItem(chest, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1000); }
+                    if (LoginBOAChest) { player->AddItem(chest, 255); }
+                    if (LoginBOAChest2) { player->AddItem(chest2, 500); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 255); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
@@ -320,17 +332,30 @@ public:
                     if (LoginBOATrinket) { player->AddItem(trinket, 2); };
                     if (LoginBOATrinket) { player->AddItem(trinket2, 2); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
-                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 75); }
                     if (LoginBOAShoulders2) { player->AddItem(shoulders2, 1); }
                     if (LoginBOAChest) { player->AddItem(chest, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
-                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
+                    if (LoginBOABags) { player->AddItem(bag, 1); }
+                    break;
+
+                case CLASS_WARLOCK:
+                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOATrinket) { player->AddItem(trinket2, 2); };
+                    if (LoginBOARing) { player->AddItem(ring, 1); }
+                    if (LoginBOAShoulders) { player->AddItem(shoulders, 1000); }
+                    if (LoginBOAShoulders2) { player->AddItem(shoulders2, 1); }
+                    if (LoginBOAChest) { player->AddItem(chest, 500); }
+                    if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
+                    if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
                 case CLASS_SHAMAN:
-                    if (LoginBOATrinket) { player->AddItem(trinket, 2); };
+                    if (LoginBOATrinket) { player->AddItem(trinket, 1); };
                     if (LoginBOARing) { player->AddItem(ring, 1); }
                     if (LoginBOAShoulders) { player->AddItem(shoulders, 1); }
                     if (LoginBOAShoulders2) { player->AddItem(shoulders2, 1); }
@@ -338,6 +363,7 @@ public:
                     if (LoginBOAChest2) { player->AddItem(chest2, 1); }
                     if (LoginBOAWeapon) { player->AddItem(weapon, 1); }
                     if (LoginBOAWeapon2) { player->AddItem(weapon2, 1); }
+                    if (LoginBOAWeapon3) { player->AddItem(weapon3, 500); }
                     if (LoginBOABags) { player->AddItem(bag, 1); }
                     break;
 
@@ -385,110 +411,45 @@ public:
                         player->learnSpell(2567);	// Thrown
                     */
 
-                case CLASS_PALADIN:
-                    player->learnSpell(196);	// Axes
-                    player->learnSpell(750);	// Plate Mail
-                    player->learnSpell(200);	// PoleArms
-                    player->learnSpell(201);	// 1h Sword
-                    player->learnSpell(197);	// 2H Axe
-                    player->learnSpell(199);	// 2H Mace
-                    player->learnSpell(54753);  // Mount White Polar Bear63624
-                    break;
+                //case CLASS_PALADIN:
+                    //player->learnSpell(750);	// Plate Mail
+                    //break;
 
                 case CLASS_SHAMAN:
-                    player->learnSpell(15590);	// Fists
-                    player->learnSpell(8737);	// Mail
-                    player->learnSpell(196);	// Axes
-                    player->learnSpell(1180);	// Dagger
-                    player->learnSpell(197);	// 2H Axe
-                    player->learnSpell(199);	// 2H Mace
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(58059);  // glyph of renewed life
                     player->learnSpell(58057);  // glyph of water walking
                     break;
 
                 case CLASS_WARRIOR:
-                    player->learnSpell(264);	// Bows
-                    player->learnSpell(5011);	// Crossbow
-                    player->learnSpell(674);	// Dual Wield
-                    player->learnSpell(15590);	// Fists
-                    player->learnSpell(266);	// Guns
-                    player->learnSpell(2567);	// Thrown
-                    player->learnSpell(750);	// Plate Mail
-                    player->learnSpell(200);	// PoleArms
-                    player->learnSpell(199);	// 2H Mace
-                    player->learnSpell(227);	// Staves
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(58096);  // Glyph of bloodrage
                     break;
 
                 case CLASS_HUNTER:
-                    player->learnSpell(674);	// Dual Wield
-                    player->learnSpell(15590);	// Fists
-                    player->learnSpell(264);	// Bows
-                    player->learnSpell(5011);	// Crossbow
-                    player->learnSpell(2567);	// Thrown
-                    player->learnSpell(266);	// Guns
-                    player->learnSpell(8737);	// Mail
-                    player->learnSpell(200);	// PoleArms
-                    player->learnSpell(227);	// Staves
-                    player->learnSpell(201);	// 1H Sword
-                    player->learnSpell(202);	// 2H Sword
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57870);  // Glyph of Mend Pet
                     break;
 
-                case CLASS_ROGUE:
-                    player->learnSpell(264);	// Bows
-                    player->learnSpell(5011);	// Crossbow
-                    player->learnSpell(15590);	// Fists
-                    player->learnSpell(266);	// Guns
-                    player->learnSpell(196);	// Axes
-                    player->learnSpell(198);	// Maces
-                    player->learnSpell(201);	// Swords
-                    player->learnSpell(54753);  // Mount White Polar Bear
-                    break;
+                //case CLASS_ROGUE:
+                    //player->learnSpell(1784);	// Stealth
+                    //break;
 
                 case CLASS_DRUID:
-                    player->learnSpell(1180);	// Daggers
-                    player->learnSpell(15590);	// Fists
-                    player->learnSpell(198);	// Maces
-                    player->learnSpell(200);	// PoleArms
-                    player->learnSpell(227);	// Staves
-                    player->learnSpell(199);	// 2H Mace
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(54824);  // Glyph of Swiftmend
                     player->learnSpell(57857);  // Glyph of Unburdened Rebirth
                     break;
 
                 case CLASS_MAGE:
-                    player->learnSpell(201);	// 1h Swords
-                    player->learnSpell(1180);	// Dagger
-                    player->learnSpell(227);	// Staves
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57925);  // Glyph of Slow Fall
                     break;
 
                 case CLASS_WARLOCK:
-                    player->learnSpell(201);	// Swords
-                    player->learnSpell(1180);	// Dagger
-                    player->learnSpell(227);	// Staves
                     player->learnSpell(61993);  // Ritual of Summoning
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     break;
 
                 case CLASS_PRIEST:
-                    player->learnSpell(1180);	// Daggers
-                    player->learnSpell(198);	// Maces
-                    player->learnSpell(227);	// Staves
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(57987);  // Glyph of Levitate
                     break;
 
                 case CLASS_DEATH_KNIGHT:
-                    player->learnSpell(198);	// Maces
-                    player->learnSpell(199);	// 2H Mace
-                    player->learnSpell(54753);  // Mount White Polar Bear
                     player->learnSpell(58680);  // Glyph of Horn of Winter
                     player->learnSpell(60200);  // Glyph of Raise Dead
                     break;
@@ -503,52 +464,109 @@ public:
                 ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
 
-            // If enabled.. learn special skills abilities
-            if (LoginSpecialAbility)
+            // If enabled, learn mounts based on faction
+            if (LoginMountSpell)
             {
-                // Learn Specialized Skills
-                player->learnSpell(1784);	// Stealth
-                player->learnSpell(921);	// Pick Pocket
-                player->learnSpell(1804);	// Lockpicking
-                player->learnSpell(11305);	// Sprint (3)
-                player->learnSpell(5384);	// Feign Death
-                player->learnSpell(475);	// Remove Curse
-
-                // Add a few teleportation runes
-                player->AddItem(17031, 5);	// Rune of Teleportation
-
-                // Learn Teleports
                 switch (player->GetTeamId())
                 {
 
                 case TEAM_ALLIANCE:
 
-                    // Alliance Teleports
-                    player->learnSpell(3565);	// Darnassus
-                    player->learnSpell(32271);	// Exodar
-                    player->learnSpell(3562);	// Ironforge
-                    player->learnSpell(33690);	// Shattrath
-                    player->learnSpell(3561);	// Stormwind
+                    // Alliance Mount
+                    player->learnSpell(32240);	// Snowy Gryphon
+                    // player->learnSpell(54753);  // Mount White Polar Bear
+                    if (player->getRace() == RACE_HUMAN)
+                    {
+                        player->learnSpell(23227); // Swift White Steed
+                        player->learnSpell(23228); // Swift White Steed
+                        player->learnSpell(23229); // Swift White Steed
+                    }
+                    else if (player->getRace() == RACE_DWARF)
+                    {
+                        player->learnSpell(23238); // Ram Riding
+                        player->learnSpell(23239); // Ram Riding
+                        player->learnSpell(23240); // Ram Riding
+
+                        // Dwarf Pala Mount
+                        if (player->getClass() == CLASS_PALADIN)
+                        {
+                            player->learnSpell(85147); // Summon Dawnforge Ram
+                        }
+                    }
+                    else if (player->getRace() == RACE_NIGHTELF)
+                    {
+                        player->learnSpell(23221); // Nightsaber Riding
+                        player->learnSpell(23219); // Ram Riding
+                        player->learnSpell(23338); // Ram Riding
+                    }
+                    else if (player->getRace() == RACE_GNOME)
+                    {
+                        player->learnSpell(23225); // Mechanostrider Piloting
+                        player->learnSpell(23223); // Ram Riding
+                        player->learnSpell(23222); // Ram Riding
+                    }
+                    else if (player->getRace() == RACE_DRAENEI)
+                    {
+                        player->learnSpell(35713); // Elekk Riding
+                        player->learnSpell(35712); // Ram Riding
+                        player->learnSpell(35714); // Ram Riding
+
+                        /*
+                        // Draenei Pala Mount
+                        if (player->getClass() == CLASS_PALADIN)
+                        {
+                            player->learnSpell(85148); // Summon Lightforged Ruinstrider
+                            player->learnSpell(85146); // Summon Great Exarch's Elekk
+                        }
+                        */
+                    }
                     break;
 
                 case TEAM_HORDE:
 
-                    // Horde Teleports
-                    player->learnSpell(3567);	// Orgrimmar
-                    player->learnSpell(35715);	// Shattrath
-                    player->learnSpell(32272);	// Silvermoon
-                    player->learnSpell(3566);	// Thunder Bluff
-                    player->learnSpell(3563);	// Undercity
+                    // Horde Mount
+                    player->learnSpell(32243);	// tawny wind rider
+                    if (player->getRace() == RACE_ORC)
+                    {
+                        player->learnSpell(23250); // Swift Wolves
+                        player->learnSpell(23252); // Swift Wolves
+                        player->learnSpell(23251); // Swift Wolves
+                    }
+                    else if (player->getRace() == RACE_UNDEAD_PLAYER)
+                    {
+                        player->learnSpell(17465); // Skeletal Warh
+                        player->learnSpell(66846); // Skeletal Warh
+                        player->learnSpell(23246); // Skeletal Warh
+                    }
+                    else if (player->getRace() == RACE_TAUREN)
+                    {
+                        player->learnSpell(23249); // Kodo
+                        player->learnSpell(23248); // Kodo
+                        player->learnSpell(23247); // Kodo
+
+                        // Tauren Pala Mount
+                        if (player->getClass() == CLASS_PALADIN)
+                        {
+                            player->learnSpell(85145); // Summon Great Sunwalker Kodo
+                        }
+                    }
+                    else if (player->getRace() == RACE_TROLL)
+                    {
+                        player->learnSpell(23241); // Raptor
+                        player->learnSpell(23242); // Raptor
+                        player->learnSpell(23243); // Raptor
+                    }
+                    else if (player->getRace() == RACE_BLOODELF)
+                    {
+                        player->learnSpell(35025); // Hawkstrider
+                        player->learnSpell(33660); // Hawkstrider
+                        player->learnSpell(35027); // Hawkstrider
+                    }
                     break;
 
                 default:
                     break;
                 }
-
-                // Inform the player they have new skills
-                std::ostringstream ss;
-                ss << "|cffFF8000[|cFFBDB76BCL|cffFF8000] Your spellbook has been scribed with |cFFBDB76Bspecial abilities|cffFF8000.";
-                ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
 
             // If enabled.. set exalted factions (AzerothCore config for rep not working as of 2017-08-25)
@@ -580,11 +598,6 @@ public:
                 default:
                     break;
                 }
-
-                // Inform the player they have exalted reputations
-                std::ostringstream ss;
-                ss << "|cffFF8000[|cFFBDB76BCL|cffFF8000] Your are now |cFFBDB76BExalted|cffFF8000 with your faction's capital cities.";
-                ChatHandler(player->GetSession()).SendSysMessage(ss.str().c_str());
             }
         }
     }
