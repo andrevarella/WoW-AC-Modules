@@ -1,7 +1,7 @@
 /*
  *MIT License
  *
- *Copyright (c) 2022 Azerothcore
+ *Copyright (c) 2023 Azerothcore
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -56,10 +56,10 @@ public:
         {
             { "global",         SEC_GAMEMASTER,     true,    &HandleAntiCheatGlobalCommand,  "" },
             { "player",         SEC_GAMEMASTER,     true,    &HandleAntiCheatPlayerCommand,  "" },
-            { "DeleteAutoReportPlayer",         SEC_ADMINISTRATOR,  true,    &HandleAntiCheatDeleteCommand,  "" },
+            { "delete",         SEC_ADMINISTRATOR,  true,    &HandleAntiCheatDeleteCommand,  "" },
             { "jail",           SEC_GAMEMASTER,     true,    &HandleAnticheatJailCommand,    "" },
-            { "libertar",         SEC_ADMINISTRATOR,  true,    &HandleAnticheatParoleCommand,  "" },
-            { "PurgeDailyPlayersStatistics",          SEC_ADMINISTRATOR,  true,    &HandleAntiCheatPurgeCommand,   "" },
+            { "parole",         SEC_ADMINISTRATOR,  true,    &HandleAnticheatParoleCommand,  "" },
+            { "purge",          SEC_ADMINISTRATOR,  true,    &HandleAntiCheatPurgeCommand,   "" },
             { "warn",           SEC_GAMEMASTER,     true,    &HandleAnticheatWarnCommand,    "" }
         };
 
@@ -71,19 +71,29 @@ public:
         return commandTable;
     }
 
+    static Optional<PlayerIdentifier> TrySolvePlayer(ChatHandler* handler, Optional<PlayerIdentifier> player)
+    {
+        if (!player)
+            player = PlayerIdentifier::FromTarget(handler);
+
+        if (!player || !player->IsConnected())
+        {
+            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
+            handler->SetSentErrorMessage(true);
+            return std::nullopt;
+        }
+
+        return player;
+    }
+
     static bool HandleAnticheatWarnCommand(ChatHandler* handler, Optional<PlayerIdentifier> player)
     {
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
             return false;
 
+        player = TrySolvePlayer(handler, player);
         if (!player)
-            player = PlayerIdentifier::FromTarget(handler);
-        if (!player || !player->IsConnected())
-        {
-            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
-            handler->SetSentErrorMessage(true);
             return false;
-        }
 
         ChatHandler(player->GetConnectedPlayer()->GetSession()).SendSysMessage("The anticheat system has reported several times that you may be cheating. You will be monitored to confirm if this is accurate.");
         return true;
@@ -94,14 +104,9 @@ public:
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
             return false;
 
+        player = TrySolvePlayer(handler, player);
         if (!player)
-            player = PlayerIdentifier::FromTarget(handler);
-        if (!player || !player->IsConnected())
-        {
-            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
-            handler->SetSentErrorMessage(true);
             return false;
-        }
 
         Player* pTarget = player->GetConnectedPlayer();
 
@@ -111,19 +116,24 @@ public:
             handler->GetSession()->GetPlayer()->TeleportTo(1, 16226.5f, 16403.6f, -64.5f, 3.2f);
         }
 
+        // GM Jail Location is uncommit and used as default for the jailing. Feel free to commit it out with double forward slashes (//) and uncommit,
+        // removing the double forward slashes (//) if you wish to use the other locations.
         WorldLocation loc = WorldLocation(1, 16226.5f, 16403.6f, -64.5f, 3.2f);// GM Jail Location
+        //WorldLocation loc = WorldLocation(35, -98.0155, 149.8360,-40.3827, 3.2f);// Alliance Jail Stormwind Stockade Location
+        //WorldLocation loc = WorldLocation(0, -11139.1845, -1742.4421, -29.7365, 3.2f);// Horde Jail The Pit of Criminals Location
+
         pTarget->TeleportTo(loc);
         pTarget->SetHomebind(loc, 876);// GM Jail Homebind location
         pTarget->CastSpell(pTarget, SHACKLES);// shackle him in place to ensure no exploit happens for jail break attempt
-        if (Aura* dungdesert = pTarget->AddAura(LFG_SPELL_DUNGEON_DESERTER, pTarget))// LFG_SPELL_DUNGEON_DESERTER
+        if (Aura* dungdesert = pTarget->AddAura(LFG_SPELL_DUNGEON_DESERTER, pTarget))
         {
             dungdesert->SetDuration(-1);
         }
-        if (Aura* bgdesert = pTarget->AddAura(BG_SPELL_DESERTER, pTarget))// BG_SPELL_DESERTER
+        if (Aura* bgdesert = pTarget->AddAura(BG_SPELL_DESERTER, pTarget))
         {
             bgdesert->SetDuration(-1);
         }
-        if (Aura* silent = pTarget->AddAura(SILENCED, pTarget))// SILENCED
+        if (Aura* silent = pTarget->AddAura(SILENCED, pTarget))
         {
             silent->SetDuration(-1);
         }
@@ -136,34 +146,28 @@ public:
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
             return false;
 
+        player = TrySolvePlayer(handler, player);
         if (!player)
-            player = PlayerIdentifier::FromTarget(handler);
-        if (!player || !player->IsConnected())
-        {
-            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
-            handler->SetSentErrorMessage(true);
             return false;
-        }
 
         Player* pTarget = player->GetConnectedPlayer();
 
-        WorldLocation Aloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Stormwind
-        WorldLocation Hloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Orgrimmar
-
         if (pTarget->GetTeamId() == TEAM_ALLIANCE)
         {
-            pTarget->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);//Stormwind
+            WorldLocation Aloc = WorldLocation(0, -8833.37f, 628.62f, 94.00f, 1.06f);// Stormwind
+            pTarget->TeleportTo(0, -8833.37f, 628.62f, 94.00f, 1.06f);//Stormwind
             pTarget->SetHomebind(Aloc, 1519);// Stormwind Homebind location
         }
         else
         {
-            pTarget->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);//Orgrimmar
+            WorldLocation Hloc = WorldLocation(1, 1569.59f, -4397.63f, 7.7f, 0.54f);// Orgrimmar
+            pTarget->TeleportTo(1, 1569.59f, -4397.63f, 7.7f, 0.54f);//Orgrimmar
             pTarget->SetHomebind(Hloc, 1653);// Orgrimmar Homebind location
         }
-        pTarget->RemoveAura(SHACKLES);// remove shackles
-        pTarget->RemoveAura(LFG_SPELL_DUNGEON_DESERTER);// LFG_SPELL_DUNGEON_DESERTER
-        pTarget->RemoveAura(BG_SPELL_DESERTER);// BG_SPELL_DESERTER
-        pTarget->RemoveAura(SILENCED);// SILENCED
+        pTarget->RemoveAura(SHACKLES);
+        pTarget->RemoveAura(LFG_SPELL_DUNGEON_DESERTER);
+        pTarget->RemoveAura(BG_SPELL_DESERTER);
+        pTarget->RemoveAura(SILENCED);
         sAnticheatMgr->AnticheatDeleteCommand(pTarget->GetGUID());// deletes auto reports on player
         return true;
     }
@@ -173,16 +177,12 @@ public:
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
             return false;
 
+        player = TrySolvePlayer(handler, player);
         if (!player)
-            player = PlayerIdentifier::FromTarget(handler);
-        if (!player || !player->IsConnected())
-        {
-            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
-            handler->SetSentErrorMessage(true);
             return false;
-        }
+
         sAnticheatMgr->AnticheatDeleteCommand(player->GetGUID());
-        handler->PSendSysMessage("Anticheat players_reports_status deleted for player %s", player->GetName().c_str());
+        handler->PSendSysMessage("Anticheat players_reports_status deleted for player %s", player->GetName());
         return true;
     }
 
@@ -191,50 +191,150 @@ public:
         if (!sConfigMgr->GetOption<bool>("Anticheat.Enabled", 0))
             return false;
 
+        player = TrySolvePlayer(handler, player);
         if (!player)
-        {
-            player = PlayerIdentifier::FromTarget(handler);
-        }
-        if (!player || !player->IsConnected())
-        {
-            handler->SendSysMessage(LANG_PLAYER_NOT_FOUND);
-            handler->SetSentErrorMessage(true);
             return false;
-        }
 
-        ObjectGuid guid = player->GetGUID();
-        Player* playerTarget = player->GetConnectedPlayer();
-        if (playerTarget)
+        if (Player* playerTarget = player->GetConnectedPlayer())
         {
+            ObjectGuid guid = player->GetGUID();
+            uint32 latency = playerTarget->GetSession()->GetLatency();
+
+            const char* lineTemplate_u;
+            const char* lineTemplate_s;
+            const char* lineSeparator;
+            const char* playerInformationTemplate;
+            const char* ipAndLatencyTemplate;
+            const char* banAndReasonTemplate;
+            const char* averageTotalTemplate;
+            if (handler->IsConsole())
+            {
+                lineTemplate_u = "%s: %u";
+                lineTemplate_s = "%s: %s";
+                lineSeparator = "-----------------------------------------------------------------";
+                playerInformationTemplate = "Information about player %s";
+                ipAndLatencyTemplate = "IP Address: %s || Latency %u ms";
+                banAndReasonTemplate = "Ban by: %s || Ban Reason: %s";
+                averageTotalTemplate = "Average: %f || Total Reports: %u";
+            }
+            else
+            {
+                lineTemplate_u = "|cffff0000%s:|cffffff00 %u";
+                lineTemplate_s = "|cffff0000%s:|cffffff00 %s";
+                lineSeparator = "|cFFFFA500-----------------------------------------------------------------";
+                playerInformationTemplate = "|cFF20B2AAInformation about player:|cffffff00 %s";
+                ipAndLatencyTemplate = "|cffff0000IP Address: |cffffff00%s |cffff0000Latency |cffffff00%u ms";
+                banAndReasonTemplate = "|cffff0000Ban by:|cffffff00 %s |cffff0000Ban Reason:|cffffff00 %s";
+                averageTotalTemplate = "|cffff0000Average: |cffffff00%f |cffff0000Total Reports:|cffffff00 %u";
+            }
+
+            handler->PSendSysMessage(lineSeparator);
+            handler->PSendSysMessage(playerInformationTemplate, player->GetName());
+            handler->PSendSysMessage(ipAndLatencyTemplate, playerTarget->GetSession()->GetRemoteAddress(), latency);
+
+            //                                                       0            1           2
+            QueryResult resultADB = LoginDatabase.Query("SELECT `unbandate`, `banreason`, `bannedby` FROM `account_banned` WHERE `id` = {} ORDER BY `bandate` ASC", playerTarget->GetSession()->GetAccountId());
+            if (resultADB)
+            {
+                do
+                {
+                    Field* fields = resultADB->Fetch();
+                    std::string startbanEnd = Acore::Time::TimeToTimestampStr(Seconds(fields[0].Get<uint64>()));
+                    std::string bannedReason = fields[1].Get<std::string>();
+                    std::string bannedBy = fields[2].Get<std::string>();
+                    handler->PSendSysMessage(lineTemplate_s, "Account Previously Banned", "Yes");
+                    handler->PSendSysMessage(lineTemplate_s, "Ban Ended", startbanEnd);
+                    handler->PSendSysMessage(banAndReasonTemplate, bannedBy, bannedReason);
+                } while (resultADB->NextRow());
+            }
+            else
+            {
+                handler->PSendSysMessage(lineTemplate_s, "Account Previously Banned", "No");
+            }
+
+            //                                                           0            1           2
+            QueryResult resultCDB = CharacterDatabase.Query("SELECT `unbandate`, `banreason`, `bannedby` FROM `character_banned` WHERE `guid` = {} ORDER BY `bandate` ASC;", playerTarget->GetGUID().GetCounter());
+            if (resultCDB)
+            {
+                do
+                {
+                    Field* fields = resultCDB->Fetch();
+                    std::string startbanEnd = Acore::Time::TimeToTimestampStr(Seconds(fields[0].Get<uint64>()));
+                    std::string bannedReason = fields[1].Get<std::string>();
+                    std::string bannedBy = fields[2].Get<std::string>();
+                    handler->PSendSysMessage(lineTemplate_s, "Character Previously Banned", "Yes");
+                    handler->PSendSysMessage(lineTemplate_s, "Ban Ended", startbanEnd);
+                    handler->PSendSysMessage(banAndReasonTemplate, bannedBy, bannedReason);
+                } while (resultCDB->NextRow());
+            }
+            else
+            {
+                handler->PSendSysMessage(lineTemplate_s, "Character Previously Banned", "No");
+            }
+
+            // If any row exists, then we consider "detected".
+            if (CharacterDatabase.Query("SELECT TRUE FROM `account_data` WHERE `data` LIKE '%CastSpellByName%' AND `accountId` = {};", playerTarget->GetSession()->GetAccountId()))
+            {
+                handler->PSendSysMessage(lineTemplate_s, "Macro Requiring Lua Unlock Detected", "Yes");
+            }
+            else
+            {
+                handler->PSendSysMessage(lineTemplate_s, "Macro Requiring Lua Unlock Detected", "No");
+            }
+
             float average = sAnticheatMgr->GetAverage(guid);
             uint32 total_reports = sAnticheatMgr->GetTotalReports(guid);
-            uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid, 0);
-            uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid, 1);
-            uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid, 3);
-            uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid, 2);
-            uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid, 4);
-            uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid, 5);
-            uint32 teleport_reports = sAnticheatMgr->GetTypeReports(guid, 6);
-            uint32 ignorecontrol_reports = sAnticheatMgr->GetTypeReports(guid, 7);
-            uint32 zaxis_reports = sAnticheatMgr->GetTypeReports(guid, 8);
-            uint32 antiswim_reports = sAnticheatMgr->GetTypeReports(guid, 9);
-            uint32 gravity_reports = sAnticheatMgr->GetTypeReports(guid, 10);
-            Player* playerTarget = player->GetConnectedPlayer();
-            uint32 latency = 0;
-            latency = playerTarget->GetSession()->GetLatency();
-            handler->PSendSysMessage("Information about player %s || Latency %u ms", player->GetName().c_str(), latency);
-            handler->PSendSysMessage("Average: %f || Total Reports: %u ", average, total_reports);
-            handler->PSendSysMessage("Speed Reports: %u || Fly Reports: %u || Jump Reports: %u ", speed_reports, fly_reports, jump_reports);
-            handler->PSendSysMessage("Walk On Water Reports: %u  || Teleport To Plane Reports: %u", waterwalk_reports, teleportplane_reports);
-            handler->PSendSysMessage("Teleport Reports: %u || Climb Reports: %u", teleport_reports, climb_reports);
-            handler->PSendSysMessage("Ignore Control Reports: %u || Ignore Z-Axis Reports: %u", ignorecontrol_reports, zaxis_reports);
-            handler->PSendSysMessage("Ignore Anti-Swim Reports: %u || Gravity Reports: %u", antiswim_reports, gravity_reports);
+            uint32 counter_measures_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::COUNTER_MEASURES_REPORT);
+
+            handler->PSendSysMessage(lineTemplate_u, "Counter Measures Deployed", counter_measures_reports);
+            handler->PSendSysMessage(averageTotalTemplate, average, total_reports);
+
+            if (uint32 speed_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::SPEED_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Speed Reports", speed_reports);
+
+            if (uint32 fly_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::FLY_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Fly Reports", fly_reports);
+
+            if (uint32 jump_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::JUMP_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Jump Reports", jump_reports);
+
+            if (uint32 waterwalk_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::WALK_WATER_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Walk On Water Reports", waterwalk_reports);
+
+            if (uint32 teleportplane_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::TELEPORT_PLANE_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Teleport To Plane Reports", teleportplane_reports);
+
+            if (uint32 teleport_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::TELEPORT_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Teleport Reports", teleport_reports);
+
+            if (uint32 climb_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::CLIMB_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Climb Reports", climb_reports);
+
+            if (uint32 ignorecontrol_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::IGNORE_CONTROL_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Ignore Control Reports", ignorecontrol_reports);
+
+            if (uint32 zaxis_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::ZAXIS_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Ignore Z-Axis Reports", zaxis_reports);
+
+            if (uint32 antiswim_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::ANTISWIM_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Anti-Swim Reports", antiswim_reports);
+
+            if (uint32 gravity_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::GRAVITY_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Gravity Reports", gravity_reports);
+
+            if (uint32 antiknockback_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::ANTIKNOCK_BACK_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Anti-Knock Back Reports", antiknockback_reports);
+
+            if (uint32 no_fall_damage_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::NO_FALL_DAMAGE_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "No Fall Damage Reports", no_fall_damage_reports);
+
+            if (uint32 op_ack_reports = sAnticheatMgr->GetTypeReports(guid, ReportTypes::OP_ACK_HACK_REPORT))
+                handler->PSendSysMessage(lineTemplate_u, "Op Ack Reports", op_ack_reports);
+
             return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
 
     static bool HandleAntiCheatGlobalCommand(ChatHandler* handler)

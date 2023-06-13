@@ -1,7 +1,7 @@
 /*
  *MIT License
  *
- *Copyright (c) 2022 Azerothcore
+ *Copyright (c) 2023 Azerothcore
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -24,9 +24,11 @@
 
 void startAnticheatScripts();
 void AddSC_anticheat_commandscript();
+void AddAntiCheatDBLoadingScripts();
 
 void Addmod_anticheatScripts()
 {
     startAnticheatScripts();
     AddSC_anticheat_commandscript();
+    AddAntiCheatDBLoadingScripts();
 }

@@ -1,7 +1,7 @@
 /*
  *MIT License
  *
- *Copyright (c) 2022 Azerothcore
+ *Copyright (c) 2023 Azerothcore
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -50,6 +50,12 @@ public:
 
         if (sConfigMgr->GetOption<bool>("Anticheat.LoginMessage", true))
             ChatHandler(player->GetSession()).PSendSysMessage("This server is running an Anticheat Module.");
+    }
+
+    void OnUpdate(Player* player, uint32 diff) override
+    {
+        if (sConfigMgr->GetOption<bool>("Anticheat.OpAckOrderHack", true) && sConfigMgr->GetOption<bool>("Anticheat.Enabled", true))
+            sAnticheatMgr->AckUpdate(player, diff);
     }
 };
 
