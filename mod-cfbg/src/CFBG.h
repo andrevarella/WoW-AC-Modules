@@ -42,8 +42,8 @@ enum FakeMorphs
     FAKE_M_DWARF          = 20317,
     FAKE_F_DWARF          = 50565, // precisa do patch   - old = // FAKE_F_DWARF missing
 
-    FAKE_M_NIGHT_ELF      = 20318,
-    FAKE_F_NIGHT_ELF      = 50569, // precisa do patch   - old = FAKE_F_NIGHT_ELF missing
+    FAKE_M_NIGHTELF      = 20318,
+    FAKE_F_NIGHTELF      = 50569, // precisa do patch   - old = FAKE_F_NIGHT_ELF missing
 
     FAKE_M_DRAENEI        = 50566, // precisa do patch
     FAKE_F_DRAENEI        = 20323,
@@ -106,7 +106,7 @@ RaceData const raceData[12] =
     { CLASS_MAGE,         { RACE_HUMAN, RACE_GNOME, RACE_NIGHTELF, RACE_DRAENEI },              { RACE_BLOODELF, RACE_TROLL, RACE_UNDEAD_PLAYER } },
     { CLASS_WARLOCK,      { RACE_HUMAN, RACE_GNOME },                                           { RACE_ORC, RACE_BLOODELF, RACE_UNDEAD_PLAYER, RACE_TROLL } },
     { CLASS_NONE,         { 0 }, { 0 } },
-    { CLASS_DRUID,        { RACE_NIGHTELF },                                                    { RACE_TAUREN } },
+    { CLASS_DRUID,        { RACE_NIGHTELF },                                                    { RACE_TAUREN, RACE_TROLL } },
 };
 
 struct CFBGRaceInfo
