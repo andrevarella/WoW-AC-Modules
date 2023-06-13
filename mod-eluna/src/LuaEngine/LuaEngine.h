@@ -20,8 +20,10 @@
 #include "Weather.h"
 #include "World.h"
 #include "Hooks.h"
+#include "LFG.h"
 #include "ElunaUtility.h"
 #include "HttpManager.h"
+#include "EventEmitter.h"
 #include <mutex>
 #include <memory>
 
@@ -239,6 +241,8 @@ public:
     lua_State* L;
     EventMgr* eventMgr;
     HttpManager httpManager;
+    QueryCallbackProcessor queryProcessor;
+    EventEmitter<void(std::string)> OnError;
 
     BindingMap< EventKey<Hooks::ServerEvents> >*     ServerEventBindings;
     BindingMap< EventKey<Hooks::PlayerEvents> >*     PlayerEventBindings;
@@ -369,6 +373,10 @@ public:
     void OnLuaStateOpen();
     bool OnAddonMessage(Player* sender, uint32 type, std::string& msg, Player* receiver, Guild* guild, Group* group, Channel* channel);
     void OnPetAddedToWorld(Player* player, Creature* pet);
+    void OnQuestRewardItem(Player* player, Item* item, uint32 count);
+    void OnCreateItem(Player* player, Item* item, uint32 count);
+    void OnStoreNewItem(Player* player, Item* item, uint32 count);
+    void OnPlayerCompleteQuest(Player* player, Quest const* quest);
 
     /* Item */
     void OnDummyEffect(WorldObject* pCaster, uint32 spellId, SpellEffIndex effIndex, Item* pTarget);
@@ -450,7 +458,7 @@ public:
     void OnFreeTalentPointsChanged(Player* pPlayer, uint32 newPoints);
     void OnTalentsReset(Player* pPlayer, bool noCost);
     void OnMoneyChanged(Player* pPlayer, int32& amount);
-    void OnGiveXP(Player* pPlayer, uint32& amount, Unit* pVictim);
+    void OnGiveXP(Player* pPlayer, uint32& amount, Unit* pVictim, uint8 xpSource);
     bool OnReputationChange(Player* pPlayer, uint32 factionID, int32& standing, bool incremental);
     void OnDuelRequest(Player* pTarget, Player* pChallenger);
     void OnDuelStart(Player* pStarter, Player* pChallenger);
@@ -469,11 +477,19 @@ public:
     void OnDelete(uint32 guid);
     void OnSave(Player* pPlayer);
     void OnBindToInstance(Player* pPlayer, Difficulty difficulty, uint32 mapid, bool permanent);
+    void OnUpdateArea(Player* pPlayer, uint32 oldArea, uint32 newArea);
     void OnUpdateZone(Player* pPlayer, uint32 newZone, uint32 newArea);
     void OnMapChanged(Player* pPlayer);
     void HandleGossipSelectOption(Player* pPlayer, uint32 menuId, uint32 sender, uint32 action, const std::string& code);
     void OnLearnSpell(Player* player, uint32 spellId);
     void OnAchiComplete(Player* player, AchievementEntry const* achievement);
+    void OnFfaPvpStateUpdate(Player* player, bool hasFfaPvp);
+    bool OnCanInitTrade(Player* player, Player* target);
+    bool OnCanSendMail(Player* player, ObjectGuid receiverGuid, ObjectGuid mailbox, std::string& subject, std::string& body, uint32 money, uint32 cod, Item* item);
+    bool OnCanJoinLfg(Player* player, uint8 roles, lfg::LfgDungeonSet& dungeons, const std::string& comment);
+    bool OnCanGroupInvite(Player* player, std::string& memberName);
+    void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll);
+    void OnBattlegroundDesertion(Player* player, const BattlegroundDesertionType type);
 
 #ifndef CLASSIC
 #ifndef TBC

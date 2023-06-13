@@ -227,18 +227,19 @@ void Eluna::OnMoneyChanged(Player* pPlayer, int32& amount)
     CleanUpStack(2);
 }
 
-void Eluna::OnGiveXP(Player* pPlayer, uint32& amount, Unit* pVictim)
+void Eluna::OnGiveXP(Player* pPlayer, uint32& amount, Unit* pVictim, uint8 xpSource)
 {
     START_HOOK(PLAYER_EVENT_ON_GIVE_XP);
     Push(pPlayer);
     Push(amount);
     Push(pVictim);
+    Push(xpSource);
     int amountIndex = lua_gettop(L) - 1;
-    int n = SetupStack(PlayerEventBindings, key, 3);
+    int n = SetupStack(PlayerEventBindings, key, 4);
 
     while (n > 0)
     {
-        int r = CallOneFunction(n--, 3, 1);
+        int r = CallOneFunction(n--, 4, 1);
 
         if (lua_isnumber(L, r))
         {
@@ -250,7 +251,7 @@ void Eluna::OnGiveXP(Player* pPlayer, uint32& amount, Unit* pVictim)
         lua_pop(L, 1);
     }
 
-    CleanUpStack(3);
+    CleanUpStack(4);
 }
 
 bool Eluna::OnReputationChange(Player* pPlayer, uint32 factionID, int32& standing, bool incremental)
@@ -381,6 +382,15 @@ void Eluna::OnBindToInstance(Player* pPlayer, Difficulty difficulty, uint32 mapi
     CallAllFunctions(PlayerEventBindings, key);
 }
 
+void Eluna::OnUpdateArea(Player* pPlayer, uint32 oldArea, uint32 newArea)
+{
+    START_HOOK(PLAYER_EVENT_ON_UPDATE_AREA);
+    Push(pPlayer);
+    Push(oldArea);
+    Push(newArea);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
 void Eluna::OnUpdateZone(Player* pPlayer, uint32 newZone, uint32 newArea)
 {
     START_HOOK(PLAYER_EVENT_ON_UPDATE_ZONE);
@@ -500,7 +510,7 @@ bool Eluna::OnChat(Player* pPlayer, uint32 type, uint32 lang, std::string& msg, 
     Push(msg);
     Push(type);
     Push(lang);
-    Push(pChannel->GetChannelId());
+    Push(pChannel->IsConstant() ? static_cast<int32>(pChannel->GetChannelId()) : -static_cast<int32>(pChannel->GetChannelDBId()));
     int n = SetupStack(PlayerEventBindings, key, 5);
 
     while (n > 0)
@@ -572,5 +582,119 @@ void Eluna::OnAchiComplete(Player* player, AchievementEntry const* achievement)
     START_HOOK(PLAYER_EVENT_ON_ACHIEVEMENT_COMPLETE);
     Push(player);
     Push(achievement);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+void Eluna::OnFfaPvpStateUpdate(Player* player, bool hasFfaPvp)
+{
+    START_HOOK(PLAYER_EVENT_ON_FFAPVP_CHANGE);
+    Push(player);
+    Push(hasFfaPvp);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+bool Eluna::OnCanInitTrade(Player* player, Player* target)
+{
+    START_HOOK_WITH_RETVAL(PLAYER_EVENT_ON_CAN_INIT_TRADE, true);
+    Push(player);
+    Push(target);
+    return CallAllFunctionsBool(PlayerEventBindings, key);
+}
+
+bool Eluna::OnCanSendMail(Player* player, ObjectGuid receiverGuid, ObjectGuid mailbox, std::string& subject, std::string& body, uint32 money, uint32 cod, Item* item)
+{
+    START_HOOK_WITH_RETVAL(PLAYER_EVENT_ON_CAN_SEND_MAIL, true);
+    Push(player);
+    Push(receiverGuid);
+    Push(mailbox);
+    Push(subject);
+    Push(body);
+    Push(money);
+    Push(cod);
+    Push(item);
+    return CallAllFunctionsBool(PlayerEventBindings, key);
+}
+
+bool Eluna::OnCanJoinLfg(Player* player, uint8 roles, lfg::LfgDungeonSet& dungeons, const std::string& comment)
+{
+    START_HOOK_WITH_RETVAL(PLAYER_EVENT_ON_CAN_JOIN_LFG, true);
+    Push(player);
+    Push(roles);
+
+    lua_newtable(L);
+    int table = lua_gettop(L);
+    uint32 counter = 1;
+    for (uint32 dungeon : dungeons)
+    {
+        Eluna::Push(L, dungeon);
+        lua_rawseti(L, table, counter);
+        ++counter;
+    }
+    lua_settop(L, table);
+    ++push_counter;
+
+    Push(comment);
+    return CallAllFunctionsBool(PlayerEventBindings, key);
+}
+
+void Eluna::OnQuestRewardItem(Player* player, Item* item, uint32 count)
+{
+    START_HOOK(PLAYER_EVENT_ON_QUEST_REWARD_ITEM);
+    Push(player);
+    Push(item);
+    Push(count);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+void Eluna::OnCreateItem(Player* player, Item* item, uint32 count)
+{
+    START_HOOK(PLAYER_EVENT_ON_CREATE_ITEM);
+    Push(player);
+    Push(item);
+    Push(count);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+void Eluna::OnStoreNewItem(Player* player, Item* item, uint32 count)
+{
+    START_HOOK(PLAYER_EVENT_ON_STORE_NEW_ITEM);
+    Push(player);
+    Push(item);
+    Push(count);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+void Eluna::OnPlayerCompleteQuest(Player* player, Quest const* quest)
+{
+    START_HOOK(PLAYER_EVENT_ON_COMPLETE_QUEST);
+    Push(player);
+    Push(quest);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+bool Eluna::OnCanGroupInvite(Player* player, std::string& memberName)
+{
+    START_HOOK_WITH_RETVAL(PLAYER_EVENT_ON_CAN_GROUP_INVITE, true);
+    Push(player);
+    Push(memberName);
+    return CallAllFunctionsBool(PlayerEventBindings, key);
+}
+
+void Eluna::OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll)
+{
+    START_HOOK(PLAYER_EVENT_ON_GROUP_ROLL_REWARD_ITEM);
+    Push(player);
+    Push(item);
+    Push(count);
+    Push(voteType);
+    Push(roll);
+    CallAllFunctions(PlayerEventBindings, key);
+}
+
+void Eluna::OnBattlegroundDesertion(Player* player, const BattlegroundDesertionType type)
+{
+    START_HOOK(PLAYER_EVENT_ON_BG_DESERTION);
+    Push(player);
+    Push(type);
     CallAllFunctions(PlayerEventBindings, key);
 }

@@ -262,6 +262,28 @@ namespace LuaGroup
     }
 
     /**
+     * Returns the type of this [Group]
+     *
+     * <pre>
+     * enum GroupType
+     * {
+     *     GROUPTYPE_NORMAL         = 0,
+     *     GROUPTYPE_BG             = 1,
+     *     GROUPTYPE_RAID           = 2,
+     *     GROUPTYPE_LFG_RESTRICTED = 4,
+     *     GROUPTYPE_LFG            = 8
+     * };
+     * </pre>
+     *
+     * @return [GroupType] groupType
+     */
+    int GetGroupType(lua_State* L, Group* group)
+    {
+        Eluna::Push(L, group->GetGroupType());
+        return 1;
+    }
+
+    /**
      * Returns the [Player]'s subgroup ID of this [Group]
      *
      * @param ObjectGuid guid : guid of the player
@@ -403,6 +425,32 @@ namespace LuaGroup
 #else
         group->SetTargetIcon(icon, setter, target);
 #endif
+        return 0;
+    }
+
+    /**
+     * Sets or removes a flag for a [Group] member
+     * 
+     * <pre>
+     * enum GroupMemberFlags
+     * {
+     *     MEMBER_FLAG_ASSISTANT   = 0x01,
+     *     MEMBER_FLAG_MAINTANK    = 0x02,
+     *     MEMBER_FLAG_MAINASSIST  = 0x04,
+     * };
+     * </pre>
+     * 
+     * @param ObjectGuid target : GUID of the target
+     * @param bool apply : add the `flag` if `true`, remove the `flag` otherwise
+     * @param [GroupMemberFlags] flag : the flag to set or unset
+     */
+    int SetMemberFlag(lua_State* L, Group* group)
+    {
+        ObjectGuid target = Eluna::CHECKVAL<ObjectGuid>(L, 2);
+        bool apply = Eluna::CHECKVAL<bool>(L, 3);
+        GroupMemberFlags flag = static_cast<GroupMemberFlags>(Eluna::CHECKVAL<uint32>(L, 4));
+
+        group->SetGroupMemberFlag(target, apply, flag);
         return 0;
     }
 

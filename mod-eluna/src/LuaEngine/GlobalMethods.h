@@ -13,6 +13,9 @@
 
 #include "BanMgr.h"
 #include "GameTime.h"
+#include "SharedDefines.h"
+#include "OutdoorPvPMgr.h"
+#include "../../../../src/server/scripts/OutdoorPvP/OutdoorPvPNA.h"
 
 enum BanMode
 {
@@ -318,6 +321,13 @@ namespace LuaGlobalFunctions
     {
         uint32 lowguid = Eluna::CHECKVAL<uint32>(L, 1);
         Eluna::Push(L, MAKE_NEW_GUID(lowguid, 0, HIGHGUID_ITEM));
+        return 1;
+    }
+
+    int GetItemTemplate(lua_State* L)
+    {
+        uint32 entry = Eluna::CHECKVAL<uint32>(L, 1);
+        Eluna::Push(L, eObjectMgr->GetItemTemplate(entry));
         return 1;
     }
 
@@ -672,7 +682,7 @@ namespace LuaGlobalFunctions
      *     PLAYER_EVENT_ON_DUEL_REQUEST            =     9,        // (event, target, challenger)
      *     PLAYER_EVENT_ON_DUEL_START              =     10,       // (event, player1, player2)
      *     PLAYER_EVENT_ON_DUEL_END                =     11,       // (event, winner, loser, type)
-     *     PLAYER_EVENT_ON_GIVE_XP                 =     12,       // (event, player, amount, victim) - Can return new XP amount
+     *     PLAYER_EVENT_ON_GIVE_XP                 =     12,       // (event, player, amount, victim, source) - Can return new XP amount
      *     PLAYER_EVENT_ON_LEVEL_CHANGE            =     13,       // (event, player, oldLevel)
      *     PLAYER_EVENT_ON_MONEY_CHANGE            =     14,       // (event, player, amount) - Can return new money amount
      *     PLAYER_EVENT_ON_REPUTATION_CHANGE       =     15,       // (event, player, factionId, standing, incremental) - Can return new standing -> if standing == -1, it will prevent default action (rep gain)
@@ -682,7 +692,7 @@ namespace LuaGlobalFunctions
      *     PLAYER_EVENT_ON_WHISPER                 =     19,       // (event, player, msg, Type, lang, receiver) - Can return false, newMessage
      *     PLAYER_EVENT_ON_GROUP_CHAT              =     20,       // (event, player, msg, Type, lang, group) - Can return false, newMessage
      *     PLAYER_EVENT_ON_GUILD_CHAT              =     21,       // (event, player, msg, Type, lang, guild) - Can return false, newMessage
-     *     PLAYER_EVENT_ON_CHANNEL_CHAT            =     22,       // (event, player, msg, Type, lang, channel) - Can return false, newMessage
+     *     PLAYER_EVENT_ON_CHANNEL_CHAT            =     22,       // (event, player, msg, Type, lang, channel) - channel is negative for custom channels. Can return false, newMessage
      *     PLAYER_EVENT_ON_EMOTE                   =     23,       // (event, player, emote) - Not triggered on any known emote
      *     PLAYER_EVENT_ON_TEXT_EMOTE              =     24,       // (event, player, textEmote, emoteNum, guid)
      *     PLAYER_EVENT_ON_SAVE                    =     25,       // (event, player)
@@ -708,6 +718,18 @@ namespace LuaGlobalFunctions
      *     PLAYER_EVENT_ON_PET_ADDED_TO_WORLD      =     43,       // (event, player, pet)
      *     PLAYER_EVENT_ON_LEARN_SPELL             =     44,       // (event, player, spellId)
      *     PLAYER_EVENT_ON_ACHIEVEMENT_COMPLETE    =     45,       // (event, player, achievement)
+     *     PLAYER_EVENT_ON_FFAPVP_CHANGE           =     46,       // (event, player, hasFfaPvp)
+     *     PLAYER_EVENT_ON_UPDATE_AREA             =     47,       // (event, player, oldArea, newArea)
+     *     PLAYER_EVENT_ON_CAN_INIT_TRADE          =     48,       // (event, player, target) - Can return false to prevent the trade
+     *     PLAYER_EVENT_ON_CAN_SEND_MAIL           =     49,       // (event, player, receiverGuid, mailbox, subject, body, money, cod, item) - Can return false to prevent sending the mail
+     *     PLAYER_EVENT_ON_CAN_JOIN_LFG            =     50,       // (event, player, roles, dungeons, comment) - Can return false to prevent queueing
+     *     PLAYER_EVENT_ON_QUEST_REWARD_ITEM       =     51,       //  (event, player, item, count)
+     *     PLAYER_EVENT_ON_CREATE_ITEM             =     52,       //  (event, player, item, count)
+     *     PLAYER_EVENT_ON_STORE_NEW_ITEM          =     53,       //  (event, player, item, count)
+     *     PLAYER_EVENT_ON_COMPLETE_QUEST          =     54,       // (event, player, quest)
+     *     PLAYER_EVENT_ON_CAN_GROUP_INVITE        =     55,       // (event, player, memberName) - Can return false to prevent inviting
+     *     PLAYER_EVENT_ON_GROUP_ROLL_REWARD_ITEM  =     56,       // (event, player, item, count, voteType, roll)
+     *     PLAYER_EVENT_ON_BG_DESERTION            =     57,       // (event, player, type)
      * };
      * </pre>
      *
@@ -1227,7 +1249,12 @@ namespace LuaGlobalFunctions
     {
         const char* command = Eluna::CHECKVAL<const char*>(L, 1);
 #if defined TRINITY || AZEROTHCORE
-        eWorld->QueueCliCommand(new CliCommandHolder(nullptr, command, nullptr, nullptr));
+        eWorld->QueueCliCommand(new CliCommandHolder(nullptr, command, [](void*, std::string_view view)
+        {
+            std::string str = { view.begin(), view.end() };
+            str.erase(std::find_if(str.rbegin(), str.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), str.end()); // Remove trailing spaces and line breaks
+            ELUNA_LOG_INFO("{}", str);
+        }, nullptr));
 #elif defined MANGOS
         eWorld->QueueCliCommand(new CliCommandHolder(0, SEC_CONSOLE, nullptr, command, nullptr, nullptr));
 #endif
@@ -1246,11 +1273,46 @@ namespace LuaGlobalFunctions
         return 0;
     }
 
+    template <typename T>
+    static int DBQueryAsync(lua_State* L, DatabaseWorkerPool<T>& db)
+    {
+        const char* query = Eluna::CHECKVAL<const char*>(L, 1);
+        luaL_checktype(L, 2, LUA_TFUNCTION);
+        lua_pushvalue(L, 2);
+        int funcRef = luaL_ref(L, LUA_REGISTRYINDEX);
+        if (funcRef == LUA_REFNIL || funcRef == LUA_NOREF)
+        {
+            luaL_argerror(L, 2, "unable to make a ref to function");
+            return 0;
+        }
+
+        Eluna::GEluna->queryProcessor.AddCallback(db.AsyncQuery(query).WithCallback([L, funcRef](QueryResult result)
+            {
+                ElunaQuery* eq = result ? new ElunaQuery(result) : nullptr;
+
+                LOCK_ELUNA;
+
+                // Get function
+                lua_rawgeti(L, LUA_REGISTRYINDEX, funcRef);
+
+                // Push parameters
+                Eluna::Push(L, eq);
+
+                // Call function
+                Eluna::GEluna->ExecuteCall(1, 0);
+
+                luaL_unref(L, LUA_REGISTRYINDEX, funcRef);
+            }));
+
+        return 0;
+    }
+
     /**
      * Executes a SQL query on the world database and returns an [ElunaQuery].
      *
      * The query is always executed synchronously
      *   (i.e. execution halts until the query has finished and then results are returned).
+     * If you need to execute the query asynchronously, use [Global:WorldDBQueryAsync] instead.
      *
      *     local Q = WorldDBQuery("SELECT entry, name FROM creature_template LIMIT 10")
      *     if Q then
@@ -1284,13 +1346,37 @@ namespace LuaGlobalFunctions
     }
 
     /**
+     * Executes an asynchronous SQL query on the world database and passes an [ElunaQuery] to a callback function.
+     *
+     * The query is executed asynchronously
+     *   (i.e. the server keeps running while the query is executed in parallel, and results are passed to a callback function).
+     * If you need to execute the query synchronously, use [Global:WorldDBQuery] instead.
+     *
+     *     WorldDBQueryAsync("SELECT entry, name FROM creature_template LIMIT 10", function(Q)
+     *         if Q then
+     *             repeat
+     *                 local entry, name = Q:GetUInt32(0), Q:GetString(1)
+     *                 print(entry, name)
+     *             until not Q:NextRow()
+     *         end
+     *     end)
+     *
+     * @param string sql : query to execute
+     * @param function callback : function that will be called when the results are available
+     */
+    int WorldDBQueryAsync(lua_State* L)
+    {
+        return DBQueryAsync(L, WorldDatabase);
+    }
+
+    /**
      * Executes a SQL query on the world database.
      *
      * The query may be executed *asynchronously* (at a later, unpredictable time).
      * If you need to execute the query synchronously, use [Global:WorldDBQuery] instead.
      *
      * Any results produced are ignored.
-     * If you need results from the query, use [Global:WorldDBQuery] instead.
+     * If you need results from the query, use [Global:WorldDBQuery] or [Global:WorldDBQueryAsync] instead.
      *
      *     WorldDBExecute("DELETE FROM my_table")
      *
@@ -1308,6 +1394,7 @@ namespace LuaGlobalFunctions
      *
      * The query is always executed synchronously
      *   (i.e. execution halts until the query has finished and then results are returned).
+     * If you need to execute the query asynchronously, use [Global:CharDBQueryAsync] instead.
      *
      * For an example see [Global:WorldDBQuery].
      *
@@ -1335,13 +1422,30 @@ namespace LuaGlobalFunctions
     }
 
     /**
+     * Executes an asynchronous SQL query on the character database and passes an [ElunaQuery] to a callback function.
+     *
+     * The query is executed asynchronously
+     *   (i.e. the server keeps running while the query is executed in parallel, and results are passed to a callback function).
+     * If you need to execute the query synchronously, use [Global:CharDBQuery] instead.
+     *
+     * For an example see [Global:WorldDBQueryAsync].
+     *
+     * @param string sql : query to execute
+     * @param function callback : function that will be called when the results are available
+     */
+    int CharDBQueryAsync(lua_State* L)
+    {
+        return DBQueryAsync(L, CharacterDatabase);
+    }
+
+    /**
      * Executes a SQL query on the character database.
      *
      * The query may be executed *asynchronously* (at a later, unpredictable time).
      * If you need to execute the query synchronously, use [Global:CharDBQuery] instead.
      *
      * Any results produced are ignored.
-     * If you need results from the query, use [Global:CharDBQuery] instead.
+     * If you need results from the query, use [Global:CharDBQuery] or [Global:CharDBQueryAsync] instead.
      *
      *     CharDBExecute("DELETE FROM my_table")
      *
@@ -1359,6 +1463,7 @@ namespace LuaGlobalFunctions
      *
      * The query is always executed synchronously
      *   (i.e. execution halts until the query has finished and then results are returned).
+     * If you need to execute the query asynchronously, use [Global:AuthDBQueryAsync] instead.
      *
      * For an example see [Global:WorldDBQuery].
      *
@@ -1386,13 +1491,30 @@ namespace LuaGlobalFunctions
     }
 
     /**
+     * Executes an asynchronous SQL query on the character database and passes an [ElunaQuery] to a callback function.
+     *
+     * The query is executed asynchronously
+     *   (i.e. the server keeps running while the query is executed in parallel, and results are passed to a callback function).
+     * If you need to execute the query synchronously, use [Global:AuthDBQuery] instead.
+     *
+     * For an example see [Global:WorldDBQueryAsync].
+     *
+     * @param string sql : query to execute
+     * @param function callback : function that will be called when the results are available
+     */
+    int AuthDBQueryAsync(lua_State* L)
+    {
+        return DBQueryAsync(L, LoginDatabase);
+    }
+
+    /**
      * Executes a SQL query on the login database.
      *
      * The query may be executed *asynchronously* (at a later, unpredictable time).
      * If you need to execute the query synchronously, use [Global:AuthDBQuery] instead.
      *
      * Any results produced are ignored.
-     * If you need results from the query, use [Global:AuthDBQuery] instead.
+     * If you need results from the query, use [Global:AuthDBQuery] or [Global:AuthDBQueryAsync] instead.
      *
      *     AuthDBExecute("DELETE FROM my_table")
      *
@@ -1838,11 +1960,8 @@ namespace LuaGlobalFunctions
                     Eluna::Push(L);
                     return 1;
                 }
-#ifndef AZEROTHCORE
+
                 eObjectMgr->AddGameobjectToGrid(guidLow, eObjectMgr->GetGameObjectData(guidLow));
-#else
-                eObjectMgr->AddGameobjectToGrid(guidLow, eObjectMgr->GetGOData(guidLow));
-#endif
             }
             else
                 map->AddToMap(object);
@@ -1946,7 +2065,7 @@ namespace LuaGlobalFunctions
             return 0;
 
         auto const& itemlist = items->m_items;
-        for (auto itr = itemlist.begin(); itr != itemlist.end(); ++itr)
+        for (auto itr = itemlist.rbegin(); itr != itemlist.rend(); ++itr)
 #if defined(CATA) || defined(MISTS)
             eObjectMgr->RemoveVendorItem(entry, (*itr)->item, 1);
 #else
@@ -3320,5 +3439,58 @@ namespace LuaGlobalFunctions
 
         return 0;
     }
+
+    #ifdef AZEROTHCORE
+    /**
+     * Gets the faction which is the current owner of Halaa in Nagrand
+     * 0 = Alliance
+     * 1 = Horde
+     *
+     * 600 = slider max Alliance
+     * -600 = slider max Horde
+     *
+     * @return int16 the ID of the team to own Halaa
+     * @return float the slider position.
+     */
+    int GetOwnerHalaa(lua_State* L)
+    {
+        OutdoorPvPNA* nagrandPvp = (OutdoorPvPNA*)sOutdoorPvPMgr->GetOutdoorPvPToZoneId(3518);
+        OPvPCapturePointNA* halaa = nagrandPvp->GetCapturePoint();
+        Eluna::Push(L, halaa->GetControllingFaction());
+        Eluna::Push(L, halaa->GetSlider());
+
+        return 2;
+    }
+
+    /**
+     * Sets the owner of Halaa in Nagrand to the respective faction
+     * 0 = Alliance
+     * 1 = Horde
+     *
+     * @param uint16 teamId : the ID of the team to own Halaa
+     */
+    int SetOwnerHalaa(lua_State* L)
+    {
+        uint16 teamId = Eluna::CHECKVAL<uint16>(L, 1);
+
+        OutdoorPvPNA* nagrandPvp = (OutdoorPvPNA*)sOutdoorPvPMgr->GetOutdoorPvPToZoneId(3518);
+        OPvPCapturePointNA* halaa = nagrandPvp->GetCapturePoint();
+
+        if (teamId == 0)
+        {
+            halaa->SetSlider(599);
+        }
+        else if (teamId == 1)
+        {
+            halaa->SetSlider(-599);
+        }
+        else
+        {
+            return luaL_argerror(L, 1, "0 for Alliance or 1 for Horde expected");
+        }
+
+        return 0;
+    }
+    #endif
 }
 #endif

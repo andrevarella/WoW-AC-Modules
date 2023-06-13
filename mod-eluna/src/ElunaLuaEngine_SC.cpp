@@ -407,6 +407,11 @@ public:
     {
         sEluna->OnDisband(group);
     }
+
+    void OnCreate(Group* group, Player* leader) override
+    {
+        sEluna->OnCreate(group, leader->GetGUID(), group->GetGroupType());
+    }
 };
 
 class Eluna_GuildScript : public GuildScript
@@ -652,9 +657,9 @@ public:
         sEluna->OnMoneyChanged(player, amount);
     }
 
-    void OnGiveXP(Player* player, uint32& amount, Unit* victim) override
+    void OnGiveXP(Player* player, uint32& amount, Unit* victim, uint8 xpSource) override
     {
-        sEluna->OnGiveXP(player, amount, victim);
+        sEluna->OnGiveXP(player, amount, victim, xpSource);
     }
 
     bool OnReputationChange(Player* player, uint32 factionID, int32& standing, bool incremental) override
@@ -722,6 +727,11 @@ public:
         sEluna->OnBindToInstance(player, difficulty, mapid, permanent);
     }
 
+    void OnUpdateArea(Player* player, uint32 oldArea, uint32 newArea) override
+    {
+        sEluna->OnUpdateArea(player, oldArea, newArea);
+    }
+
     void OnUpdateZone(Player* player, uint32 newZone, uint32 newArea) override
     {
         sEluna->OnUpdateZone(player, newZone, newArea);
@@ -740,6 +750,61 @@ public:
     void OnAchiComplete(Player* player, AchievementEntry const* achievement) override
     {
         sEluna->OnAchiComplete(player, achievement);
+    }
+
+    void OnFfaPvpStateUpdate(Player* player, bool IsFlaggedForFfaPvp) override
+    {
+        sEluna->OnFfaPvpStateUpdate(player, IsFlaggedForFfaPvp);
+    }
+
+    bool CanInitTrade(Player* player, Player* target) override
+    {
+        return sEluna->OnCanInitTrade(player, target);
+    }
+
+    bool CanSendMail(Player* player, ObjectGuid receiverGuid, ObjectGuid mailbox, std::string& subject, std::string& body, uint32 money, uint32 cod, Item* item) override
+    {
+        return sEluna->OnCanSendMail(player, receiverGuid, mailbox, subject, body, money, cod, item);
+    }
+
+    bool CanJoinLfg(Player* player, uint8 roles, lfg::LfgDungeonSet& dungeons, const std::string& comment) override
+    {
+        return sEluna->OnCanJoinLfg(player, roles, dungeons, comment);
+    }
+
+    void OnQuestRewardItem(Player* player, Item* item, uint32 count) override
+    {
+        sEluna->OnQuestRewardItem(player, item, count);
+    }
+
+    void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll) override
+    {
+        sEluna->OnGroupRollRewardItem(player, item, count, voteType, roll);
+    }
+
+    void OnCreateItem(Player* player, Item* item, uint32 count) override
+    {
+        sEluna->OnCreateItem(player, item, count);
+    }
+
+    void OnStoreNewItem(Player* player, Item* item, uint32 count) override
+    {
+        sEluna->OnStoreNewItem(player, item, count);
+    }
+
+    void OnPlayerCompleteQuest(Player* player, Quest const* quest) override
+    {
+        sEluna->OnPlayerCompleteQuest(player, quest);
+    }
+
+    bool CanGroupInvite(Player* player, std::string& memberName) override
+    {
+        return sEluna->OnCanGroupInvite(player, memberName);
+    }
+
+    void OnBattlegroundDesertion(Player* player, const BattlegroundDesertionType type) override
+    {
+        sEluna->OnBattlegroundDesertion(player, type);
     }
 };
 
@@ -846,16 +911,8 @@ public:
 
     void OnWorldObjectSetMap(WorldObject* object, Map* /*map*/) override
     {
-        delete object->elunaEvents;
-
-        // On multithread replace this with a pointer to map's Eluna pointer stored in a map
-        object->elunaEvents = new ElunaEventProcessor(&Eluna::GEluna, object);
-    }
-
-    void OnWorldObjectResetMap(WorldObject* object) override
-    {
-        delete object->elunaEvents;
-        object->elunaEvents = nullptr;
+        if (!object->elunaEvents)
+            object->elunaEvents = new ElunaEventProcessor(&Eluna::GEluna, object);
     }
 
     void OnWorldObjectUpdate(WorldObject* object, uint32 diff) override

@@ -133,7 +133,10 @@ void Eluna::_ReloadEluna()
     LOCK_ELUNA;
     ASSERT(IsInitialized());
 
-    /*eWorld->SendServerMessage(SERVER_MSG_STRING, "Reloading Eluna...");*/ // Antigo code (mandava mensagem até para players)
+    if (eConfigMgr->GetOption<bool>("Eluna.PlayerAnnounceReload", false))
+        eWorld->SendServerMessage(SERVER_MSG_STRING, "Reloading Eluna...");
+    else
+        eWorld->SendGMText(SERVER_MSG_STRING, "Reloading Eluna...");
 
     // Remove all timed events
     sEluna->eventMgr->SetStates(LUAEVENT_STATE_ERASE);
@@ -161,6 +164,7 @@ enabled(false),
 L(NULL),
 eventMgr(NULL),
 httpManager(),
+queryProcessor(),
 
 ServerEventBindings(NULL),
 PlayerEventBindings(NULL),
@@ -575,6 +579,7 @@ int Eluna::StackTrace(lua_State *_L)
 
     // dirty stack?
     // Stack: errmsg, debug, tracemsg
+    sEluna->OnError(std::string(lua_tostring(_L, -1)));
     return 1;
 }
 

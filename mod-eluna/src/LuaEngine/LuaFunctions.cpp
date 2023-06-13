@@ -38,6 +38,8 @@ extern "C"
 #include "BattleGroundMethods.h"
 #include "ChatHandlerMethods.h"
 #include "AchievementMethods.h"
+#include "ItemTemplateMethods.h"
+#include "RollMethods.h"
 
 luaL_Reg GlobalMethods[] =
 {
@@ -92,12 +94,14 @@ luaL_Reg GlobalMethods[] =
     { "GetPlayerCount", &LuaGlobalFunctions::GetPlayerCount },
     { "GetPlayerGUID", &LuaGlobalFunctions::GetPlayerGUID },
     { "GetItemGUID", &LuaGlobalFunctions::GetItemGUID },
+    { "GetItemTemplate", &LuaGlobalFunctions::GetItemTemplate },
     { "GetObjectGUID", &LuaGlobalFunctions::GetObjectGUID },
     { "GetUnitGUID", &LuaGlobalFunctions::GetUnitGUID },
     { "GetGUIDLow", &LuaGlobalFunctions::GetGUIDLow },
     { "GetGUIDType", &LuaGlobalFunctions::GetGUIDType },
     { "GetGUIDEntry", &LuaGlobalFunctions::GetGUIDEntry },
     { "GetAreaName", &LuaGlobalFunctions::GetAreaName },
+    { "GetOwnerHalaa", &LuaGlobalFunctions::GetOwnerHalaa },
     { "bit_not", &LuaGlobalFunctions::bit_not },
     { "bit_xor", &LuaGlobalFunctions::bit_xor },
     { "bit_rshift", &LuaGlobalFunctions::bit_rshift },
@@ -125,10 +129,13 @@ luaL_Reg GlobalMethods[] =
     { "RunCommand", &LuaGlobalFunctions::RunCommand },
     { "SendWorldMessage", &LuaGlobalFunctions::SendWorldMessage },
     { "WorldDBQuery", &LuaGlobalFunctions::WorldDBQuery },
+    { "WorldDBQueryAsync", &LuaGlobalFunctions::WorldDBQueryAsync },
     { "WorldDBExecute", &LuaGlobalFunctions::WorldDBExecute },
     { "CharDBQuery", &LuaGlobalFunctions::CharDBQuery },
+    { "CharDBQueryAsync", &LuaGlobalFunctions::CharDBQueryAsync },
     { "CharDBExecute", &LuaGlobalFunctions::CharDBExecute },
     { "AuthDBQuery", &LuaGlobalFunctions::AuthDBQuery },
+    { "AuthDBQueryAsync", &LuaGlobalFunctions::AuthDBQueryAsync },
     { "AuthDBExecute", &LuaGlobalFunctions::AuthDBExecute },
     { "CreateLuaEvent", &LuaGlobalFunctions::CreateLuaEvent },
     { "RemoveEventById", &LuaGlobalFunctions::RemoveEventById },
@@ -148,6 +155,7 @@ luaL_Reg GlobalMethods[] =
     { "StartGameEvent", &LuaGlobalFunctions::StartGameEvent },
     { "StopGameEvent", &LuaGlobalFunctions::StopGameEvent },
     { "HttpRequest", &LuaGlobalFunctions::HttpRequest },
+    { "SetOwnerHalaa", &LuaGlobalFunctions::SetOwnerHalaa },
 
     { NULL, NULL }
 };
@@ -304,6 +312,7 @@ ElunaRegister<Unit> UnitMethods[] =
     // {"GetVehicle", &LuaUnit::GetVehicle},                           // :GetVehicle() - UNDOCUMENTED - Gets the Vehicle kit of the vehicle the unit is on
 #endif
     { "GetMovementType", &LuaUnit::GetMovementType },
+    { "GetAttackers", &LuaUnit::GetAttackers },
 
     // Setters
     { "SetFaction", &LuaUnit::SetFaction },
@@ -420,6 +429,7 @@ ElunaRegister<Unit> UnitMethods[] =
     // {"RemoveBindSightAuras", &LuaUnit::RemoveBindSightAuras},        // :RemoveBindSightAuras() - UNDOCUMENTED
     // {"RemoveCharmAuras", &LuaUnit::RemoveCharmAuras},                // :RemoveCharmAuras() - UNDOCUMENTED
     { "ClearThreatList", &LuaUnit::ClearThreatList },
+    { "GetThreatList", &LuaUnit::GetThreatList },
     { "ClearUnitState", &LuaUnit::ClearUnitState },
     { "AddUnitState", &LuaUnit::AddUnitState },
     // {"DisableMelee", &LuaUnit::DisableMelee},                        // :DisableMelee([disable]) - UNDOCUMENTED - if true, enables
@@ -471,6 +481,7 @@ ElunaRegister<Player> PlayerMethods[] =
     { "GetItemByPos", &LuaPlayer::GetItemByPos },
     { "GetItemByEntry", &LuaPlayer::GetItemByEntry },
     { "GetItemByGUID", &LuaPlayer::GetItemByGUID },
+    { "GetMailCount", &LuaPlayer::GetMailCount },
     { "GetMailItem", &LuaPlayer::GetMailItem },
     { "GetReputation", &LuaPlayer::GetReputation },
     { "GetEquippedItemBySlot", &LuaPlayer::GetEquippedItemBySlot },
@@ -507,6 +518,7 @@ ElunaRegister<Player> PlayerMethods[] =
     { "GetDrunkValue", &LuaPlayer::GetDrunkValue },
     { "GetBattlegroundId", &LuaPlayer::GetBattlegroundId },
     { "GetBattlegroundTypeId", &LuaPlayer::GetBattlegroundTypeId },
+    { "GetXP", &LuaPlayer::GetXP },
     { "GetXPRestBonus", &LuaPlayer::GetXPRestBonus },
     { "GetGroupInvite", &LuaPlayer::GetGroupInvite },
     { "GetSubGroup", &LuaPlayer::GetSubGroup },
@@ -531,6 +543,8 @@ ElunaRegister<Player> PlayerMethods[] =
     { "GetRankPoints", &LuaPlayer::GetRankPoints },
     { "GetHonorLastWeekStandingPos", &LuaPlayer::GetHonorLastWeekStandingPos },
 #endif
+    { "GetPlayerSettingValue", &LuaPlayer::GetPlayerSettingValue },
+    { "GetTrader", &LuaPlayer::GetTrader },
 
     // Setters
     { "AdvanceSkillsToMax", &LuaPlayer::AdvanceSkillsToMax },
@@ -592,6 +606,8 @@ ElunaRegister<Player> PlayerMethods[] =
 #ifndef CLASSIC
     { "IsInArenaTeam", &LuaPlayer::IsInArenaTeam },
 #endif
+    { "CanRewardQuest", &LuaPlayer::CanRewardQuest },
+    { "CanCompleteRepeatableQuest", &LuaPlayer::CanCompleteRepeatableQuest },
     { "CanCompleteQuest", &LuaPlayer::CanCompleteQuest },
     { "CanEquipItem", &LuaPlayer::CanEquipItem },
     { "IsFalling", &LuaPlayer::IsFalling },
@@ -612,6 +628,7 @@ ElunaRegister<Player> PlayerMethods[] =
     // {"HasPendingBind", &LuaPlayer::HasPendingBind},                                      // :HasPendingBind() - UNDOCUMENTED - Returns true if the player has a pending instance bind
 #if (!defined(TBC) && !defined(CLASSIC))
     { "HasAchieved", &LuaPlayer::HasAchieved },
+    { "GetAchievementCriteriaProgress", &LuaPlayer::GetAchievementCriteriaProgress },
 #if defined(TRINITY) || defined(AZEROTHCORE)
     { "SetAchievement", &LuaPlayer::SetAchievement },
 #endif
@@ -766,6 +783,7 @@ ElunaRegister<Player> PlayerMethods[] =
     { "ResetHonor", &LuaPlayer::ResetHonor },
     { "ClearHonorInfo", &LuaPlayer::ClearHonorInfo },
 #endif
+    { "UpdatePlayerSetting", &LuaPlayer::UpdatePlayerSetting },
 
     { NULL, NULL }
 };
@@ -797,6 +815,8 @@ ElunaRegister<Creature> CreatureMethods[] =
     { "GetLootRecipient", &LuaCreature::GetLootRecipient },
     { "GetLootRecipientGroup", &LuaCreature::GetLootRecipientGroup },
     { "GetNPCFlags", &LuaCreature::GetNPCFlags },
+    { "GetUnitFlags", &LuaCreature::GetUnitFlags },
+    { "GetUnitFlagsTwo", &LuaCreature::GetUnitFlagsTwo },
     { "GetExtraFlags", &LuaCreature::GetExtraFlags },
 #if defined(CLASSIC) || defined(TBC) || defined(WOTLK)
     { "GetShieldBlockValue", &LuaCreature::GetShieldBlockValue },
@@ -822,6 +842,8 @@ ElunaRegister<Creature> CreatureMethods[] =
     { "SetLootMode", &LuaCreature::SetLootMode },
 #endif
     { "SetNPCFlags", &LuaCreature::SetNPCFlags },
+    { "SetUnitFlags", &LuaCreature::SetUnitFlags },
+    { "SetUnitFlagsTwo", &LuaCreature::SetUnitFlagsTwo },
 #if defined(TRINITY) || AZEROTHCORE
     { "SetReactState", &LuaCreature::SetReactState },
 #endif
@@ -956,6 +978,7 @@ ElunaRegister<Item> ItemMethods[] =
 #endif
     { "GetItemSet", &LuaItem::GetItemSet },
     { "GetBagSize", &LuaItem::GetBagSize },
+    { "GetItemTemplate", &LuaItem::GetItemTemplate },
 
     // Setters
     { "SetOwner", &LuaItem::SetOwner },
@@ -994,6 +1017,27 @@ ElunaRegister<Item> ItemMethods[] =
     // Other
     { "SaveToDB", &LuaItem::SaveToDB },
 
+    { NULL, NULL }
+};
+
+ElunaRegister<ItemTemplate> ItemTemplateMethods[] =
+{
+    { "GetItemId", &LuaItemTemplate::GetItemId },
+    { "GetClass", &LuaItemTemplate::GetClass },
+    { "GetSubClass", &LuaItemTemplate::GetSubClass },
+    { "GetName", &LuaItemTemplate::GetName },
+    { "GetDisplayId", &LuaItemTemplate::GetDisplayId },
+    { "GetQuality", &LuaItemTemplate::GetQuality },
+    { "GetFlags", &LuaItemTemplate::GetFlags },
+    { "GetExtraFlags", &LuaItemTemplate::GetExtraFlags },
+    { "GetBuyCount", &LuaItemTemplate::GetBuyCount },
+    { "GetBuyPrice", &LuaItemTemplate::GetBuyPrice },
+    { "GetSellPrice", &LuaItemTemplate::GetSellPrice },
+    { "GetInventoryType", &LuaItemTemplate::GetInventoryType },
+    { "GetAllowableClass", &LuaItemTemplate::GetAllowableClass },
+    { "GetAllowableRace", &LuaItemTemplate::GetAllowableRace },
+    { "GetItemLevel", &LuaItemTemplate::GetItemLevel },
+    { "GetRequiredLevel", &LuaItemTemplate::GetRequiredLevel },
     { NULL, NULL }
 };
 
@@ -1077,11 +1121,13 @@ ElunaRegister<Group> GroupMethods[] =
     { "GetMemberGroup", &LuaGroup::GetMemberGroup },
     { "GetMemberGUID", &LuaGroup::GetMemberGUID },
     { "GetMembersCount", &LuaGroup::GetMembersCount },
+    { "GetGroupType", &LuaGroup::GetGroupType },
 
     // Setters
     { "SetLeader", &LuaGroup::SetLeader },
     { "SetMembersGroup", &LuaGroup::SetMembersGroup },
     { "SetTargetIcon", &LuaGroup::SetTargetIcon },
+    { "SetMemberFlag", &LuaGroup::SetMemberFlag },
 
     // Boolean
     { "IsLeader", &LuaGroup::IsLeader },
@@ -1324,6 +1370,26 @@ ElunaRegister<ChatHandler> ChatHandlerMethods[] =
 ElunaRegister<AchievementEntry> AchievementMethods[] =
 {
     { "GetId", &LuaAchievement::GetId },
+    { "GetName", &LuaAchievement::GetName },
+
+    { NULL, NULL }
+};
+
+ElunaRegister<Roll> RollMethods[] =
+{
+    { "GetItemGUID", &LuaRoll::GetItemGUID },
+    { "GetItemId", &LuaRoll::GetItemId },
+    { "GetItemRandomPropId", &LuaRoll::GetItemRandomPropId },
+    { "GetItemRandomSuffix", &LuaRoll::GetItemRandomSuffix },
+    { "GetItemCount", &LuaRoll::GetItemCount },
+    { "GetPlayerVote", &LuaRoll::GetPlayerVote },
+    { "GetPlayerVoteGUIDs", &LuaRoll::GetPlayerVoteGUIDs },
+    { "GetTotalPlayersRolling", &LuaRoll::GetTotalPlayersRolling },
+    { "GetTotalNeed", &LuaRoll::GetTotalNeed },
+    { "GetTotalGreed", &LuaRoll::GetTotalGreed },
+    { "GetTotalPass", &LuaRoll::GetTotalPass },
+    { "GetItemSlot", &LuaRoll::GetItemSlot },
+    { "GetRollVoteMask", &LuaRoll::GetRollVoteMask },
 
     { NULL, NULL }
 };
@@ -1430,6 +1496,9 @@ void RegisterFunctions(Eluna* E)
     ElunaTemplate<Item>::SetMethods(E, ObjectMethods);
     ElunaTemplate<Item>::SetMethods(E, ItemMethods);
 
+    ElunaTemplate<ItemTemplate>::Register(E, "ItemTemplate");
+    ElunaTemplate<ItemTemplate>::SetMethods(E, ItemTemplateMethods);
+
 #ifndef CLASSIC
 #ifndef TBC
     ElunaTemplate<Vehicle>::Register(E, "Vehicle");
@@ -1470,8 +1539,11 @@ void RegisterFunctions(Eluna* E)
     ElunaTemplate<ElunaQuery>::Register(E, "ElunaQuery", true);
     ElunaTemplate<ElunaQuery>::SetMethods(E, QueryMethods);
 
-    ElunaTemplate<AchievementEntry>::Register(E, "AchievementEntry", true);
+    ElunaTemplate<AchievementEntry>::Register(E, "AchievementEntry");
     ElunaTemplate<AchievementEntry>::SetMethods(E, AchievementMethods);
+
+    ElunaTemplate<Roll>::Register(E, "Roll");
+    ElunaTemplate<Roll>::SetMethods(E, RollMethods);
 
     ElunaTemplate<long long>::Register(E, "long long", true);
 

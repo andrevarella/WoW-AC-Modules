@@ -769,7 +769,7 @@ namespace LuaCreature
 #elif defined(TRINITY)
         auto const& threatlist = creature->GetThreatManager().GetSortedThreatList();
 #elif defined(AZEROTHCORE)
-        auto const& threatlist = creature->GetThreatMgr().getThreatList();
+        auto const& threatlist = creature->GetThreatMgr().GetThreatList();
 #endif
 #ifndef TRINITY
         if (threatlist.empty())
@@ -860,7 +860,7 @@ namespace LuaCreature
 #if defined(TRINITY)
         auto const& threatlist = creature->GetThreatManager().GetThreatenedByMeList();
 #elif defined(AZEROTHCORE)
-auto const& threatlist = creature->GetThreatMgr().getThreatList();
+auto const& threatlist = creature->GetThreatMgr().GetThreatList();
 #else
         ThreatList const& threatlist = creature->GetThreatManager().getThreatList();
 #endif
@@ -894,7 +894,7 @@ auto const& threatlist = creature->GetThreatMgr().getThreatList();
 #if defined(TRINITY)
         Eluna::Push(L, creature->GetThreatManager().GetThreatenedByMeList().size());
 #elif defined(AZEROTHCORE)
-        Eluna::Push(L, creature->GetThreatMgr().getThreatList().size());
+        Eluna::Push(L, creature->GetThreatMgr().GetThreatListSize());
 #else
         Eluna::Push(L, creature->GetThreatManager().getThreatList().size());
 #endif
@@ -912,6 +912,30 @@ auto const& threatlist = creature->GetThreatMgr().getThreatList();
     int GetNPCFlags(lua_State* L, Creature* creature)
     {
         Eluna::Push(L, creature->GetUInt32Value(UNIT_NPC_FLAGS));
+        return 1;
+    }
+
+    /**
+     * Returns the [Creature]'s Unit flags.
+     *
+     * These are used to control whether the NPC is attackable or not, among other things.
+     *
+     * @return [UnitFlags] unitFlags
+     */
+    int GetUnitFlags(lua_State* L, Creature* creature)
+    {
+        Eluna::Push(L, creature->GetUInt32Value(UNIT_FIELD_FLAGS));
+        return 1;
+    }
+
+    /**
+     * Returns the [Creature]'s Unit flags 2.
+     *
+     * @return [UnitFlags2] unitFlags2
+     */
+    int GetUnitFlagsTwo(lua_State* L, Creature* creature)
+    {
+        Eluna::Push(L, creature->GetUInt32Value(UNIT_FIELD_FLAGS_2));
         return 1;
     }
 
@@ -980,6 +1004,30 @@ auto const& threatlist = creature->GetThreatMgr().getThreatList();
         uint32 flags = Eluna::CHECKVAL<uint32>(L, 2);
 
         creature->SetUInt32Value(UNIT_NPC_FLAGS, flags);
+        return 0;
+    }
+    
+    /**
+     * Sets the [Creature]'s Unit flags to `flags`.
+     *
+     * @param [UnitFlags] flags
+     */
+    int SetUnitFlags(lua_State* L, Creature* creature)
+    {
+        uint32 flags = Eluna::CHECKVAL<uint32>(L, 2);
+        creature->SetUInt32Value(UNIT_FIELD_FLAGS, flags);
+        return 0;
+    }
+
+    /**
+     * Sets the [Creature]'s Unit flags2 to `flags`.
+     *
+     * @param [UnitFlags2] flags
+     */
+    int SetUnitFlagsTwo(lua_State* L, Creature* creature)
+    {
+        uint32 flags = Eluna::CHECKVAL<uint32>(L, 2);
+        creature->SetUInt32Value(UNIT_FIELD_FLAGS_2, flags);
         return 0;
     }
 
