@@ -56,10 +56,10 @@ public:
         {
             { "global",         SEC_GAMEMASTER,     true,    &HandleAntiCheatGlobalCommand,  "" },
             { "player",         SEC_GAMEMASTER,     true,    &HandleAntiCheatPlayerCommand,  "" },
-            { "delete",         SEC_ADMINISTRATOR,  true,    &HandleAntiCheatDeleteCommand,  "" },
+            { "DeleteAutoReportPlayer",         SEC_ADMINISTRATOR,  true,    &HandleAntiCheatDeleteCommand,  "" },
             { "jail",           SEC_GAMEMASTER,     true,    &HandleAnticheatJailCommand,    "" },
-            { "parole",         SEC_ADMINISTRATOR,  true,    &HandleAnticheatParoleCommand,  "" },
-            { "purge",          SEC_ADMINISTRATOR,  true,    &HandleAntiCheatPurgeCommand,   "" },
+            { "libertar",         SEC_ADMINISTRATOR,  true,    &HandleAnticheatParoleCommand,  "" },
+            { "PurgeDailyPlayersStatistics",          SEC_ADMINISTRATOR,  true,    &HandleAntiCheatPurgeCommand,   "" },
             { "warn",           SEC_GAMEMASTER,     true,    &HandleAnticheatWarnCommand,    "" }
         };
 
@@ -154,14 +154,20 @@ public:
 
         if (pTarget->GetTeamId() == TEAM_ALLIANCE)
         {
-            WorldLocation Aloc = WorldLocation(0, -8833.37f, 628.62f, 94.00f, 1.06f);// Stormwind
-            pTarget->TeleportTo(0, -8833.37f, 628.62f, 94.00f, 1.06f);//Stormwind
+            //WorldLocation Aloc = WorldLocation(0, -8833.37f, 628.62f, 94.00f, 1.06f);// Stormwind - Old!
+            //pTarget->TeleportTo(0, -8833.37f, 628.62f, 94.00f, 1.06f);//Stormwind - Old!
+            //pTarget->SetHomebind(Aloc, 1519);// Stormwind Homebind location - Old!
+			WorldLocation Aloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Mall
+            pTarget->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);//  Mall
             pTarget->SetHomebind(Aloc, 1519);// Stormwind Homebind location
         }
         else
         {
-            WorldLocation Hloc = WorldLocation(1, 1569.59f, -4397.63f, 7.7f, 0.54f);// Orgrimmar
-            pTarget->TeleportTo(1, 1569.59f, -4397.63f, 7.7f, 0.54f);//Orgrimmar
+            //WorldLocation Hloc = WorldLocation(1, 1569.59f, -4397.63f, 7.7f, 0.54f);// Orgrimmar - Old!
+            //pTarget->TeleportTo(1, 1569.59f, -4397.63f, 7.7f, 0.54f);//Orgrimmar - Old!
+            //pTarget->SetHomebind(Hloc, 1653);// Orgrimmar Homebind location - Old!
+			WorldLocation Hloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Mall
+            pTarget->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Mall
             pTarget->SetHomebind(Hloc, 1653);// Orgrimmar Homebind location
         }
         pTarget->RemoveAura(SHACKLES);

@@ -17,8 +17,8 @@ INSERT INTO `command` (`name`, `security`, `help`) VALUES
 ('anticheat', 2, 'Syntax: .anticheat\r\n\r\nDisplay the access level of anticheat commands if you possess the necessary permissions.'),
 ('anticheat global', 2, 'Syntax: .anticheat global\r\n\r\nDisplay if anticheat is active with global statistics.'),
 ('anticheat player', 2, 'Syntax: .anticheat player [$charactername]\r\n\r\nDisplay anticheat statistics of current session of player.'),
-('anticheat delete', 3, 'Syntax: .anticheat delete [$charactername]\r\n\r\nDeletes anticheat statistics of current session of player.'),
+('anticheat DeleteAutoReportPlayer', 3, 'Syntax: .anticheat delete [$charactername]\r\n\r\nDeletes AutoReportPlayer anticheat statistics of current session of player.'),
 ('anticheat jail', 2, 'Syntax: .anticheat jail [$charactername]\r\n\r\nJails and restricts player and teleports GM cmd user to jail with no restrictions'),
-('anticheat parole', 3, 'Syntax: .anticheat parole [$charactername]\r\n\r\nDeletes anticheat statistics, removes jail restrictions, and sends to faction capital of player.'),
-('anticheat purge', 3, 'Syntax: .anticheat purge\r\n\r\nDeletes stored statistics of daily_players_reports table.'),
+('anticheat libertar', 3, 'Syntax: .anticheat libertar [$charactername]\r\n\r\nDeletes anticheat statistics, removes jail restrictions, and sends to faction capital of player.'),
+('anticheat PurgeDailyPlayersStatistics', 3, 'Syntax: .anticheat PurgeDailyPlayersStatistics\r\n\r\nDeletes stored statistics of daily_players_reports table.'),
 ('anticheat warn', 2, 'Syntax: .anticheat warn [$charactername]\r\n\r\nSends individual player they are being monitored for possible cheating.');
