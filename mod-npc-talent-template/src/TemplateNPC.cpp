@@ -448,7 +448,7 @@ void sTemplateNPC::LoadTalentsContainer()
         m_TalentContainer.push_back(pTalent);
         ++count;
     } while (result->NextRow());
-    LOG_INFO("module", ">>TEMPLATE NPC: Loaded {} talent templates in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("module", ">>TEMPLATE NPC: Loaded selected talent template.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void sTemplateNPC::LoadGlyphsContainer()
@@ -484,7 +484,7 @@ void sTemplateNPC::LoadGlyphsContainer()
         ++count;
     } while (result->NextRow());
 
-    LOG_INFO("module", ">>TEMPLATE NPC: Loaded {} glyph templates in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("module", ">>TEMPLATE NPC: Loaded glyph templates.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void sTemplateNPC::LoadHumanGearContainer()
@@ -525,7 +525,7 @@ void sTemplateNPC::LoadHumanGearContainer()
         m_HumanGearContainer.push_back(pItem);
         ++count;
     } while (result->NextRow());
-    LOG_INFO("module", ">>TEMPLATE NPC: Loaded {} gear templates for Humans in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("module", ">>TEMPLATE NPC: Loaded gear templates for Humans.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void sTemplateNPC::LoadAllianceGearContainer()
@@ -566,7 +566,7 @@ void sTemplateNPC::LoadAllianceGearContainer()
         m_AllianceGearContainer.push_back(pItem);
         ++count;
     } while (result->NextRow());
-    LOG_INFO("module", ">>TEMPLATE NPC: Loaded {} gear templates for Alliances in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("module", ">>TEMPLATE NPC: Loaded gear templates for Alliances.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 void sTemplateNPC::LoadHordeGearContainer()
@@ -607,7 +607,7 @@ void sTemplateNPC::LoadHordeGearContainer()
         m_HordeGearContainer.push_back(pItem);
         ++count;
     } while (result->NextRow());
-    LOG_INFO("module", ">>TEMPLATE NPC: Loaded {} gear templates for Hordes in {} ms.", count, GetMSTimeDiffToNow(oldMSTime));
+    LOG_INFO("module", ">>TEMPLATE NPC: Loaded gear templates for Hordes.", count, GetMSTimeDiffToNow(oldMSTime));
 }
 
 std::string sTemplateNPC::GetClassString(Player *player)
@@ -959,24 +959,39 @@ public:
             return;
         }
 
-        // Don't let players to use Template feature while wearing some gear
-        for (uint8 i = EQUIPMENT_SLOT_START; i < EQUIPMENT_SLOT_END; ++i)
+        // Don't let players use the Template feature while wearing some gear
+        if (player->getLevel() == 80)
         {
-            if (Item *haveItemEquipped = player->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
+            for (uint8 i = EQUIPMENT_SLOT_START; i < EQUIPMENT_SLOT_END; ++i)
             {
-                if (haveItemEquipped)
+                if (Item* haveItemEquipped = player->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
                 {
-                    player->GetSession()->SendAreaTriggerMessage("You need to remove all your equipped items in order to use this feature!");
-                    CloseGossipMenuFor(player);
-                    return;
+                    if (haveItemEquipped)
+                    {
+                        player->GetSession()->SendAreaTriggerMessage("You need to remove all your equipped items in order to use this feature!");
+                        CloseGossipMenuFor(player);
+                        return;
+                    }
                 }
             }
         }
+        else
+        {
+            player->GetSession()->SendAreaTriggerMessage("You need to be level 80 to use this feature.");
+            CloseGossipMenuFor(player);
+            return;
+        }
 
         // Don't let players to use Template feature after spending some talent points
-        if (player->GetFreeTalentPoints() < 71)
+        if (player->GetFreeTalentPoints() < 71 && player->getLevel() == 80)
         {
             player->GetSession()->SendAreaTriggerMessage("You have already spent some talent points. You need to reset your talents first!");
+            CloseGossipMenuFor(player);
+            return;
+        }
+        else if (player->getLevel() < 80 || player->getLevel() > 80)
+        {
+            player->GetSession()->SendAreaTriggerMessage("You need to be level 80 to use this feature.");
             CloseGossipMenuFor(player);
             return;
         }
@@ -992,7 +1007,7 @@ public:
 
         LearnWeaponSkills(player);
 
-        player->GetSession()->SendAreaTriggerMessage("Successfuly equipped {} {} template!", playerSpecStr.c_str(), sTemplateNpcMgr->GetClassString(player).c_str());
+        player->GetSession()->SendAreaTriggerMessage("Successfuly equipped selected template!", playerSpecStr.c_str(), sTemplateNpcMgr->GetClassString(player).c_str());
 
         if (player->getPowerType() == POWER_MANA)
             player->SetPower(POWER_MANA, player->GetMaxPower(POWER_MANA));
@@ -1020,14 +1035,20 @@ public:
     {
         if (sTemplateNpcMgr->CanEquipTemplate(player, playerSpecStr) == false)
         {
-            player->GetSession()->SendAreaTriggerMessage("There's no templates for {} specialization yet.", playerSpecStr.c_str());
+            player->GetSession()->SendAreaTriggerMessage("There's no templates for selected specialization yet.", playerSpecStr.c_str());
             return;
         }
 
         // Don't let players to use Template feature after spending some talent points
-        if (player->GetFreeTalentPoints() < 71)
+        if (player->GetFreeTalentPoints() < 71 && player->getLevel() == 80)
         {
             player->GetSession()->SendAreaTriggerMessage("You have already spent some talent points. You need to reset your talents first!");
+            CloseGossipMenuFor(player);
+            return;
+        }
+        else if (player->getLevel() < 80 || player->getLevel() > 80)
+        {
+            player->GetSession()->SendAreaTriggerMessage("You need to be level 80 to use this feature.");
             CloseGossipMenuFor(player);
             return;
         }
@@ -1039,7 +1060,7 @@ public:
 
         LearnWeaponSkills(player);
 
-        player->GetSession()->SendAreaTriggerMessage("Successfuly learned talent spec {}!", playerSpecStr.c_str());
+        player->GetSession()->SendAreaTriggerMessage("Successfuly learned selected talent spec!", playerSpecStr.c_str());
 
         // Learn Riding/Flying
         if (player->HasSpell(SPELL_Artisan_Riding) ||
