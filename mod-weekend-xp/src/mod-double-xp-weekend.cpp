@@ -9,13 +9,14 @@ using namespace Acore::ChatCommands;
 enum WeekendXP
 {
     SETTING_WEEKEND_XP_RATE = 0,
+    SETTING_WEEKEND_XP_DISABLE = 1,
 
     LANG_CMD_WEEKEND_XP_SET   = 11120,
     LANG_CMD_WEEKEND_XP_ERROR = 11121,
 
     WD_FRIDAY   = 5,
     WD_SATURDAY = 6,
-    WD_SUNDAY   = 0
+    WD_SUNDAY   = 0,
 };
 
 class weekendxp_commandscript : public CommandScript
@@ -39,7 +40,7 @@ public:
 
         int8 maxRate = sConfigMgr->GetOption<int8>("XPWeekend.MaxAllowedRate", 2);
 
-        if (!rate || rate > maxRate)
+        if (rate <= 0 || rate > maxRate)
         {
             handler->PSendSysMessage(LANG_CMD_WEEKEND_XP_ERROR, maxRate);
             handler->SetSentErrorMessage(true);
@@ -68,23 +69,30 @@ public:
             }
             else
             {
-                ChatHandler(player->GetSession()).PSendSysMessage("This server is running the |cff4CFF00Double Xp Weekend |rmodule.");
+                ChatHandler(player->GetSession()).PSendSysMessage("This server is running the |cff4CFF00Double XP Weekend |rmodule.");
             }
         }
     }
            
 
-    void OnGiveXP(Player* player, uint32& amount, Unit* victim) override
+    void OnGiveXP(Player* player, uint32& amount, Unit* victim, uint8 /*xpSource*/) override
     {
-        if (IsEventActive())
+        if (!IsEventActive())
         {
-            if (sConfigMgr->GetOption<bool>("XPWeekend.QuestOnly", false) && victim)
-            {
-                return;
-            }
-
-            amount *= GetExperienceRate(player);
+            return;
         }
+
+        if (sConfigMgr->GetOption<bool>("XPWeekend.QuestOnly", false) && victim && victim->GetTypeId() == TYPEID_UNIT && !victim->ToCreature()->hasLootRecipient())
+        {
+            return;
+        }
+
+        if (player->getLevel() >= sConfigMgr->GetOption<uint32>("XPWeekend.MaxLevel", 80))
+        {
+            return;
+        }
+
+        amount *= GetExperienceRate(player);
     }
 
     int8 GetExperienceRate(Player * player) const
@@ -92,6 +100,11 @@ public:
         int8 rate = sConfigMgr->GetOption<int8>("XPWeekend.xpAmount", 2);
 
         int8 individualRate = player->GetPlayerSetting("mod-double-xp-weekend", SETTING_WEEKEND_XP_RATE).value;
+
+        if (player->GetPlayerSetting("mod-double-xp-weekend", SETTING_WEEKEND_XP_DISABLE).value)
+        {
+            return 1;
+        }
 
         // If individualxp setting is enabled... and a rate was set, overwrite it.
         if (sConfigMgr->GetOption<bool>("XPWeekend.IndividualXPEnabled", false) && individualRate)
