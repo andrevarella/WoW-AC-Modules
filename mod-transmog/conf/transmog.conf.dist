@@ -149,6 +149,14 @@ Transmogrification.TokenAmount = 1
 #
 #    Transmogrification.AllowMixedWeaponTypes
 #        Description: Allow axe to be transmogrified with dagger for example
+#        Possible options:
+#            Default:    0 - STRICT - Fully restricted like original Blizzard 4.3 transmog - Weapons must be the same weapon type (exceptions: Guns, Crossbows, or Bows)
+#                        1 - MODERN - Like later retail WoW, allow swords to be transmogged to axes, etc.
+#                        2 - FULL - No restrictions, allow any weapon to be transmogrified to any other weapon
+#
+#    Transmogrification.AllowMixedWeaponHandedness
+#        Description: Normally main-hand and off-hand weapons can only be transmogged to this same type. Enable to remove this restriction.
+#                     Not necessary when AllowMixedWeaponTypes is set to FULL.
 #        Default:    0
 #
 #    Transmogrification.AllowFishingPoles
@@ -188,22 +196,23 @@ Transmogrification.AllowCommon = 0
 Transmogrification.AllowUncommon = 1
 Transmogrification.AllowRare = 1
 Transmogrification.AllowEpic = 1
-Transmogrification.AllowLegendary = 0
-Transmogrification.AllowArtifact = 0
+Transmogrification.AllowLegendary = 1
+Transmogrification.AllowArtifact = 1
 Transmogrification.AllowHeirloom = 1
 Transmogrification.AllowTradeable = 0
 
-Transmogrification.AllowMixedArmorTypes = 0
-Transmogrification.AllowMixedWeaponTypes = 0
-Transmogrification.AllowFishingPoles = 0
+Transmogrification.AllowMixedArmorTypes = 1
+Transmogrification.AllowMixedWeaponTypes = 1
+Transmogrification.AllowMixedWeaponHandedness = 1
+Transmogrification.AllowFishingPoles = 1
 
-Transmogrification.IgnoreReqRace = 0
+Transmogrification.IgnoreReqRace = 1
 Transmogrification.IgnoreReqClass = 0
-Transmogrification.IgnoreReqSkill = 0
-Transmogrification.IgnoreReqSpell = 0
-Transmogrification.IgnoreReqLevel = 0
-Transmogrification.IgnoreReqEvent = 0
-Transmogrification.IgnoreReqStats = 0
+Transmogrification.IgnoreReqSkill = 1
+Transmogrification.IgnoreReqSpell = 1
+Transmogrification.IgnoreReqLevel = 1
+Transmogrification.IgnoreReqEvent = 1
+Transmogrification.IgnoreReqStats = 1
 
 #
 #    SET FEATURE
@@ -238,7 +247,7 @@ Transmogrification.MaxSets = 10
 Transmogrification.EnableSetInfo = 1
 Transmogrification.SetNpcText = 601084
 
-Transmogrification.SetCostModifier = 3.0
+Transmogrification.SetCostModifier = 1.0
 Transmogrification.SetCopperCost = 0
 
 #

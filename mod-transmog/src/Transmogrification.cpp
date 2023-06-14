@@ -18,7 +18,7 @@ void Transmogrification::PresetTransmog(Player* player, Item* itemTransmogrified
         return;
     if (slot >= EQUIPMENT_SLOT_END)
         return;
-    if (!CanTransmogrifyItemWithItem(player, itemTransmogrified->GetTemplate(), sObjectMgr->GetItemTemplate(fakeEntry)))
+    if (fakeEntry != HIDDEN_ITEM_ID && (!CanTransmogrifyItemWithItem(player, itemTransmogrified->GetTemplate(), sObjectMgr->GetItemTemplate(fakeEntry))))
         return;
 
     // [AZTH] Custom
@@ -66,7 +66,7 @@ void Transmogrification::LoadPlayerSets(ObjectGuid pGUID)
                     LOG_ERROR("module", "Item entry (FakeEntry: {}, player: {}, slot: {}, presetId: {}) has invalid slot, ignoring.", entry, pGUID.ToString(), slot, PresetID);
                     continue;
                 }
-                if (sObjectMgr->GetItemTemplate(entry))
+                if (entry == HIDDEN_ITEM_ID || sObjectMgr->GetItemTemplate(entry))
                     presetById[pGUID][PresetID][slot] = entry; // Transmogrification::Preset(presetName, fakeEntry);
             }
 
@@ -238,6 +238,13 @@ std::string Transmogrification::GetItemLink(uint32 entry, WorldSession* session)
 {
     LOG_DEBUG("module", "Transmogrification::GetItemLink");
 
+    if (entry == HIDDEN_ITEM_ID)
+    {
+        std::ostringstream oss;
+        oss << "(Hidden)";
+
+        return oss.str();
+    }
     const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
     int loc_idx = session->GetSessionDbLocaleIndex();
     std::string name = temp->Name1;
@@ -463,13 +470,66 @@ bool Transmogrification::CanTransmogrifyItemWithItem(Player* player, ItemTemplat
         {
             if (source->Class == ITEM_CLASS_ARMOR && !AllowMixedArmorTypes)
                 return false;
-            if (source->Class == ITEM_CLASS_WEAPON && !AllowMixedWeaponTypes)
-                return false;
+            if (source->Class == ITEM_CLASS_WEAPON)
+            {
+                if (AllowMixedWeaponTypes == MIXED_WEAPONS_STRICT)
+                {
+                    return false;
+                }
+                if (AllowMixedWeaponTypes == MIXED_WEAPONS_MODERN)
+                {
+                    switch (source->SubClass)
+                    {
+                        case ITEM_SUBCLASS_WEAPON_WAND:
+                        case ITEM_SUBCLASS_WEAPON_DAGGER:
+                        case ITEM_SUBCLASS_WEAPON_FIST:
+                            return false;
+                        case ITEM_SUBCLASS_WEAPON_AXE:
+                        case ITEM_SUBCLASS_WEAPON_SWORD:
+                        case ITEM_SUBCLASS_WEAPON_MACE:
+                            if (target->SubClass != ITEM_SUBCLASS_WEAPON_MACE &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_AXE &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_SWORD)
+                            {
+                                return false;
+                            }
+                            break;
+                        case ITEM_SUBCLASS_WEAPON_AXE2:
+                        case ITEM_SUBCLASS_WEAPON_SWORD2:
+                        case ITEM_SUBCLASS_WEAPON_MACE2:
+                        case ITEM_SUBCLASS_WEAPON_STAFF:
+                        case ITEM_SUBCLASS_WEAPON_POLEARM:
+                            if (target->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_STAFF &&
+                                target->SubClass != ITEM_SUBCLASS_WEAPON_POLEARM)
+                            {
+                                return false;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
     }
 
     if (source->InventoryType != target->InventoryType)
     {
+
+        // Main-hand to offhand restrictions - see https://wowpedia.fandom.com/wiki/Transmogrification
+        if (!AllowMixedWeaponHandedness && AllowMixedWeaponTypes != MIXED_WEAPONS_LOOSE)
+        {
+            if ((source->InventoryType == INVTYPE_WEAPONMAINHAND && target->InventoryType != INVTYPE_WEAPONMAINHAND) ||
+                (source->InventoryType == INVTYPE_WEAPONOFFHAND && target->InventoryType != INVTYPE_WEAPONOFFHAND))
+            {
+                return false;
+            }
+
+        }
+
         if (source->Class == ITEM_CLASS_WEAPON && !(IsRangedWeapon(target->Class, target->SubClass) ||
             (
                 // [AZTH] Yehonal: fixed weapon check
@@ -512,7 +572,7 @@ bool Transmogrification::SuitableForTransmogrification(Player* player, ItemTempl
             return false;
         }
 
-        if (proto->Class == ITEM_CLASS_WEAPON && !AllowMixedWeaponTypes)
+        if (proto->Class == ITEM_CLASS_WEAPON && AllowMixedWeaponTypes != MIXED_WEAPONS_LOOSE)
         {
             return false;
         }
@@ -714,6 +774,16 @@ bool Transmogrification::IsAllowedQuality(uint32 quality) const
     }
 }
 
+bool Transmogrification::CanNeverTransmog(ItemTemplate const* itemTemplate)
+{
+    return (itemTemplate->InventoryType == INVTYPE_BAG ||
+        itemTemplate->InventoryType == INVTYPE_RELIC ||
+        itemTemplate->InventoryType == INVTYPE_FINGER ||
+        itemTemplate->InventoryType == INVTYPE_TRINKET ||
+        itemTemplate->InventoryType == INVTYPE_AMMO ||
+        itemTemplate->InventoryType == INVTYPE_QUIVER);
+}
+
 void Transmogrification::LoadConfig(bool reload)
 {
 #ifdef PRESETS
@@ -784,8 +854,10 @@ void Transmogrification::LoadConfig(bool reload)
     AllowTradeable = sConfigMgr->GetOption<bool>("Transmogrification.AllowTradeable", false);
 
     AllowMixedArmorTypes = sConfigMgr->GetOption<bool>("Transmogrification.AllowMixedArmorTypes", false);
-    AllowMixedWeaponTypes = sConfigMgr->GetOption<bool>("Transmogrification.AllowMixedWeaponTypes", false);
+    AllowMixedWeaponHandedness = sConfigMgr->GetOption<bool>("Transmogrification.AllowMixedWeaponHandedness", false);
     AllowFishingPoles = sConfigMgr->GetOption<bool>("Transmogrification.AllowFishingPoles", false);
+
+    AllowMixedWeaponTypes = sConfigMgr->GetOption<uint8>("Transmogrification.AllowMixedWeaponTypes", MIXED_WEAPONS_STRICT);
 
     IgnoreReqRace = sConfigMgr->GetOption<bool>("Transmogrification.IgnoreReqRace", false);
     IgnoreReqClass = sConfigMgr->GetOption<bool>("Transmogrification.IgnoreReqClass", false);
@@ -864,7 +936,7 @@ bool Transmogrification::GetAllowMixedArmorTypes() const
 {
     return AllowMixedArmorTypes;
 };
-bool Transmogrification::GetAllowMixedWeaponTypes() const
+uint8 Transmogrification::GetAllowMixedWeaponTypes() const
 {
     return AllowMixedWeaponTypes;
 };

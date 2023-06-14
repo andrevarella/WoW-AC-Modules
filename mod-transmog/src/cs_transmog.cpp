@@ -40,7 +40,8 @@ public:
         static ChatCommandTable transmogTable =
         {
             { "add", addCollectionTable },
-            { "",    HandleDisableTransMogVisual, SEC_PLAYER,    Console::No },
+            { "",    HandleDisableTransMogVisual,   SEC_PLAYER,    Console::No },
+            { "sync",    HandleSyncTransMogCommand, SEC_PLAYER,    Console::No },
         };
 
         static ChatCommandTable commandTable =
@@ -49,6 +50,19 @@ public:
         };
 
         return commandTable;
+    }
+
+    static bool HandleSyncTransMogCommand(ChatHandler* handler)
+    {
+        Player* player = handler->GetPlayer();
+        uint32 accountId = player->GetSession()->GetAccountId();
+        handler->SendSysMessage(LANG_CMD_TRANSMOG_BEGIN_SYNC);
+        for (uint32 itemId : sTransmogrification->collectionCache[accountId])
+        {
+            handler->PSendSysMessage("TRANSMOG_SYNC:%u", itemId);
+        }
+        handler->SendSysMessage(LANG_CMD_TRANSMOG_COMPLETE_SYNC);
+        return true;
     }
 
     static bool HandleDisableTransMogVisual(ChatHandler* handler, bool hide)
@@ -133,7 +147,7 @@ public:
         if (sTransmogrification->AddCollectedAppearance(accountId, itemId))
         {
             // Notify target of new item in appearance collection
-            if (target && !(target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value))
+            if (target && !(target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value) && !sTransmogrification->CanNeverTransmog(itemTemplate))
             {
                 ChatHandler(target->GetSession()).PSendSysMessage(R"(|c%s|Hitem:%u:0:0:0:0:0:0:0:0|h[%s]|h|r has been added to your appearance collection.)", itemQuality.c_str(), itemId, itemName.c_str());
             }

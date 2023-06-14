@@ -51,6 +51,10 @@ public:
     bool OnGossipHello(Player* player, Creature* creature) override
     {
         WorldSession* session = player->GetSession();
+
+        // Clear the search string for the player
+        sT->searchStringByPlayer.erase(player->GetGUID().GetCounter());
+
         if (sT->GetEnableTransmogInfo())
             AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "|TInterface/ICONS/INV_Misc_Book_11:30:30:-18:0|tHow does transmogrification work?", EQUIPMENT_SLOT_END + 9, 0);
         for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; ++slot)
@@ -273,7 +277,18 @@ public:
     bool OnGossipSelectCode(Player* player, Creature* creature, uint32 sender, uint32 action, const char* code) override
     {
         player->PlayerTalkClass->ClearMenus();
-        if (sender || action)
+        if (sender)
+        {
+            // "sender" is an equipment slot for a search - execute the search
+            std::string searchString(code);
+            if (searchString.length() > MAX_SEARCH_STRING_LENGTH)
+                searchString = searchString.substr(0, MAX_SEARCH_STRING_LENGTH);
+            sT->searchStringByPlayer.erase(player->GetGUID().GetCounter());
+            sT->searchStringByPlayer.insert({player->GetGUID().GetCounter(), searchString});
+            OnGossipSelect(player, creature, EQUIPMENT_SLOT_END, sender - 1);
+            return true;
+        }
+        if (action)
             return true; // should never happen
         if (!sT->GetEnableSets())
         {
@@ -301,12 +316,15 @@ public:
                         uint32 entry = sT->GetFakeEntry(newItem->GetGUID());
                         if (!entry)
                             continue;
-                        const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
-                        if (!temp)
-                            continue;
-                        if (!sT->SuitableForTransmogrification(player, temp))
-                            continue;
-                        cost += sT->GetSpecialPrice(temp);
+                        if (entry != HIDDEN_ITEM_ID)
+                        {
+                            const ItemTemplate* temp = sObjectMgr->GetItemTemplate(entry);
+                            if (!temp)
+                                continue;
+                            if (!sT->SuitableForTransmogrification(player, temp))
+                                continue;
+                            cost += sT->GetSpecialPrice(temp);
+                        }
                         items[slot] = entry;
                     }
                 }
@@ -344,6 +362,7 @@ public:
         WorldSession* session = player->GetSession();
         Item* oldItem = player->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
         bool sendGossip = true;
+        bool hasSearchString;
         if (oldItem)
         {
             uint32 price = sT->GetSpecialPrice(oldItem->GetTemplate());
@@ -361,7 +380,7 @@ public:
 
                 uint16 pageNumber = 0;
                 uint32 startValue = 0;
-                uint32 endValue = MAX_OPTIONS - 3;
+                uint32 endValue = MAX_OPTIONS - 4;
                 bool lastPage = false;
                 if (gossipPageNumber > EQUIPMENT_SLOT_END + 10)
                 {
@@ -369,9 +388,30 @@ public:
                     startValue = (pageNumber * (MAX_OPTIONS - 2));
                     endValue = (pageNumber + 1) * (MAX_OPTIONS - 2) - 1;
                 }
-                uint64 playerEntry = player->GetGUID().GetRawValue();
-                if (sT->collectionCache.find(playerEntry) != sT->collectionCache.end())
+                uint32 accountId = player->GetSession()->GetAccountId(); // collection on account
+				// uint64 playerEntry = player->GetGUID().GetRawValue(); // collection on character
+                if (sT->collectionCache.find(accountId) != sT->collectionCache.end())
+				// if (sT->collectionCache.find(playerEntry) != sT->collectionCache.end())
                 {
+                    std::unordered_map<uint32, std::string>::iterator searchStringIterator = sT->searchStringByPlayer.find(player->GetGUID().GetCounter());
+                    hasSearchString = !(searchStringIterator == sT->searchStringByPlayer.end());
+                    std::string searchDisplayValue(hasSearchString ? searchStringIterator->second : "Search....");
+                    // Offset values to add Search gossip item
+                    if (pageNumber == 0)
+                    {
+                        if (hasSearchString)
+                        {
+                            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, sT->GetItemIcon(30620, 30, 30, -18, 0) + "Searching for: " + searchDisplayValue, slot + 1, 0, "Search for what item?", 0, true);
+                        }
+                        else
+                        {
+                            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, sT->GetItemIcon(30620, 30, 30, -18, 0) + "Search....", slot + 1, 0, "Search for what item?", 0, true);
+                        }
+                    }
+                    else
+                    {
+                        startValue--;
+                    }
                     std::vector<Item*> allowedItems;
                     if (sT->GetAllowHiddenTransmog())
                     {
@@ -387,13 +427,18 @@ public:
                             AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Hide Slot", slot, UINT_MAX, "You are hiding the item in this slot.\nDo you wish to continue?\n\n" + lineEnd, 0, false);
                         }
                     }
-                    for (uint32 newItemEntryId : sT->collectionCache[playerEntry]) {
+					// for (uint32 newItemEntryId : sT->collectionCache[playerEntry]) {
+                    for (uint32 newItemEntryId : sT->collectionCache[accountId]) {
+                        if (!sObjectMgr->GetItemTemplate(newItemEntryId))
+                            continue;
                         Item* newItem = Item::CreateItem(newItemEntryId, 1, 0);
                         if (!newItem)
                             continue;
                         if (!sT->CanTransmogrifyItemWithItem(player, oldItem->GetTemplate(), newItem->GetTemplate()))
                             continue;
                         if (sT->GetFakeEntry(oldItem->GetGUID()) == newItem->GetEntry())
+                            continue;
+                        if (hasSearchString && newItem->GetTemplate()->Name1.find(searchDisplayValue) == std::string::npos)
                             continue;
                         allowedItems.push_back(newItem);
                     }
@@ -504,17 +549,20 @@ private:
         if (itemTemplate->Class != ITEM_CLASS_ARMOR && itemTemplate->Class != ITEM_CLASS_WEAPON)
             return;
         uint32 itemId = itemTemplate->ItemId;
-        uint64 playerEntry = player->GetGUID().GetRawValue();
+		// uint64 playerEntry = player->GetGUID().GetRawValue();
+        uint32 accountId = player->GetSession()->GetAccountId();
         std::string itemName = itemTemplate -> Name1;
         std::stringstream tempStream;
         tempStream << std::hex << ItemQualityColors[itemTemplate->Quality];
         std::string itemQuality = tempStream.str();
-        bool showChatMessage = !(player->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value);
-        if (sT->AddCollectedAppearance(playerEntry, itemId))
+        bool showChatMessage = !(player->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value) && !sT->CanNeverTransmog(itemTemplate);
+        // if (sT->AddCollectedAppearance(playerEntry, itemId))
+		if (sT->AddCollectedAppearance(accountId, itemId))
         {
             if (showChatMessage)
                 ChatHandler(player->GetSession()).PSendSysMessage( R"(|c%s|Hitem:%u:0:0:0:0:0:0:0:0|h[%s]|h|r has been added to your appearance collection.)", itemQuality.c_str(), itemId, itemName.c_str());
-            CharacterDatabase.Execute( "INSERT INTO custom_unlocked_appearances (account_id, item_template_id) VALUES ({}, {})", playerEntry, itemId);
+            CharacterDatabase.Execute( "INSERT INTO custom_unlocked_appearances (account_id, item_template_id) VALUES ({}, {})", accountId, itemId);
+			// CharacterDatabase.Execute( "INSERT INTO custom_unlocked_appearances (account_id, item_template_id) VALUES ({}, {})", playerEntry, itemId);
         }
     }
 
@@ -570,7 +618,7 @@ public:
 
     void OnPlayerCompleteQuest(Player* player, Quest const* quest) override
     {
-        if (!sT->GetUseCollectionSystem())
+        if (!sT->GetUseCollectionSystem() || !quest)
             return;
         for (uint8 i = 0; i < QUEST_REWARD_CHOICES_COUNT; ++i)
         {
@@ -720,7 +768,16 @@ public:
     void OnMirrorImageDisplayItem(const Item *item, uint32 &display) override
     {
         if (uint32 entry = sTransmogrification->GetFakeEntry(item->GetGUID()))
-            display=uint32(sObjectMgr->GetItemTemplate(entry)->DisplayInfoID);
+        {
+            if (entry == HIDDEN_ITEM_ID)
+            {
+                display = 0;
+            }
+            else
+            {
+                display=uint32(sObjectMgr->GetItemTemplate(entry)->DisplayInfoID);
+            }
+        }
     }
 };
 
