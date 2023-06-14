@@ -1,7 +1,7 @@
 /*
  *MIT License
  *
- *Copyright (c) 2022 Azerothcore
+ *Copyright (c) 2023 Azerothcore
  *
  *Permission is hereby granted, free of charge, to any person obtaining a copy
  *of this software and associated documentation files (the "Software"), to deal
@@ -119,13 +119,22 @@ void Azerothcore_skip_deathknight_HandleSkip(Player* player)
     //Don't need to save all players, just current
     player->SaveToDB(false, false);
 
+    // WorldLocation Aloc = WorldLocation(0, -8866.55f, 671.39f, 97.90f, 5.27f);// Stormwind
+    // WorldLocation Hloc = WorldLocation(1, 1637.62f, -4440.22f, 15.78f, 2.42f);// Orgrimmar
+    WorldLocation Aloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Stormwind
+    WorldLocation Hloc = WorldLocation(571, 2787.87f, -2732.06f, 89.67f, 0.41f);// Orgrimmar
+
     if (player->GetTeamId() == TEAM_ALLIANCE)
     {
-        player->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);//Stormwind
+        //player->TeleportTo(0, -8833.37f, 628.62f, 94.00f, 1.06f); //Stormwind
+        player->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f); // Mall
+        player->SetHomebind(Aloc, 1637);// Stormwind Homebind location
     }
     else
     {
-        player->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f);//Orgrimmar
+        //player->TeleportTo(1, 1569.59f, -4397.63f, 7.70f, 0.54f); //Orgrimmar
+        player->TeleportTo(571, 2787.87f, -2732.06f, 89.67f, 0.41f); // Mall
+        player->SetHomebind(Hloc, 1653);// Orgrimmar Homebind location
     }
 }
 
