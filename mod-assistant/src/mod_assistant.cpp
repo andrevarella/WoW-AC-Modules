@@ -78,25 +78,25 @@ public:
         ClearGossipMenuFor(player);
 
         if (aEnableHeirlooms)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want heirlooms", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want heirlooms", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_HEIRLOOM);
 
         if (aEnableGlyphs)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want glyphs", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GLYPH);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want glyphs", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GLYPH);
 
         if (aEnableGems)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want gems", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_GEM);
 
         if (aEnableEnchantScrolls)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS);
 
         if (aEnableUtilities)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want utilities", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want utilities", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
 
         if (aEnableContainers)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want GM items", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_CONTAINER);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want GM items", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_CONTAINER);
 
         if (aEnableProfessionItems)
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "I want profession reagents", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONITEMS);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want profession reagents", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_PROFESSIONITEMS);
 
         SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
         return true;
@@ -534,7 +534,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_FIRST_AID);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_FIRST_AID);
             uint32 professionCost = getProfessionCost(player, SKILL_FIRST_AID);
 
             player->SetSkill(SKILL_FIRST_AID, 0, maxSkillValue, maxSkillValue);
@@ -547,7 +547,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_BLACKSMITHING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_BLACKSMITHING);
             uint32 professionCost = getProfessionCost(player, SKILL_BLACKSMITHING);
 
             player->SetSkill(SKILL_BLACKSMITHING, 0, maxSkillValue, maxSkillValue);
@@ -560,7 +560,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_LEATHERWORKING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_LEATHERWORKING);
             uint32 professionCost = getProfessionCost(player, SKILL_LEATHERWORKING);
 
             player->SetSkill(SKILL_LEATHERWORKING, 0, maxSkillValue, maxSkillValue);
@@ -573,7 +573,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_ALCHEMY);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_ALCHEMY);
             uint32 professionCost = getProfessionCost(player, SKILL_ALCHEMY);
 
             player->SetSkill(SKILL_ALCHEMY, 0, maxSkillValue, maxSkillValue);
@@ -586,7 +586,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_HERBALISM);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_HERBALISM);
             uint32 professionCost = getProfessionCost(player, SKILL_HERBALISM);
 
             player->SetSkill(SKILL_HERBALISM, 0, maxSkillValue, maxSkillValue);
@@ -599,7 +599,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_COOKING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_COOKING);
             uint32 professionCost = getProfessionCost(player, SKILL_COOKING);
 
             player->SetSkill(SKILL_COOKING, 0, maxSkillValue, maxSkillValue);
@@ -612,7 +612,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_MINING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_MINING);
             uint32 professionCost = getProfessionCost(player, SKILL_MINING);
 
             player->SetSkill(SKILL_MINING, 0, maxSkillValue, maxSkillValue);
@@ -625,7 +625,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_TAILORING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_TAILORING);
             uint32 professionCost = getProfessionCost(player, SKILL_TAILORING);
 
             player->SetSkill(SKILL_TAILORING, 0, maxSkillValue, maxSkillValue);
@@ -638,7 +638,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_ENGINEERING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_ENGINEERING);
             uint32 professionCost = getProfessionCost(player, SKILL_ENGINEERING);
 
             player->SetSkill(SKILL_ENGINEERING, 0, maxSkillValue, maxSkillValue);
@@ -651,7 +651,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_ENCHANTING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_ENCHANTING);
             uint32 professionCost = getProfessionCost(player, SKILL_ENCHANTING);
 
             player->SetSkill(SKILL_ENCHANTING, 0, maxSkillValue, maxSkillValue);
@@ -664,7 +664,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_FISHING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_FISHING);
             uint32 professionCost = getProfessionCost(player, SKILL_FISHING);
 
             player->SetSkill(SKILL_FISHING, 0, maxSkillValue, maxSkillValue);
@@ -677,7 +677,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_SKINNING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_SKINNING);
             uint32 professionCost = getProfessionCost(player, SKILL_SKINNING);
 
             player->SetSkill(SKILL_SKINNING, 0, maxSkillValue, maxSkillValue);
@@ -690,7 +690,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_INSCRIPTION);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_INSCRIPTION);
             uint32 professionCost = getProfessionCost(player, SKILL_INSCRIPTION);
 
             player->SetSkill(SKILL_INSCRIPTION, 0, maxSkillValue, maxSkillValue);
@@ -703,7 +703,7 @@ public:
         {
             ClearGossipMenuFor(player);
 
-            uint16 maxSkillValue = player->GetMaxSkillValue(SKILL_JEWELCRAFTING);
+            uint16 maxSkillValue = player->GetPureMaxSkillValue(SKILL_JEWELCRAFTING);
             uint32 professionCost = getProfessionCost(player, SKILL_JEWELCRAFTING);
 
             player->SetSkill(SKILL_JEWELCRAFTING, 0, maxSkillValue, maxSkillValue);

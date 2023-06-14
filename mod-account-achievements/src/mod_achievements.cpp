@@ -75,6 +75,46 @@ public:
 	{
 		if (sConfigMgr->GetOption<bool>("Account.Achievements.Enable", true))
         {
+            // Gladiators
+            static const std::vector<uint32> excludedAchievements = { 2091, 418, 419, 420, 3336, 3436, 3758, 4599, 10003, 10004, 10005, 10006, 10007, 10008, 10009, 10010, 10011, 10012, 10013, 10014, 10015, 10016, 10017, 10018, 10019, 10020, 10021, 10022, 10023, 10024, 10025, 10026, 10054, 10055, 10056, 10085, 10086, 10087, 10088, 10089};
+            if (std::find(excludedAchievements.begin(), excludedAchievements.end(), AchievementID) != excludedAchievements.end())
+            {
+                return; // Skip adding excluded PvP/Gladiator achievements
+            }
+
+            // Mounts Achiev
+            static const std::vector<uint32> excludedMountAchievements = {
+                3096,
+                3756,
+                3757,
+                4600,
+                415,
+                431,
+                729,
+                980,
+                880,
+                881,
+                882,
+                883,
+                884,
+                885,
+                886, // teste
+                887, // teste2
+                888,
+                430,
+            };
+            if (std::find(excludedMountAchievements.begin(), excludedMountAchievements.end(), AchievementID) != excludedMountAchievements.end())
+            {
+                return; // Skip adding excluded Mounts achievements
+            }
+
+            // Realm First Achievs
+            static const std::vector<uint32> excludedRFAchievements = { 457, 467, 466, 465, 464, 463, 462, 461, 460, 459, 458, 1404, 1405, 1406, 1407, 1408, 1409, 1410, 1411, 1412, 1413, 1414, 1415, 1416, 1417, 1418, 1419, 1420, 1421, 1422, 1423, 1424, 1425, 1426, 1427, 1400, 456, 1402, 3117, 3259, 4078, 4576, 1463, 10028 };
+            if (std::find(excludedRFAchievements.begin(), excludedRFAchievements.end(), AchievementID) != excludedRFAchievements.end())
+            {
+                return; // Skip adding excluded Realm First achievements
+            }
+
 			if (limitlevel)
 				setlevel = minlevel;
 

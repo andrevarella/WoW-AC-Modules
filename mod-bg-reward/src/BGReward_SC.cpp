@@ -34,29 +34,29 @@ public:
         if (sConfigMgr->GetBoolDefault("Battleground.Reward.Enable", true) && !bg->isArena())
         {
             if (bgTeamId == winnerTeamId)
-                RewardCount = sConfigMgr->GetIntDefault("Battleground.Reward.WinnerTeam.Count", 2);
+                RewardCount = sConfigMgr->GetOption<bool>("Battleground.Reward.WinnerTeam.Count", 2);
             else
-                RewardCount = sConfigMgr->GetIntDefault("Battleground.Reward.LoserTeam.Count", 1);
+                RewardCount = sConfigMgr->GetOption<bool>("Battleground.Reward.LoserTeam.Count", 1);
 
             switch (player->GetZoneId())
             {
                 case 3277:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.WS", 20558), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.WS", 20558), RewardCount);
                     break;
                 case 3358:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.AB", 20559), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.AB", 20559), RewardCount);
                     break;
                 case 3820:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.EY", 29024), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.EY", 29024), RewardCount);
                     break;
                 case 4710:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.IC", 47395), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.IC", 47395), RewardCount);
                     break;
                 case 4384:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.SA", 42425), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.SA", 42425), RewardCount);
                     break;
                 case 2597:
-                    player->AddItem(sConfigMgr->GetIntDefault("Battleground.Reward.ItemID.AV", 20560), RewardCount);
+                    player->AddItem(sConfigMgr->GetOption<bool>("Battleground.Reward.ItemID.AV", 20560), RewardCount);
                     break;
                 default:
                     break;
@@ -66,9 +66,9 @@ public:
         if (sConfigMgr->GetBoolDefault("Arena.Reward.Enable", true) && bg->isArena())
         {
             if (bgTeamId == winnerTeamId)
-                RewardCount = sConfigMgr->GetIntDefault("Arena.Reward.WinnerTeam.Count", 2);
+                RewardCount = sConfigMgr->GetOption<bool>("Arena.Reward.WinnerTeam.Count", 2);
             else
-                RewardCount = sConfigMgr->GetIntDefault("Arena.Reward.LoserTeam.Count", 1);
+                RewardCount = sConfigMgr->GetOption<bool>("Arena.Reward.LoserTeam.Count", 1);
 
             if (bg->isRated()) // Rated Arena
             {
@@ -158,11 +158,11 @@ public:
     {
         if (bgTeamId == winnerTeamId)
         {   // rated win
-            if (player->HasAura(83025)) // nao dar reward se a arena acabar e o player tiver com a aura 83025 (arena preparation)
+            if (player->HasAura(83025)) // Arena Preparation - nao da reward se a arena acabar e o player tiver com Arena Prep
             {
                 return;
             }
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // Caixa de Arena (x2/x3)
+            player->AddItem(sConfigMgr->GetOption<bool>("Arena.Reward.Winner.ItemID." + Type, 32544), RewardCount); // Caixa de Arena (x2/x3)
             srand(time(NULL));
             int honorPoints = rand() % 76 + 175; // 175 até 250 honor  (o valor da esquerda é o que varia de 0 ate X, e o valor da direita é o numero base(minimo). ex: 51 e 100, o valor minimo é 100 e vai até 150
             player->ModifyHonorPoints(honorPoints);
@@ -173,11 +173,11 @@ public:
         }
         else
         {   // rated loss
-            if (player->HasAura(83025)) 
+            if (player->HasAura(83025))
             {
                 return;
             }
-            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Loser.ItemID." + Type, 29434), RewardCount);  // Badge of Justice
+            player->AddItem(sConfigMgr->GetOption<bool>("Arena.Reward.Loser.ItemID." + Type, 29434), RewardCount);  // Badge of Justice
             srand(time(NULL));
             int honorPoints = rand() % 31 + 70; // Rated Loss - da entre 70 a 100 honor
             player->ModifyHonorPoints(honorPoints);
