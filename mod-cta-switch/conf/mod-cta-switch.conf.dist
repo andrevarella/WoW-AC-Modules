@@ -17,16 +17,15 @@
 ModCTASwitch.Enable = 0
 
 #
-#  EVENT_CTA_ALTERAC_VALLEY         = 18, EVENT_CTA_WARSONG_GULCH          = 19,
-#  EVENT_CTA_ARATHI_BASIN           = 20, EVENT_CTA_EYE_OF_THE_STORM       = 21,
-#  EVENT_CTA_STRAND_OF_THE_ANCIENTS = 53, EVENT_CTA_ISLE_OF_CONQUEST       = 54,
-#
 #    ModCTASwitch.SwitchEots
 #    ModCTASwitch.SwitchSota
 #    ModCTASwitch.SwitchIoc
 #        Description: When the Call to Arms! event starts, switch it to another one specified in this config.
 #
 
+ModCTASwitch.SwitchWsg = 19
+ModCTASwitch.SwitchAB = 20
+ModCTASwitch.SwitchAV = 18
 ModCTASwitch.SwitchEots = 19
 ModCTASwitch.SwitchSota = 20
 ModCTASwitch.SwitchIoc = 18
