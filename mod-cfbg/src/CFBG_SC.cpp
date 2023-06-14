@@ -1,15 +1,14 @@
 /*
  *  Copyright (С) since 2019 Andrei Guluaev (Winfidonarleyan/Kargatum) https://github.com/Winfidonarleyan
  *  Copyright (С) since 2019+ AzerothCore <www.azerothcore.org>
-*/
+ */
 
 #include "CFBG.h"
-#include "BattlegroundMgr.h"
-#include "Chat.h"
-#include "GroupMgr.h"
-#include "Opcodes.h"
-#include "ScriptMgr.h"
+#include "Group.h"
+#include "Player.h"
 #include "ReputationMgr.h"
+#include "ScriptMgr.h"
+#include "BattlegroundQueue.h"
 
 // CFBG custom script
 class CFBG_BG : public BGScript
@@ -19,21 +18,11 @@ public:
 
     void OnBattlegroundBeforeAddPlayer(Battleground* bg, Player* player) override
     {
-        if (!sCFBG->IsEnableSystem() || !bg || bg->isArena() || !player)
-        {
-            return;
-        }
-
-        sCFBG->ValidatePlayerForBG(bg, player, player->GetBgTeamId());
+        sCFBG->ValidatePlayerForBG(bg, player);
     }
 
     void OnBattlegroundAddPlayer(Battleground* bg, Player* player) override
     {
-        if (!sCFBG->IsEnableSystem() || bg->isArena())
-        {
-            return;
-        }
-
         sCFBG->FitPlayerInTeam(player, true, bg);
 
         if (sCFBG->IsEnableResetCooldowns())
@@ -82,21 +71,14 @@ public:
         {
             index = BG_QUEUE_CFBG;
         }
+
+        // After rework hook
+        // sCFBG->OnAddGroupToBGQueue(ginfo, group);
     }
 
     bool CanFillPlayersToBG(BattlegroundQueue* queue, Battleground* bg, BattlegroundBracketId bracket_id) override
     {
-        if (!sCFBG->IsEnableSystem() || bg->isArena())
-        {
-            return true;
-        }
-
-        if (sCFBG->FillPlayersToCFBG(queue, bg, bracket_id))
-        {
-            return false;
-        }
-
-        return true;
+        return !sCFBG->FillPlayersToCFBG(queue, bg, bracket_id);
     }
 
     bool IsCheckNormalMatch(BattlegroundQueue* queue, Battleground* bg, BattlegroundBracketId bracket_id, uint32 minPlayers, uint32 maxPlayers) override
