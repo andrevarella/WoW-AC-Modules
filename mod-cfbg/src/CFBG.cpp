@@ -140,17 +140,17 @@ CFBG::CFBG()
     _raceData =
     {
         RaceData{ CLASS_NONE,           { 0 }, { 0 } },
-        RaceData{ CLASS_WARRIOR,        { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI  }, { RACE_ORC, RACE_TAUREN, RACE_TROLL } },
-        RaceData{ CLASS_PALADIN,        { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI }, { RACE_BLOODELF } },
-        RaceData{ CLASS_HUNTER,         { RACE_DWARF, RACE_DRAENEI }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF } },
-        RaceData{ CLASS_ROGUE,          { RACE_HUMAN, RACE_DWARF, RACE_GNOME }, { RACE_ORC, RACE_TROLL, RACE_BLOODELF } },
-        RaceData{ CLASS_PRIEST,         { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI  }, { RACE_TROLL, RACE_BLOODELF } },
-        RaceData{ CLASS_DEATH_KNIGHT,   { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF } },
+        RaceData{ CLASS_WARRIOR,        { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI, RACE_NIGHTELF }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_UNDEAD_PLAYER } },
+        RaceData{ CLASS_PALADIN,        { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI }, { RACE_BLOODELF, RACE_TAUREN } },
+        RaceData{ CLASS_HUNTER,         { RACE_DWARF, RACE_DRAENEI, RACE_NIGHTELF }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+        RaceData{ CLASS_ROGUE,          { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_NIGHTELF }, { RACE_ORC, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+        RaceData{ CLASS_PRIEST,         { RACE_HUMAN, RACE_DWARF, RACE_DRAENEI, RACE_NIGHTELF, RACE_GNOME }, { RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
+        RaceData{ CLASS_DEATH_KNIGHT,   { RACE_HUMAN, RACE_DWARF, RACE_GNOME, RACE_DRAENEI, RACE_NIGHTELF }, { RACE_ORC, RACE_TAUREN, RACE_TROLL, RACE_BLOODELF, RACE_UNDEAD_PLAYER } },
         RaceData{ CLASS_SHAMAN,         { RACE_DRAENEI }, { RACE_ORC, RACE_TAUREN, RACE_TROLL  } },
-        RaceData{ CLASS_MAGE,           { RACE_HUMAN, RACE_GNOME }, { RACE_BLOODELF, RACE_TROLL } },
-        RaceData{ CLASS_WARLOCK,        { RACE_HUMAN, RACE_GNOME }, { RACE_ORC, RACE_BLOODELF } },
+        RaceData{ CLASS_MAGE,           { RACE_HUMAN, RACE_GNOME, RACE_NIGHTELF, RACE_DRAENEI }, { RACE_BLOODELF, RACE_TROLL, RACE_UNDEAD_PLAYER } },
+        RaceData{ CLASS_WARLOCK,        { RACE_HUMAN, RACE_GNOME }, { RACE_ORC, RACE_BLOODELF, RACE_UNDEAD_PLAYER, RACE_TROLL } },
         RaceData{ CLASS_NONE,           { 0 }, { 0 } },
-        RaceData{ CLASS_DRUID,          { RACE_HUMAN }, { RACE_TAUREN } }
+        RaceData{ CLASS_DRUID,          { RACE_NIGHTELF }, { RACE_TAUREN, RACE_TROLL } }
     };
 
     _raceInfo =
@@ -162,6 +162,7 @@ CFBG::CFBG()
         CFBGRaceInfo{ RACE_DRAENEI,  "draenei",  TEAM_HORDE    },
         CFBGRaceInfo{ RACE_ORC,      "orc",      TEAM_ALLIANCE },
         CFBGRaceInfo{ RACE_BLOODELF, "bloodelf", TEAM_ALLIANCE },
+        CFBGRaceInfo{ RACE_UNDEAD_PLAYER, "undead", TEAM_ALLIANCE },
         CFBGRaceInfo{ RACE_TROLL,    "troll",    TEAM_ALLIANCE },
         CFBGRaceInfo{ RACE_TAUREN,   "tauren",   TEAM_ALLIANCE }
     };
@@ -399,6 +400,7 @@ uint32 CFBG::GetMorphFromRace(uint8 race, uint8 gender)
 {
     switch (race)
     {
+        /*
         case RACE_BLOODELF:
             return gender == GENDER_MALE ? FAKE_M_BLOOD_ELF : FAKE_F_BLOOD_ELF;
         case RACE_ORC:
@@ -414,6 +416,41 @@ uint32 CFBG::GetMorphFromRace(uint8 race, uint8 gender)
         case RACE_GNOME:
             return gender == GENDER_MALE ? FAKE_M_GNOME : FAKE_F_GNOME;
         case RACE_NIGHTELF: // female is missing and male causes client crashes...
+        case RACE_HUMAN:
+            return gender == GENDER_MALE ? FAKE_M_HUMAN : FAKE_F_HUMAN;
+        default:
+            // Default: Blood elf.
+            return gender == GENDER_MALE ? FAKE_M_BLOOD_ELF : FAKE_F_BLOOD_ELF;
+        */
+        // Hordes
+        case RACE_BLOODELF:
+            return gender == GENDER_MALE ? FAKE_M_BLOOD_ELF : FAKE_F_BLOOD_ELF;
+
+        case RACE_ORC:
+            return gender == GENDER_MALE ? FAKE_M_ORC : FAKE_F_ORC; // FAKE_M_FEL_ORC : FAKE_F_ORC;
+
+        case RACE_TROLL:
+            return gender == GENDER_MALE ? FAKE_M_TROLL : FAKE_F_TROLL;
+
+        case RACE_TAUREN:
+            return gender == GENDER_MALE ? FAKE_M_TAUREN : FAKE_F_TAUREN;
+
+        case RACE_UNDEAD_PLAYER:
+            return gender == GENDER_MALE ? FAKE_M_UNDEAD_PLAYER : FAKE_F_UNDEAD_PLAYER;
+
+        // Alliances
+        case RACE_DRAENEI:
+            return gender == GENDER_MALE ? FAKE_M_DRAENEI : FAKE_F_DRAENEI;
+
+        case RACE_DWARF:
+            return gender == GENDER_MALE ? FAKE_M_DWARF : FAKE_F_DWARF;
+
+        case RACE_GNOME:
+            return gender == GENDER_MALE ? FAKE_M_GNOME : FAKE_F_GNOME;
+
+        case RACE_NIGHTELF:                          
+            return gender == GENDER_MALE ? FAKE_M_NIGHTELF : FAKE_F_NIGHTELF;    // female is missing and male causes client crashes...
+
         case RACE_HUMAN:
             return gender == GENDER_MALE ? FAKE_M_HUMAN : FAKE_F_HUMAN;
         default:

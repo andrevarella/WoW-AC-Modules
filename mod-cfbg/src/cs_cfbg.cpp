@@ -65,7 +65,8 @@ public:
                     handler->SetSentErrorMessage(true);
                     return true;
                 }
-
+                
+                /*
                 if (raceId == RACE_NIGHTELF)
                 {
                     handler->SendSysMessage("Night elf models are not available as the female model is missing and the male one causes client crashes.");
@@ -79,6 +80,7 @@ public:
                     handler->SetSentErrorMessage(true);
                     return true;
                 }
+                */
             }
         }
 
