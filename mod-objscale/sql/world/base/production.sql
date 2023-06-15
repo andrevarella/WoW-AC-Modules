@@ -5,6 +5,7 @@
 
 DELETE FROM `command` WHERE name IN ('npc_scale', 'npc_scale set','npc_scale reset','gob_scale','gob_scale set','gob_scale reset');
 
+-- npcs:
 INSERT INTO `command` (`name`, `security`, `help`) VALUES 
 ('npc_scale', 3, 'Syntax: .npc_objscale $subcommand\nType .help creature_objscale to see a list of subcommands\nor .help xp $subcommand to see info on the subcommand.'),
 ('npc_scale set', 3, 'Syntax: .npc_objscale set $scale\nSet scale of selected creature.'),
