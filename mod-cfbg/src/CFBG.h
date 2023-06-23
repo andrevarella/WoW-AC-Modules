@@ -222,7 +222,7 @@ private:
     std::unordered_map<GroupQueueInfo*, CrossFactionGroupInfo> _groupsInfo;
 
     std::array<RaceData, 12> _raceData{};
-    std::array<CFBGRaceInfo, 9> _raceInfo{};
+    std::array<CFBGRaceInfo, 10> _raceInfo{};
 
     // For config
     bool _IsEnableSystem;
