@@ -24,4 +24,4 @@ StartGuild.Alliance = 1
 # Enable = level (ex. 10)
 #
 
-StartGuild.Level = 70
+StartGuild.Level = 1
