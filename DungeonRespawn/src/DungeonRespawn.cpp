@@ -39,6 +39,7 @@ void DSPlayerScript::ResurrectPlayer(Player* player)
 {
     player->ResurrectPlayer(respawnHpPct / 100.0f, false);
     player->SpawnCorpseBones();
+    player->RemoveArenaSpellCooldowns(true);
 }
 
 bool DSPlayerScript::OnBeforeTeleport(Player* player, uint32 mapid, float /*x*/, float /*y*/, float /*z*/, float /*orientation*/, uint32 /*options*/, Unit* /*target*/)
