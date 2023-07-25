@@ -6,7 +6,7 @@
 
 # Enable the module? (1: true | 0: false)
 
-Account.Mounts.Enable = 0
+Account.Mounts.Enable = 1
 
 # Announce the module when the player logs in?
 
