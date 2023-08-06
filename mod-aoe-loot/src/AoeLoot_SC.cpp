@@ -33,6 +33,14 @@ class AoeLoot_Player : public PlayerScript
 public:
     AoeLoot_Player() : PlayerScript("AoeLoot_Player") { }
 
+    void OnLogin(Player* player) override
+    {
+        if (sConfigMgr->GetOption<bool>("AOELoot.Enable", true))
+        {
+            ChatHandler(player->GetSession()).PSendSysMessage(AOE_ACORE_STRING_MESSAGE);
+        }
+    }
+
     bool CanSendErrorAlreadyLooted(Player* /*player*/) override
     {
         return true;
@@ -63,15 +71,29 @@ public:
             {
                 if (LootItem* item = loot->LootItemInSlot(i, player))
                 {
-                    if (player->AddItem(item->itemid, item->count))
+                    ItemTemplate const* itemTemplate = sObjectMgr->GetItemTemplate(item->itemid);
+
+                    if (itemTemplate->MaxCount != 1)
                     {
-                        player->SendNotifyLootItemRemoved(lootSlot);
-                        player->SendLootRelease(player->GetLootGUID());
+                        if (player->AddItem(item->itemid, item->count))
+                        {
+                            player->SendNotifyLootItemRemoved(lootSlot);
+                            player->SendLootRelease(player->GetLootGUID());
+                        }
+                        else if (sConfigMgr->GetOption<bool>("AOELoot.MailEnable", true))
+                        {
+                            player->SendItemRetrievalMail(item->itemid, item->count);
+                            ChatHandler(player->GetSession()).SendSysMessage(AOE_ITEM_IN_THE_MAIL);
+                        }
                     }
                     else
                     {
-                        player->SendItemRetrievalMail(item->itemid, item->count);
-                        ChatHandler(player->GetSession()).SendSysMessage(AOE_ITEM_IN_THE_MAIL);
+                        if (!player->HasItemCount(item->itemid, 1))
+                        {
+                            player->AddItem(item->itemid, item->count);
+                        }
+                        player->SendNotifyLootItemRemoved(lootSlot);
+                        player->SendLootRelease(player->GetLootGUID());
                     }
                 }
             }
