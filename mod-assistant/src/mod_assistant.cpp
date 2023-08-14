@@ -90,7 +90,7 @@ public:
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS);
 
         if (aEnableUtilities)
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want utilities", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
+            AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want GM services", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_UTILITIES);
 
         if (aEnableContainers)
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "I want GM items", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_CONTAINER);
@@ -330,16 +330,16 @@ public:
         else if (action == ASSISTANT_GOSSIP_ENCHANTSCROLLS)
             {
             ClearGossipMenuFor(player);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Weapon Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 1);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Shield & Bow Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 3);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Head Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 4);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Shoulder Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 5);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Cloak Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 6);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Chest Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 7);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Bracer Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 8);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Gloves Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 9);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Leggings Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 11);
-            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Boots Enchant Scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 12);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Weapon enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 1);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Shield & Bow enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 3);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Head enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 4);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Shoulder enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 5);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Cloak enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 6);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Chest enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 7);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Bracer enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 8);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Gloves enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 9);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Leggings enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 11);
+            AddGossipItemFor(player, GOSSIP_ICON_VENDOR, "I want Boots enchant scrolls", GOSSIP_SENDER_MAIN, ASSISTANT_GOSSIP_ENCHANTSCROLLS + 12);
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, "Previous Page", GOSSIP_SENDER_MAIN, 1);
             SendGossipMenuFor(player, ASSISTANT_GOSSIP_TEXT, creature->GetGUID());
             }

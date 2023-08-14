@@ -5,13 +5,13 @@
 Assistant.Heirlooms = 0
 
 # Obtain glyphs from the assistant npc
-Assistant.Glyphs = 1
+Assistant.Glyphs = 0
 
 # Obtain gems from the assistant npc
-Assistant.Gems = 1
+Assistant.Gems = 0
 
 # Obtain containers from the assistant npc
-Assistant.Containers = 1
+Assistant.Containers = 0
 
 # Obtain Enchant Scrolls from the assistant npc
 Assistant.EnchantScrolls = 1
