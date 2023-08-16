@@ -144,6 +144,15 @@ void DuelReset::RestoreHealthAfterDuel(Player* player) {
     if (savedPlayerHealth == m_healthBeforeDuel.end())
         return;
 
+    player->RemoveAurasDueToSpell(66233); // Ardent Defender - pala
+    player->RemoveAurasDueToSpell(25771); // Forbearance - pala
+    player->RemoveAurasDueToSpell(61987); // Avenging Wrath Marker (server side forbearance) - pala
+    player->RemoveAurasDueToSpell(79501); // Forbearance Custom (visual only) - pala
+    player->RemoveAurasDueToSpell(6788); // Weakened Soul - Priest
+    player->RemoveAurasDueToSpell(79500); // Cheated Death (Custom visual only) - Rogue
+    player->RemoveAurasDueToSpell(41425); // Hipothermia - Mage
+    // player->RemoveAurasDueToSpell(79503); // Reincarnation - Shaman
+
     player->SetHealth(savedPlayerHealth->second);
     m_healthBeforeDuel.erase(player);
 }
