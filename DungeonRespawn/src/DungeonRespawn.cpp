@@ -40,6 +40,12 @@ void DSPlayerScript::ResurrectPlayer(Player* player)
     player->ResurrectPlayer(respawnHpPct / 100.0f, false);
     player->SpawnCorpseBones();
     player->RemoveArenaSpellCooldowns(true);
+    player->RemoveAurasDueToSpell(66233); // Ardent Defender - pala
+    player->RemoveAurasDueToSpell(61987); // Avenging Wrath Marker (server side forbearance) - pala
+
+    player->RemoveAurasDueToSpell(79501); // Forbearance Custom (visual only) - pala
+    player->RemoveAurasDueToSpell(79500); // Cheated Death (Custom visual only) - Rogue
+    player->RemoveAurasDueToSpell(79503); // Reincarnation - Shaman
 }
 
 bool DSPlayerScript::OnBeforeTeleport(Player* player, uint32 mapid, float /*x*/, float /*y*/, float /*z*/, float /*orientation*/, uint32 /*options*/, Unit* /*target*/)
