@@ -10,7 +10,7 @@
 #       Default:     1 - (Enabled)
 #                    0 - (Disabled)
 
-Anticheat.Enabled = 1
+Anticheat.Enabled = 0
 
 #     Anticheat.EnabledOnGmAccounts
 #       Description: Enables detection for GM accounts
