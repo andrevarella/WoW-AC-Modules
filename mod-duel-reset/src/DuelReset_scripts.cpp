@@ -94,6 +94,7 @@ public:
                 sDuelReset->RestoreHealthAfterDuel(winner);
                 sDuelReset->RestoreHealthAfterDuel(loser);
 
+                
                 // check if player1 class uses mana
                 if (winner->getPowerType() == POWER_MANA || winner->getClass() == CLASS_DRUID)
                     sDuelReset->RestoreManaAfterDuel(winner);
