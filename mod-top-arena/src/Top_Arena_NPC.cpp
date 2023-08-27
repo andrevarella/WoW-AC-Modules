@@ -16,6 +16,7 @@ enum ArenaRankActionIds {
     ARENA_2V2_LADDER = GOSSIP_ACTION_INFO_DEF + 1,
     ARENA_3V3_LADDER = GOSSIP_ACTION_INFO_DEF + 2,
     ARENA_5V5_LADDER = GOSSIP_ACTION_INFO_DEF + 3,
+    ARENA_1V1_LADDER = GOSSIP_ACTION_INFO_DEF + 6,
     ARENA_GOODBYE = GOSSIP_ACTION_INFO_DEF + 4,
     ARENA_NOOP = 1,
     ARENA_START_TEAM_LOOKUP = GOSSIP_ACTION_INFO_DEF + 5,
@@ -43,6 +44,7 @@ class Top_Arena_NPC : public CreatureScript
                 case ARENA_2V2_LADDER: teamType = 2; break;
                 case ARENA_3V3_LADDER: teamType = 3; break;
                 case ARENA_5V5_LADDER: teamType = 5; break;
+                case ARENA_1V1_LADDER: teamType = 1; break;
             }
             return teamType;
         }
@@ -52,6 +54,7 @@ class Top_Arena_NPC : public CreatureScript
                 case 2: option = ARENA_2V2_LADDER; break;
                 case 3: option = ARENA_3V3_LADDER; break;
                 case 5: option = ARENA_5V5_LADDER; break;
+                case 1: option = ARENA_1V1_LADDER; break;
             }
             return option;
         }
@@ -114,12 +117,32 @@ class Top_Arena_NPC : public CreatureScript
         }
         
     public:
+
+        std::string classToColor(uint8 Class) {
+            std::string color_s = "|cffFFFFFF"; //default to white
+            switch (Class)
+            {
+            case CLASS_WARRIOR:         color_s = "|cffC79C6E"; break;
+            case CLASS_PALADIN:         color_s = "|cffF58CBA"; break;
+            case CLASS_HUNTER:          color_s = "|cffABD473"; break;
+            case CLASS_ROGUE:           color_s = "|cffFFF569"; break;
+            case CLASS_PRIEST:          color_s = "|cffFFFFFF"; break;
+            case CLASS_DEATH_KNIGHT:    color_s = "|cffC41F3B"; break;
+            case CLASS_SHAMAN:          color_s = "|cff0070DE"; break;
+            case CLASS_MAGE:            color_s = "|cff3FC7EB"; break;
+            case CLASS_WARLOCK:         color_s = "|cff9482C9"; break;
+            case CLASS_DRUID:           color_s = "|cffFF7D0A"; break;
+            }
+            return color_s;
+        }
+
         Top_Arena_NPC() : CreatureScript("arenatop"){}
         
         bool OnGossipHello(Player *player, Creature *creature) {
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_arena_2v2_7:30|t Ranking 2v2\n", GOSSIP_SENDER_MAIN, ARENA_2V2_LADDER);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_arena_3v3_7:30|t Ranking 3v3\n", GOSSIP_SENDER_MAIN, ARENA_3V3_LADDER);
             AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_arena_5v5_7:30|t Ranking 5v5\n", GOSSIP_SENDER_MAIN, ARENA_5V5_LADDER);
+            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Achievement_bg_trueavshutout:30|t Ranking 1v1\n", GOSSIP_SENDER_MAIN, ARENA_1V1_LADDER);
             
             SendGossipMenuFor(player, ARENA_GOSSIP_HELLO, creature->GetGUID());
             
@@ -138,6 +161,7 @@ class Top_Arena_NPC : public CreatureScript
                 case ARENA_2V2_LADDER:
                 case ARENA_3V3_LADDER:
                 case ARENA_5V5_LADDER:
+                case ARENA_1V1_LADDER:
                 {
                     uint32 teamType = optionToTeamType(uiAction);
                     QueryResult result = CharacterDatabase.Query(
@@ -264,7 +288,7 @@ class Top_Arena_NPC : public CreatureScript
                                 
                                 // AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
                                 buf.str("");
-                                buf << " " << Class << " " << race << "|r|cff0000ff " << name << "|r|cffffff00 " << personalRating << " Personal Rating"
+                                buf << " " << Class << " " << race << classToColor(fields[8].Get<uint8>()) << name << "|r|cffffff00 " << personalRating << " Personal Rating"
                                     "\n |rWeek: |cFF228B22" << weekWins << "|r - |cFFFF6347" << weekLosses << "|r (" << weekWinPercentage << ") " "|r| Season: |cFF228B22" << seasonWins << "|r - |cFFFF6347" << seasonLosses << " |r(" << seasonWinPercentage << ")\n______________________________________";
                                 AddGossipItemFor(player, GOSSIP_ICON_DOT, buf.str(), GOSSIP_SENDER_MAIN, parentOption);
 
