@@ -10,7 +10,7 @@
 #        Default:     10
 #
 
-LowLevelRBG.MinLevelRBG = 10
+LowLevelRBG.MinLevelRBG = 51
 
 #
 #    LowLevelRBG.MaxLevelRBG
@@ -18,4 +18,4 @@ LowLevelRBG.MinLevelRBG = 10
 #        Default:     79
 #
 
-LowLevelRBG.MaxLevelRBG = 79
+LowLevelRBG.MaxLevelRBG = 80

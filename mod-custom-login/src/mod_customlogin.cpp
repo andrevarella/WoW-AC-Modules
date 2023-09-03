@@ -472,26 +472,26 @@ public:
 
                 case TEAM_ALLIANCE:
 
-                    // Alliance Mount
-                    player->learnSpell(32240);	// Snowy Gryphon
-                    // player->learnSpell(54753);  // Mount White Polar Bear
-                    if (player->getRace() == RACE_HUMAN)
+                    if (player->getRace() == RACE_DWARF)
                     {
-                        player->learnSpell(23227); // Swift White Steed
-                        player->learnSpell(23228); // Swift White Steed
-                        player->learnSpell(23229); // Swift White Steed
-                    }
-                    else if (player->getRace() == RACE_DWARF)
-                    {
-                        player->learnSpell(23238); // Ram Riding
+                        /*player->learnSpell(23238); // Ram Riding
                         player->learnSpell(23239); // Ram Riding
-                        player->learnSpell(23240); // Ram Riding
+                        player->learnSpell(23240); // Ram Riding*/
 
                         // Dwarf Pala Mount
                         if (player->getClass() == CLASS_PALADIN)
                         {
                             player->learnSpell(85147); // Summon Dawnforge Ram
                         }
+                    }
+                    // Alliance Mount
+                    // player->learnSpell(32240);	// Snowy Gryphon
+                    // player->learnSpell(54753);  // Mount White Polar Bear
+                    /*if (player->getRace() == RACE_HUMAN)
+                    {
+                        player->learnSpell(23227); // Swift White Steed
+                        player->learnSpell(23228); // Swift White Steed
+                        player->learnSpell(23229); // Swift White Steed
                     }
                     else if (player->getRace() == RACE_NIGHTELF)
                     {
@@ -509,8 +509,7 @@ public:
                     {
                         player->learnSpell(35713); // Elekk Riding
                         player->learnSpell(35712); // Ram Riding
-                        player->learnSpell(35714); // Ram Riding
-
+                        player->learnSpell(35714); // Ram Riding*/
                         /*
                         // Draenei Pala Mount
                         if (player->getClass() == CLASS_PALADIN)
@@ -519,13 +518,25 @@ public:
                             player->learnSpell(85146); // Summon Great Exarch's Elekk
                         }
                         */
-                    }
+                    //}
                     break;
 
                 case TEAM_HORDE:
 
+                    if (player->getRace() == RACE_TAUREN)
+                    {
+                        /*player->learnSpell(23249); // Kodo
+                        player->learnSpell(23248); // Kodo
+                        player->learnSpell(23247); // Kodo*/
+
+                        // Tauren Pala Mount
+                        if (player->getClass() == CLASS_PALADIN)
+                        {
+                            player->learnSpell(85145); // Summon Great Sunwalker Kodo
+                        }
+                    }
                     // Horde Mount
-                    player->learnSpell(32243);	// tawny wind rider
+                    /*player->learnSpell(32243);	// tawny wind rider
                     if (player->getRace() == RACE_ORC)
                     {
                         player->learnSpell(23250); // Swift Wolves
@@ -538,19 +549,7 @@ public:
                         player->learnSpell(66846); // Skeletal Warh
                         player->learnSpell(23246); // Skeletal Warh
                     }
-                    else if (player->getRace() == RACE_TAUREN)
-                    {
-                        player->learnSpell(23249); // Kodo
-                        player->learnSpell(23248); // Kodo
-                        player->learnSpell(23247); // Kodo
-
-                        // Tauren Pala Mount
-                        if (player->getClass() == CLASS_PALADIN)
-                        {
-                            player->learnSpell(85145); // Summon Great Sunwalker Kodo
-                        }
-                    }
-                    else if (player->getRace() == RACE_TROLL)
+                    /*else if (player->getRace() == RACE_TROLL)
                     {
                         player->learnSpell(23241); // Raptor
                         player->learnSpell(23242); // Raptor
@@ -561,9 +560,8 @@ public:
                         player->learnSpell(35025); // Hawkstrider
                         player->learnSpell(33660); // Hawkstrider
                         player->learnSpell(35027); // Hawkstrider
-                    }
+                    }*/
                     break;
-
                 default:
                     break;
                 }

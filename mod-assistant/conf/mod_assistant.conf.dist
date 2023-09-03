@@ -14,10 +14,10 @@ Assistant.Gems = 0
 Assistant.Containers = 0
 
 # Obtain Enchant Scrolls from the assistant npc
-Assistant.EnchantScrolls = 1
+Assistant.EnchantScrolls = 0
 
 # Obtain Profession reagents from the assistant npc
-Assistant.ProfessionItems = 1
+Assistant.ProfessionItems = 0
 ###
 
 ### UTILTIIES ###

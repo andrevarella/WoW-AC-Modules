@@ -27,7 +27,7 @@ Mount = 0
 Trainers = 1
 
 #    Arena
-#        Description: Allows players to spawn class trainers
+#        Description: Allows players to spawn Arena Queue NPC
 #        Default:     1  - (Enabled)
 #                     0  - (Disabled)
 Arena = 1

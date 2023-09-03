@@ -39,7 +39,7 @@ void DSPlayerScript::ResurrectPlayer(Player* player)
 {
     player->ResurrectPlayer(respawnHpPct / 100.0f, false);
     player->SpawnCorpseBones();
-    player->RemoveArenaSpellCooldowns(true);
+    player->ResetPlayersRaidSpellCooldowns(true);
     player->RemoveAurasDueToSpell(66233); // Ardent Defender - pala
     player->RemoveAurasDueToSpell(61987); // Avenging Wrath Marker (server side forbearance) - pala
 
