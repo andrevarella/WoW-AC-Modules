@@ -263,11 +263,11 @@ void QueueListCache::ShowArenaRated(ChatHandler* handler)
 
     if (queueArenaRatedList.empty())
     {
-        handler->SendSysMessage("> All queues empty");
+        handler->SendSysMessage("> There's no Arena Team on the queue.");
     }
     else
     {
-        handler->SendSysMessage("# Queue status for rated arena:");
+        handler->SendSysMessage("# Arena Teams on the queue:");
 
         for (auto const& [teamName, arenaType, teamRating] : queueArenaRatedList)
         {
@@ -287,11 +287,11 @@ void QueueListCache::ShowArenaNonRated(ChatHandler* handler)
 
     if (queueArenaNonRatedList.empty())
     {
-        handler->SendSysMessage("> All queues empty");
+        handler->SendSysMessage("> All queues empty for Skirmish Arenas.");
     }
     else
     {
-        handler->SendSysMessage("# Queue status for non rated arena:");
+        handler->SendSysMessage("# Queue status for Skirmish Arenas:");
 
         for (auto const& [arenaType, minLevel, maxLevel, qTotal, MaxPlayers] : queueArenaNonRatedList)
         {
@@ -323,7 +323,7 @@ void QueueListCache::ShowBg(ChatHandler* handler)
 
     if (queueBgNormalList.empty() && queueBgPremadeList.empty() && queueCFBGList.empty())
     {
-        handler->SendSysMessage("> All queues empty");
+        handler->SendSysMessage("> All queues empty for battlegrounds.");
     }
 
     // If mod-cfbg enale, show only cfbg queue
