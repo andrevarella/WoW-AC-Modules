@@ -353,7 +353,7 @@ public:
                 if (sConfigMgr->GetBoolDefault("Pet Trainer", true))
                     AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Ability_hunter_beastcall.png:29|t Treinador de Pet (Hunter)", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 13);
 
-                if (sConfigMgr->GetBoolDefault("Arenateam", true))
+                if (sConfigMgr->GetBoolDefault("Create.Arena.Team", true))
                     AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, "|TInterface/Icons/Inv_scroll_11.png:29|t Criar Time de Arena", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
 
                 SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, item->GetGUID());

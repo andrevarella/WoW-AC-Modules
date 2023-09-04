@@ -24,3 +24,9 @@ DungeonRespawn.Enable = 1
 #
 
 DungeonRespawn.RespawnHealthPct = 50.0
+
+
+# Ativar ou desativar a remoção de auras e reinicialização de cooldowns em ressurreição
+# 0 - Desativado, 1 - Ativado
+
+DungeonRespawn.RemoveAurasAndCooldownsOnResurrect = 1

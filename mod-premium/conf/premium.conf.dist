@@ -58,7 +58,7 @@ Class Trainer = 1
 
 Pet Trainer = 1
 
-ArenaTeam = 1
+Create.Arena.Team = 1
 
 #################################################################################################################
 #    PlayerInteraction
