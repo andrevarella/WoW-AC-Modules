@@ -597,6 +597,16 @@ public:
         }
     }
 
+    void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll) override
+    {
+        if (!sT->GetUseCollectionSystem() || !item)
+            return;
+        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP) // Add SoulBound? 
+        {
+            AddToDatabase(player, item);
+        }
+    }
+
     void OnCreateItem(Player* player, Item* item, uint32 /*count*/) override
     {
         if (!sT->GetUseCollectionSystem())
