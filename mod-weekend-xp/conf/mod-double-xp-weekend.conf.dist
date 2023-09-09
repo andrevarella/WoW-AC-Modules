@@ -18,7 +18,31 @@ XPWeekend.Enabled = 1
 #	Allows the config file to set the amount of times xp is given
 # default = 2 (double)
 #
-XPWeekend.xpAmount = 2
+XPWeekend.xpAmount = 1
+
+
+Dynamic.XP.Rate.1-9 = 1
+Dynamic.XP.Rate.10-19 = 1
+Dynamic.XP.Rate.20-29 = 1
+Dynamic.XP.Rate.30-39 = 1
+Dynamic.XP.Rate.40-49 = 1
+Dynamic.XP.Rate.50-59 = 1
+Dynamic.XP.Rate.60-69 = 1
+Dynamic.XP.Rate.70-79 = 1
+
+
+# XPWeekend.BattlegroundRate de ganho de XP em BGs - aumenta ganho de Kill e Objetivos [Rate.Honor aumenta XP de objetivo, e Rate.XP.BattlegroundKill aumenta de kill]
+#
+XPWeekend.BattlegroundRate.1-9   = 2
+XPWeekend.BattlegroundRate.10-19 = 2
+XPWeekend.BattlegroundRate.20-29 = 1
+XPWeekend.BattlegroundRate.30-39 = 1
+XPWeekend.BattlegroundRate.40-49 = 1
+XPWeekend.BattlegroundRate.50-59 = 1
+XPWeekend.BattlegroundRate.60-69 = 1
+XPWeekend.BattlegroundRate.70-74 = 1
+XPWeekend.BattlegroundRate.75-79 = 1
+
 
 # XPWeekend.IndividualXPEnabled
 #     Allows players to set their own XP rates during the weekend through the weekendxp rates command.
@@ -26,19 +50,20 @@ XPWeekend.xpAmount = 2
 
 XPWeekend.IndividualXPEnabled = 0
 
+
 # XPWeekend.MaxAllowedRate
 #     Max allowed rates players may set while using the weekendxp rates command.
 #     Default: 2
 #
 
-XPWeekend.MaxAllowedRate = 2
+XPWeekend.MaxAllowedRate = 1
 
 # XPWeekend.AlwaysEnabled
 #     Forces the weekend xp bonus event to always be enabled regardless of the day. Use this for debugging.
 #     Default: 0 (Disabled)
 #
 
-XPWeekend.AlwaysEnabled = 0
+XPWeekend.AlwaysEnabled = 1
 
 # XPWeekend.QuestOnly
 #     Restricts the experience bonus to quest rewards only.

@@ -63,14 +63,7 @@ public:
     {
         if (sConfigMgr->GetOption<bool>("XPWeekend.Announce", false))
         {
-            if (IsEventActive())
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("É fim de semana! O rate de xp foi multiplicado por: %u", GetExperienceRate(player));
-            }
-            else
-            {
-                ChatHandler(player->GetSession()).PSendSysMessage("This server is running the |cff4CFF00Double XP Weekend |rmodule.");
-            }
+            ChatHandler(player->GetSession()).PSendSysMessage("This server is running the |cff4CFF00Double XP Weekend |rmodule.");
         }
     }
            
@@ -93,7 +86,49 @@ public:
         }
 
         amount *= GetExperienceRate(player);
+
+        if (player->InBattleground())
+        {
+            if (player->getLevel() <= 9)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.1-9", 1);
+            else if (player->getLevel() <= 19)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.10-19", 2);
+            else if (player->getLevel() <= 29)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.20-29", 3);
+            else if (player->getLevel() <= 39)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.30-39", 4);
+            else if (player->getLevel() <= 49)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.40-49", 5);
+            else if (player->getLevel() <= 59)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.50-59", 6);
+            else if (player->getLevel() <= 69)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.60-69", 7);
+            else if (player->getLevel() <= 79)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.70-74", 8);
+            else if (player->getLevel() <= 79)
+                amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.75-79", 8);
+        }
+        else if (sConfigMgr->GetOption<bool>("Dynamic.XP.Rate", true))
+        {
+            if (player->getLevel() <= 9)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.1-9", 1);
+            else if (player->getLevel() <= 19)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.10-19", 2);
+            else if (player->getLevel() <= 29)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.20-29", 3);
+            else if (player->getLevel() <= 39)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.30-39", 4);
+            else if (player->getLevel() <= 49)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.40-49", 5);
+            else if (player->getLevel() <= 59)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.50-59", 6);
+            else if (player->getLevel() <= 69)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.60-69", 7);
+            else if (player->getLevel() <= 79)
+                amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.70-79", 8);
+        }
     }
+
 
     int8 GetExperienceRate(Player * player) const
     {
