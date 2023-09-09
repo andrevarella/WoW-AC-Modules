@@ -599,9 +599,9 @@ public:
 
     void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll) override
     {
-        if (!sT->GetUseCollectionSystem() || !item)
+        if (!sT->GetUseCollectionSystem())
             return;
-        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP) // Add SoulBound? 
+        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP/* || item->IsSoulBound()*/)
         {
             AddToDatabase(player, item);
         }

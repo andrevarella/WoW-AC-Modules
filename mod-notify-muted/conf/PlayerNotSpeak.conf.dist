@@ -7,3 +7,29 @@
 #                     0  - (Disable)
 
 PlayerNotSpeak.Enable = 1
+
+
+
+
+##
+##
+
+###################################################################################################
+#	mod-faction-icons-channel
+#
+#    Channel.Icon.Faction.Enable
+#        Description: Enable the module to add the faction icon for the message sender in the channel.
+#        Default: 1
+#
+#    Channel.Icon.Faction.OnlyLFG
+#        Description: Add the icon only in the Looking For Group channel.
+#        Default: 1
+#
+#    Channel.Icon.Faction.GM
+#        Description: Add the icon only for GM (Game Master).
+#        Default: 0 (icons for everyone)
+#
+
+Channel.Icon.Faction.Enable = 1
+Channel.Icon.Faction.OnlyLFG = 1
+Channel.Icon.Faction.GM = 0
