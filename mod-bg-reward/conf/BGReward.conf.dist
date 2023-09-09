@@ -147,7 +147,7 @@ Arena.Reward.LoserTeam.Count = 0
 #
 Arena.Reward.Winner.ItemID.2v2 = 32544
 
-### LOSE 2v2 #######################################################################################
+### LOSE 2v2 ######################################################################################
 # Honor Points
 #    Arena.Reward.Loser.ItemID.2v2
 #       Description: Reward item on arena 2v2.
@@ -157,7 +157,7 @@ Arena.Reward.Winner.ItemID.2v2 = 32544
 Arena.Reward.Loser.ItemID.2v2 = 29434
 
 
-### WIN 3V3 #####################################################################################
+### WIN 3V3 #######################################################################################
 # Arena Case (3x3) (1 em win)
 #    Arena.Reward.Winner.ItemID.3v3
 #       Description: Reward item on arena 3v3.
@@ -197,14 +197,65 @@ Arena.Reward.Loser.ItemID.5v5 = 29434
 
 
 
-### SKIRMISH REWARD ######################################################################################
+### SKIRMISH REWARD ###############################################################################
 # 
 #    Arena.Reward.Skirmish.ItemID
 #       Description: Reward item on arena skirmish
 #
 #       Default: 32545 - Test Caixa de bg Loss
+
+Arena.Reward.Skirmish.Item70.79 = 32545 
+
+
+
+### SKIRMISH XP Reward ############################################################################
 #
-Arena.Reward.Skirmish.ItemID = 32545
+#
+#
+#    XP.Reward.Skirmish
+#       Description: Da XP para participantes de arena skirmish
+#
+#       Default:
+#       Win:  10-19 =
+#
+#       Loss: 10-19 = , 20-29 =, 30-39 =, 40-49 =, 50-59 =, 60-69 =, 70-79 =
+#
+#
+Arena.Reward.XP.10to14.Win  = 11000
+Arena.Reward.XP.10to14.Loss = 5500
+Arena.Reward.XP.15to19.Win  = 18000
+Arena.Reward.XP.15to19.Loss = 9000
+
+Arena.Reward.XP.20to24.Win  = 23000
+Arena.Reward.XP.20to24.Loss = 11500
+Arena.Reward.XP.25to29.Win  = 30000
+Arena.Reward.XP.25to29.Loss = 15000
+
+Arena.Reward.XP.30to34.Win  = 40000
+Arena.Reward.XP.30to34.Loss = 20000
+Arena.Reward.XP.35to39.Win  = 53000
+Arena.Reward.XP.35to39.Loss = 26500
+
+Arena.Reward.XP.40to44.Win  = 63000
+Arena.Reward.XP.40to44.Loss = 31500
+Arena.Reward.XP.45to49.Win  = 74000
+Arena.Reward.XP.45to49.Loss = 37000
+
+Arena.Reward.XP.50to54.Win  = 84000
+Arena.Reward.XP.50to54.Loss = 42000
+Arena.Reward.XP.55to59.Win  = 96000
+Arena.Reward.XP.55to59.Loss = 48000
+
+Arena.Reward.XP.60to64.Win  = 120000
+Arena.Reward.XP.60to64.Loss = 60000
+Arena.Reward.XP.65to69.Win  = 160000
+Arena.Reward.XP.65to69.Loss = 80000
+
+Arena.Reward.XP.70to74.Win  = 300000
+Arena.Reward.XP.70to74.Loss = 150000
+
+Arena.Reward.XP.75to79.Win  = 325000
+Arena.Reward.XP.75to79.Loss = 162500
 
 
 #

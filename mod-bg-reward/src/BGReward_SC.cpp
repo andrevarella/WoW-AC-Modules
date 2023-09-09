@@ -65,6 +65,7 @@ public:
 
         if (sConfigMgr->GetOption<bool>("Arena.Reward.Enable", true) && bg->isArena())
         {
+
             if (bgTeamId == winnerTeamId)
                 RewardCount = sConfigMgr->GetOption<int32>("Arena.Reward.WinnerTeam.Count", 2);
             else
@@ -85,66 +86,232 @@ public:
                     break;
                 }
             }
-            else // Skirmish Arenas (apenas do lvl 79 pra baixo)
+            else // Skirmish Arenas
             {
-                if (player->getLevel() <= 79)
+                if (player->getLevel() <= 79) // (apenas do lvl 79 pra baixo)
                 {
-                    // Verifique se o jogador tem a aura com o ID 12345
                     if (player->HasAura(83025))
                     {
                         return;
                     }
 
-                    if (bgTeamId == winnerTeamId) // Skirmish <= 79 Win
+                    int xpWinReward = 10000;
+                    int xpLossReward = 4500;
+
+                    if (10 <= player->getLevel() && player->getLevel() <= 14) // (<= é igual ou menor)
                     {
-                        if (rand() % 100 < 75) // 75% de chance de ganhar a caixa de arena skirmish
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.10to14.Win", 10000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.10to14.Loss", 4500);
+                    }
+                    if (15 <= player->getLevel() && player->getLevel() <= 19)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.15to19.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.15to19.Loss", 6000);
+                    }
+                    if (20 <= player->getLevel() && player->getLevel() <= 24)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.20to24.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.20to24.Loss", 6000);
+                    }
+                    if (25 <= player->getLevel() && player->getLevel() <= 29)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.25to29.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.25to29.Loss", 6000);
+                    }
+                    if (30 <= player->getLevel() && player->getLevel() <= 34)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.30to34.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.30to34.Loss", 6000);
+                    }
+                    if (35 <= player->getLevel() && player->getLevel() <= 39)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.35to39.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.35to39.Loss", 6000);
+                    }
+                    if (40 <= player->getLevel() && player->getLevel() <= 44)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.40to44.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.40to44.Loss", 6000);
+                    }
+                    if (45 <= player->getLevel() && player->getLevel() <= 49)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.45to49.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.45to49.Loss", 6000);
+                    }
+                    if (50 <= player->getLevel() && player->getLevel() <= 54)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.50to54.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.50to54.Loss", 6000);
+                    }
+                    if (55 <= player->getLevel() && player->getLevel() <= 59)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.55to59.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.55to59.Loss", 6000);
+                    }
+                    if (60 <= player->getLevel() && player->getLevel() <= 64)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.60to64.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.60to64.Loss", 6000);
+                    }
+                    if (65 <= player->getLevel() && player->getLevel() <= 69)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.65to69.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.65to69.Loss", 6000);
+                    }
+                    if (70 <= player->getLevel() && player->getLevel() <= 74)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.70to74.Win", 14000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.70to74.Loss", 6000);
+                    }
+                    else if (75 <= player->getLevel() && player->getLevel() <= 79)
+                    {
+                        xpWinReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.75to79.Win", 50000);
+                        xpLossReward = sConfigMgr->GetIntDefault("Arena.Reward.XP.75to79.Loss", 27500);
+                    }
+
+                    if (bgTeamId == winnerTeamId) // Skirmish Win <= Level 79
+                    {
+                        player->GiveXP(xpWinReward, nullptr);
+
+                        if (70 <= player->getLevel() && player->getLevel() <= 79) // Verifica se o nível está entre 70 e 79
                         {
-                            player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.ItemID", 32545), 1);
+                            if (rand() % 100 < 75) // 75% de chance de ganhar a caixa de arena skirmish
+                            {
+                                player->AddItem(sConfigMgr->GetIntDefault("Arena.Reward.Skirmish.Item70.79", 32545), 1);
+                            }
                         }
 
-                        float xpMultiplier = 1.0; // // Aplicar multiplicador de XP com base no nível do jogador
-                        if (player->getLevel() >= 74)
+                        int honorPoints;
+                        if (10 <= player->getLevel() && player->getLevel() <= 19)
                         {
-                            xpMultiplier = 1.2; // 60k acho
+                            honorPoints = rand() % 11 + 15; // honor reward de 15 ate 25 honor
                         }
-                        if (player->getLevel() >= 77) // 75k atualmente (+50%)
+                        if (20 <= player->getLevel() && player->getLevel() <= 29)
                         {
-                            xpMultiplier = 1.5;
+                            honorPoints = rand() % 9 + 35; // honor reward de 27 ate 35 honor
                         }
-                        int xpReward = (int)(50000 * xpMultiplier); // 50k XP para quem ganha
-                        player->GiveXP(xpReward, nullptr);
-
-                        int honorPoints = rand() % 36 + 115; // honor reward de 115 ate 150
+                        if (30 <= player->getLevel() && player->getLevel() <= 39)
+                        {
+                            honorPoints = rand() % 9 + 37; // honor reward de 37 ate 45 honor
+                        }
+                        if (40 <= player->getLevel() && player->getLevel() <= 49)
+                        {
+                            honorPoints = rand() % 9 + 47; // honor reward de 47 ate 55 honor
+                        }
+                        if (50 <= player->getLevel() && player->getLevel() <= 59)
+                        {
+                            honorPoints = rand() % 11 + 55; // honor reward de 55 ate 65 honor
+                        }
+                        if (60 <= player->getLevel() && player->getLevel() <= 69)
+                        {
+                            honorPoints = rand() % 16 + 70; // honor reward de 70 ate 85 honor
+                        }
+                        else if (70 <= player->getLevel() && player->getLevel() <= 79)
+                        {
+                            honorPoints = rand() % 11 + 95; // honor reward de 95 ate 105 honor
+                        }
                         player->ModifyHonorPoints(honorPoints);
                         ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
-                        int goldReward = rand() % 11 + 5; // 5 a 15 gold
+
+                        // Gold:
+                        int goldReward;
+                        if (10 <= player->getLevel() && player->getLevel() <= 19)
+                        {
+                            goldReward = rand() % 1 + 1; // 1 a 2 gold
+                        }
+                        if (20 <= player->getLevel() && player->getLevel() <= 29)
+                        {
+                            goldReward = rand() % 2 + 3; // 3 a 4 gold
+                        }
+                        if (30 <= player->getLevel() && player->getLevel() <= 39)
+                        {
+                            goldReward = rand() % 2 + 4; // 4 a 5 gold
+                        }
+                        if (40 <= player->getLevel() && player->getLevel() <= 49)
+                        {
+                            goldReward = rand() % 2 + 5; // 5 a 6 gold
+                        }
+                        if (50 <= player->getLevel() && player->getLevel() <= 59)
+                        {
+                            goldReward = rand() % 3 + 6; // 6 a 8 gold
+                        }
+                        if (60 <= player->getLevel() && player->getLevel() <= 69)
+                        {
+                            goldReward = rand() % 5 + 8; // 8 a 12 gold
+                        }
+                        else if (70 <= player->getLevel() && player->getLevel() <= 79)
+                        {
+                            goldReward = rand() % 5 + 14; // 14 a 18 gold
+                        }
                         player->ModifyMoney(goldReward);
                         ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
                     }
-                    else // Skirmish Loss (Level <= 79 Loss)
+                    else // Skirmish Loss <= Level 79
                     {
-                        if (player->HasAura(83025))
-                        {
-                            return;
-                        }
+                        player->GiveXP(xpLossReward, nullptr);
 
-                        // Aplicar multiplicador de XP com base no nível do jogador
-                        float xpMultiplier = 1.0;
-                        if (player->getLevel() >= 74)
+                        int honorPoints;
+                        if (10 <= player->getLevel() && player->getLevel() <= 19)
                         {
-                            xpMultiplier = 1.2;
+                            honorPoints = rand() % 11 + 7; // honor reward de 7 ate 14 honor
                         }
-                        if (player->getLevel() >= 77) // ? XP se for 77+
+                        if (20 <= player->getLevel() && player->getLevel() <= 29)
                         {
-                            xpMultiplier = 1.4;
+                            honorPoints = rand() % 6 + 15; // honor reward de 15 ate 20 honor
                         }
-                        int xpReward = (int)(30000 * xpMultiplier); // 30k XP para quem perde
-                        player->GiveXP(xpReward, nullptr);
-
-                        int honorPoints = rand() % 11 + 70; // honor reward de 70 ate 80
+                        if (30 <= player->getLevel() && player->getLevel() <= 39)
+                        {
+                            honorPoints = rand() % 6 + 20; // honor reward de 20 ate 25 honor
+                        }
+                        if (40 <= player->getLevel() && player->getLevel() <= 49)
+                        {
+                            honorPoints = rand() % 6 + 25; // honor reward de 25 ate 30 honor
+                        }
+                        if (50 <= player->getLevel() && player->getLevel() <= 59)
+                        {
+                            honorPoints = rand() % 6 + 30; // honor reward de 30 ate 35 honor
+                        }
+                        if (60 <= player->getLevel() && player->getLevel() <= 69)
+                        {
+                            honorPoints = rand() % 16 + 40; // honor reward de 40 ate 55 honor
+                        }
+                        else if (70 <= player->getLevel() && player->getLevel() <= 79)
+                        {
+                            honorPoints = rand() % 11 + 70; // honor reward de 60 ate 70 honor
+                        }
                         player->ModifyHonorPoints(honorPoints);
                         ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d honor points.", honorPoints);
-                        int goldReward = rand() % 6 + 4; // 4 a 9 gold
+
+                        // Gold:
+                        int goldReward;
+                        if (10 <= player->getLevel() && player->getLevel() <= 19)
+                        {
+                            goldReward = rand() % 1 + 1; // 1 a 2 gold
+                        }
+                        if (20 <= player->getLevel() && player->getLevel() <= 29)
+                        {
+                            goldReward = rand() % 2 + 3; // 3 a 4 gold
+                        }
+                        if (30 <= player->getLevel() && player->getLevel() <= 39)
+                        {
+                            goldReward = rand() % 2 + 4; // 4 a 5 gold
+                        }
+                        if (40 <= player->getLevel() && player->getLevel() <= 49)
+                        {
+                            goldReward = rand() % 2 + 5; // 5 a 6 gold
+                        }
+                        if (50 <= player->getLevel() && player->getLevel() <= 59)
+                        {
+                            goldReward = rand() % 3 + 6; // 6 a 8 gold
+                        }
+                        if (60 <= player->getLevel() && player->getLevel() <= 69)
+                        {
+                            goldReward = rand() % 5 + 8; // 8 a 12 gold
+                        }
+                        else if (70 <= player->getLevel() && player->getLevel() <= 79)
+                        {
+                            goldReward = rand() % 6 + 4; // 4 a 9
+                        }
                         player->ModifyMoney(goldReward);
                         ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
                     }
@@ -159,7 +326,7 @@ public:
     {
         if (bgTeamId == winnerTeamId)
         {   // rated win
-            if (player->HasAura(83025)) // Arena Preparation - nao da reward se a arena acabar e o player tiver com Arena Prep
+            if (player->HasAura(83025)) // Arena Preparation
             {
                 return;
             }
