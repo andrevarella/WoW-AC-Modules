@@ -1,0 +1,97 @@
+[worldserver]
+
+################################################################################################################
+#
+#    PremiumAccount
+#        Description: Enable PremiumAccount for players
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+PremiumAccount = 1
+
+#    Morph
+#        Description: Enable Morph & demorph option for players
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Morph = 0
+
+#    Mount
+#        Description: Allow Players to use mount
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Mount = 0
+
+#    Class Trainers
+#        Description: Allows players to spawn class trainers
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Trainers = 1
+
+#    Arena
+#        Description: Allows players to spawn Arena Queue NPC
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Arena = 1
+
+#    Transmog
+#        Description: Allows players to spawn transmog
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Transmogrifier = 1
+
+#    AH
+#        Description: Allows players to spawn AH
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Auction House = 1
+
+#    Extras
+#        Description: Allows players to use extras menu
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Extras = 1
+
+Food & Water = 1
+
+Reagent Vendor = 1
+
+Class Trainer = 1
+
+Pet Trainer = 1
+
+Create.Arena.Team = 1
+
+#################################################################################################################
+#    PlayerInteraction
+#        Description: This enables the submenu for the below
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+PlayerInteraction = 1
+#
+#    Bank
+#        Description: Allow Players to use mobile bank
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Bank = 1
+#
+#    Auction
+#        Description: Allow Players to use mobile Auction
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Auction = 1
+#    Vendor
+#        Description: Allow Players to use vendor
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+Vendor = 1
+#
+#    Mail Box
+#        Description: Allow Players Access ingame Mail
+#        Default:     1  - (Enabled)
+#                     0  - (Disabled)
+MailBox = 1
+
+##################################################################################################################
+#   Premium.NpcDuration
+#       Description: Time (in seconds) before despawn of summoned NPC
+#       Default:    20 - (Seconds)
+Premium.NpcDuration = 15
