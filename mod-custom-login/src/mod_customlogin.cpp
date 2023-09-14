@@ -209,8 +209,8 @@ public:
                     break;
 
                 case CLASS_SHAMAN:
-                    // trinket = 46978; // totem of earthen ring
-                    trinket = 10050;
+                    trinket = 46978; // totem of earthen ring
+                    //trinket = 10050;
                     weapon = 10050;
                     weapon2 = 10050;
                     weapon3 = 34760;
