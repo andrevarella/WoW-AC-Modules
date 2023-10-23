@@ -54,6 +54,14 @@ void DSPlayerScript::ResurrectPlayer(Player* player)
 
 bool DSPlayerScript::OnBeforeTeleport(Player* player, uint32 mapid, float /*x*/, float /*y*/, float /*z*/, float /*orientation*/, uint32 /*options*/, Unit* /*target*/)
 {
+    // Só se tiver um dos item VIP
+    /*
+    if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+    {
+        return;
+    }*/
+
+
     if (!drEnabled)
     {
         return true;

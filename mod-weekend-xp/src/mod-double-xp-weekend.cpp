@@ -108,7 +108,7 @@ public:
             else if (player->getLevel() <= 79)
                 amount *= sConfigMgr->GetOption<uint32>("XPWeekend.BattlegroundRate.75-79", 8);
         }
-        else if (sConfigMgr->GetOption<bool>("Dynamic.XP.Rate", true))
+        else
         {
             if (player->getLevel() <= 9)
                 amount *= sConfigMgr->GetOption<uint32>("Dynamic.XP.Rate.1-9", 1);

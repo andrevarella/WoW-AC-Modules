@@ -38,25 +38,52 @@ public:
             else
                 RewardCount = sConfigMgr->GetOption<int32>("Battleground.Reward.LoserTeam.Count", 1);
 
+
+
             switch (player->GetZoneId())
             {
                 case 3277:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.WS", 20558), RewardCount);
+                    // credit quest PVP
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 case 3358:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.AB", 20559), RewardCount);
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 case 3820:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.EY", 29024), RewardCount);
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 case 4710:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.IC", 47395), RewardCount);
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 case 4384:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.SA", 42425), RewardCount);
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 case 2597:
                     player->AddItem(sConfigMgr->GetOption<int32>("Battleground.Reward.ItemID.AV", 20560), RewardCount);
+                    if ((player->GetQuestStatus(30014) == QUEST_STATUS_INCOMPLETE)) // Win 5 Battlegrounds Quest
+                        player->KilledMonsterCredit(94176);
+                    if ((player->GetQuestStatus(30025) == QUEST_STATUS_INCOMPLETE)) // Win 1 Battleground Quest
+                        player->KilledMonsterCredit(94177);
                     break;
                 default:
                     break;
@@ -77,12 +104,19 @@ public:
                 {
                 case ARENA_TEAM_2v2:
                     ArenaRewardItem(player, bgTeamId, winnerTeamId, "2v2", RewardCount);
+                    // credit quest PVP
+                    if ((player->GetQuestStatus(30010) == QUEST_STATUS_INCOMPLETE)) // Win 10 Games in 2v2 Quest
+                        player->KilledMonsterCredit(94171);
                     break;
                 case ARENA_TEAM_3v3:
                     ArenaRewardItem(player, bgTeamId, winnerTeamId, "3v3", RewardCount);
+                    if ((player->GetQuestStatus(30011) == QUEST_STATUS_INCOMPLETE)) // Win 10 Games in 3v3 Quest
+                        player->KilledMonsterCredit(94172);
                     break;
                 case ARENA_TEAM_5v5:
                     ArenaRewardItem(player, bgTeamId, winnerTeamId, "5v5", RewardCount);
+                    if ((player->GetQuestStatus(30012) == QUEST_STATUS_INCOMPLETE)) // Win 10 Games in 5v5 Quest
+                        player->KilledMonsterCredit(94173);
                     break;
                 }
             }
@@ -338,6 +372,7 @@ public:
             int goldReward = rand() % 11 + 10; // 10 a 20 gold
             player->ModifyMoney(goldReward);
             ChatHandler(player->GetSession()).PSendSysMessage("You have been awarded %d gold.", goldReward);
+
         }
         else
         {   // rated loss

@@ -1,0 +1,28 @@
+#
+# Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU AGPL v3 license: https://github.com/azerothcore/azerothcore-wotlk/blob/master/LICENSE-AGPL3
+#
+
+[worldserver]
+
+########################################
+# DynamicSockets Configuration
+########################################
+#
+#    DynamicSockets.Enable
+#        Description: Enable/disable dynamic sockets (some dynamic sockets will still apply stats).
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+DynamicSockets.Enable = 0
+
+DynamicSockets.Cost.CurrencyEntryId = 37711
+DynamicSockets.Cost.BaseCost = 5
+DynamicSockets.Cost.Multiplier = 1
+DynamicSockets.Cost.Multiplier.Slot.1 = 1
+DynamicSockets.Cost.Multiplier.Slot.2 = 2
+DynamicSockets.Cost.Multiplier.Slot.3 = 3
+DynamicSockets.Cost.Multiplier.Gem.Quality.Common = 1
+DynamicSockets.Cost.Multiplier.Gem.Quality.Uncommon = 1.5
+DynamicSockets.Cost.Multiplier.Gem.Quality.Rare = 2
+DynamicSockets.Cost.Multiplier.Gem.Quality.Epic = 2.5

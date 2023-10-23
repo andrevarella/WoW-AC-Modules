@@ -100,6 +100,13 @@ void NpcBeastmaster::ShowMainMenu(Player* player, Creature* creature)
         }
     }
 
+    // Só se tiver um dos item VIP
+    if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+    {
+        creature->Whisper("Você precisa do Livro Vip para usar esse NPC.", LANG_UNIVERSAL, player);
+        return;
+    }
+
     // Check level requirement
     if (player->getLevel() < BeastMasterMinLevel && BeastMasterMinLevel != 0)
     {

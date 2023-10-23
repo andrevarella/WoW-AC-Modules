@@ -58,7 +58,7 @@
 
 Transmogrification.Enable = 1
 Transmogrification.UseCollectionSystem = 1
-Transmogrification.AllowHiddenTransmog = 1
+Transmogrification.AllowHiddenTransmog = 0
 Transmogrification.TrackUnusableItems = 1
 Transmogrification.RetroActiveAppearances = 1
 Transmogrification.ResetRetroActiveAppearancesFlag = 0
@@ -200,6 +200,7 @@ Transmogrification.AllowLegendary = 1
 Transmogrification.AllowArtifact = 1
 Transmogrification.AllowHeirloom = 1
 Transmogrification.AllowTradeable = 0
+
 
 Transmogrification.AllowMixedArmorTypes = 1
 Transmogrification.AllowMixedWeaponTypes = 1

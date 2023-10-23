@@ -689,6 +689,7 @@ ElunaRegister<Player> PlayerMethods[] =
     { "ModifyMoney", &LuaPlayer::ModifyMoney },
     { "LearnSpell", &LuaPlayer::LearnSpell },
     { "LearnTalent", &LuaPlayer::LearnTalent },
+    { "SetGlyph", &LuaPlayer::SetGlyph },
 #if !defined(CLASSIC)
     { "RemoveArenaSpellCooldowns", &LuaPlayer::RemoveArenaSpellCooldowns },
 #endif
@@ -728,7 +729,7 @@ ElunaRegister<Player> PlayerMethods[] =
     { "RemoveSpell", &LuaPlayer::RemoveSpell },
     { "ResetTalents", &LuaPlayer::ResetTalents },
     { "ResetTalentsCost", &LuaPlayer::ResetTalentsCost },
-    // {"AddTalent", &LuaPlayer::AddTalent},                                                // :AddTalent(spellid, spec, learning) - UNDOCUMENTED - Adds a talent spell for the player to given spec
+    //{ "addTalent", &LuaPlayer::addTalent},    // :AddTalent(spellid, spec, learning) - UNDOCUMENTED - Adds a talent spell for the player to given spec
     { "RemoveFromGroup", &LuaPlayer::RemoveFromGroup },
     { "KillPlayer", &LuaPlayer::KillPlayer },
     { "DurabilityLossAll", &LuaPlayer::DurabilityLossAll },

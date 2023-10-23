@@ -40,7 +40,7 @@ public:
         bool CanBeSeen(Player const* player) override
         {
             Player* target = ObjectAccessor::FindConnectedPlayer(player->GetGUID());
-            return sTransmogrification->IsEnabled() && !target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value;
+            return sTransmogrification->IsEnabled() && (target && !target->GetPlayerSetting("mod-transmog", SETTING_HIDE_TRANSMOG).value);
         }
     };
 
@@ -596,16 +596,26 @@ public:
             AddToDatabase(player, item);
         }
     }
-
-    void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll) override
+    /*
+    void OnGroupRollRewardItem(Player* player, Item* item, uint32 count, RollVote voteType, Roll* roll) override // group roll
     {
         if (!sT->GetUseCollectionSystem())
             return;
-        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP/* || item->IsSoulBound()*/)
+        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP || item->IsSoulBound())
         {
             AddToDatabase(player, item);
         }
     }
+
+    void OnStoreNewItem(Player* player, Item* item, uint32 count) override  // master loot Items - problema com items comprados de vendor com ITEM_FIELD_FLAG_REFUNDABLE, coleta mesmo assim
+    {
+        if (!sT->GetUseCollectionSystem())
+            return;
+        if (item->GetTemplate()->Bonding == ItemBondingType::BIND_WHEN_PICKED_UP || item->IsSoulBound())
+        {
+            AddToDatabase(player, item);
+        }
+    }*/
 
     void OnCreateItem(Player* player, Item* item, uint32 /*count*/) override
     {
@@ -735,7 +745,8 @@ public:
         {
             LOG_INFO("module", "Loading transmog appearance collection cache....");
             uint32 collectedAppearanceCount = 0;
-            QueryResult result = CharacterDatabase.Query("SELECT account_id, item_template_id FROM custom_unlocked_appearances");
+            //QueryResult result = CharacterDatabase.Query("SELECT account_id, item_template_id FROM custom_unlocked_appearances");
+            QueryResult result = CharacterDatabase.Query("SELECT custom_unlocked_appearances.account_id, custom_unlocked_appearances.item_template_id, acore_world.item_template.name, acore_world.item_template.Quality FROM custom_unlocked_appearances INNER JOIN acore_world.item_template ON custom_unlocked_appearances.item_template_id=acore_world.item_template.entry ORDER BY acore_world.item_template.Quality DESC, acore_world.item_template.name ASC;");
             if (result)
             {
                 do
