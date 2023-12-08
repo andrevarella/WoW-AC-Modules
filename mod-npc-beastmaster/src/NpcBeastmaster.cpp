@@ -95,15 +95,16 @@ void NpcBeastmaster::ShowMainMenu(Player* player, Creature* creature)
     {
         if (player->getClass() != CLASS_HUNTER)
         {
-            creature->Whisper("I am sorry, but pets are for hunters only.", LANG_UNIVERSAL, player);
+            creature->Whisper("|cFF228B22I am sorry, but pets are for hunters only.|r", LANG_UNIVERSAL, player);
             return;
         }
     }
 
     // Só se tiver um dos item VIP
-    if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+    if (!player->HasItemCount(61000, 1) && !player->HasItemCount(61001, 1))
     {
-        creature->Whisper("Você precisa do Livro Vip para usar esse NPC.", LANG_UNIVERSAL, player);
+        creature->Whisper("|cFF228B22Você precisa do Livro Vip para usar esse NPC.|r", LANG_UNIVERSAL, player);
+        CloseGossipMenuFor(player);
         return;
     }
 

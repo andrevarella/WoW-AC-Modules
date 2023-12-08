@@ -10,10 +10,11 @@ public:
     bool OnGossipHello(Player *player, Creature *creature) override
     {
         // Só se tiver um dos item VIP
-        if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+        if (!player->HasItemCount(61000, 1) && !player->HasItemCount(61001, 1))
         {
-            creature->Whisper("Você precisa do Livro Vip para usar esse NPC.", LANG_UNIVERSAL, player);
+            creature->Whisper("|cFF228B22Você precisa do Livro Vip para usar esse NPC.|r", LANG_UNIVERSAL, player);
             return false;
+            CloseGossipMenuFor(player);
         }
 
 		AddGossipItemFor(player, GOSSIP_ICON_TRAINER, " Jewelcrafting", GOSSIP_SENDER_MAIN, SKILL_JEWELCRAFTING);

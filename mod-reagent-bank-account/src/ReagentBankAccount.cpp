@@ -208,12 +208,12 @@ public:
     bool OnGossipHello(Player* player, Creature* creature) override
     {
         // Só se tiver um dos item VIP
-        if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+        if (!player->HasItemCount(61000, 1) && !player->HasItemCount(61001, 1))
         {
-            creature->Whisper("Você precisa do Livro Vip para usar esse NPC.", LANG_UNIVERSAL, player);
+            creature->Whisper("|cFF228B22Você precisa do Livro Vip para usar esse NPC.|r", LANG_UNIVERSAL, player);
+            CloseGossipMenuFor(player);
             return false;
         }
-
         AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, "Deposit All Reagents", DEPOSIT_ALL_REAGENTS, 0);
         AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, GetItemIcon(2589, 30, 30, -18, 0) + "Cloth", ITEM_SUBCLASS_CLOTH, 0);
         AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, GetItemIcon(12208, 30, 30, -18, 0) + "Meat", ITEM_SUBCLASS_MEAT, 0);

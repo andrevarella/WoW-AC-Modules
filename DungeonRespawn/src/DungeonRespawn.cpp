@@ -56,7 +56,7 @@ bool DSPlayerScript::OnBeforeTeleport(Player* player, uint32 mapid, float /*x*/,
 {
     // Só se tiver um dos item VIP
     /*
-    if (!player->HasItemCount(83550, 1) && !player->HasItemCount(83555, 1))
+    if (!player->HasItemCount(61000, 1) && !player->HasItemCount(61001, 1))
     {
         return;
     }*/

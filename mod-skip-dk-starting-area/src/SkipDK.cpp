@@ -168,6 +168,11 @@ public:
                 Azerothcore_skip_deathknight_HandleSkip(player);
             }
         }
+        if (sConfigMgr->GetOption<bool>("DeleteGold.Deathknight.Optional.Enable", true))
+        {
+            int DKM = sConfigMgr->GetOption<int32>("StartHeroicPlayerMoney", 2000);
+            player->SetMoney(DKM);
+        }
     }
 };
 
@@ -223,6 +228,11 @@ public:
                 case YESSKIPDK:
                     Azerothcore_skip_deathknight_HandleSkip(player);
                     CloseGossipMenuFor(player);
+                    if (sConfigMgr->GetOption<bool>("DeleteGold.Deathknight.Optional.Enable", true))
+                    {
+                        int DKM = sConfigMgr->GetOption<int32>("StartHeroicPlayerMoney", 2000);
+                        player->SetMoney(DKM);
+                    }
                     break;
             }
             return true;
