@@ -117,7 +117,8 @@ public:
     void OnLevelChanged(Player* player, uint8 oldLevel) override
     {
         // If enabled...
-        if (sConfigMgr->GetOption<bool>("Congrats.Enable", true)) {
+        if (sConfigMgr->GetOption<bool>("Congrats.Enable", true))
+        {
 
             std::string level;
             uint32 money, item1, item2, spell;

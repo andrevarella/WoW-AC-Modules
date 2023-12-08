@@ -701,6 +701,22 @@ namespace LuaPlayer
     }
 
     /**
+    * Returns `true` if the [Player] is currently in a [Arena] queue, `false` otherwise.
+     *
+    * @return bool inArenaQueue
+    */
+    int InArenaQueue(lua_State* L, Player* player)
+    {
+#if defined TRINITY || AZEROTHCORE
+        Eluna::Push(L, player->InArenaQueue());
+#else
+        Eluna::Push(L, player->InArenaQueue());
+
+#endif
+        return 1;
+    }
+
+    /**
      * Returns `true` if the [Player] is currently in a [BattleGround] queue, `false` otherwise.
      *
      * @return bool inBattlegroundQueue
@@ -3660,7 +3676,7 @@ namespace LuaPlayer
 #ifdef TRINITY
         player->GetSpellHistory()->ResetAllCooldowns();
 #else
-        player->RemoveAllSpellCooldown();
+        player->ResetPlayerCDonDeath();
 #endif
         return 0;
     }
