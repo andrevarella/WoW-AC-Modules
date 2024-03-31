@@ -586,6 +586,11 @@ public:
         sEluna->OnEquip(player, it, bag, slot);
     }
 
+    void OnUnEquip(Player* player, Item* it, uint8 slot, bool /*update*/) override
+    {
+        sEluna->OnUnEquip(player, it, slot);
+    }
+
     void OnPlayerEnterCombat(Player* player, Unit* enemy) override
     {
         sEluna->OnPlayerEnterCombat(player, enemy);

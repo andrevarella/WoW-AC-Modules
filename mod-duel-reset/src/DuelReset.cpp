@@ -64,11 +64,15 @@ void DuelReset::ResetSpellCooldowns(Player* player, bool onStartDuel)
 
     if (Pet* pet = player->GetPet())
     {
-        for (CreatureSpellCooldowns::const_iterator itr2 = pet->m_CreatureSpellCooldowns.begin(); itr2 != pet->m_CreatureSpellCooldowns.end(); ++itr2)
-            player->SendClearCooldown(itr2->first, pet);
+        // vai que pode causar crash
+        if (pet->IsInWorld())
+        {
+            for (CreatureSpellCooldowns::const_iterator itr2 = pet->m_CreatureSpellCooldowns.begin(); itr2 != pet->m_CreatureSpellCooldowns.end(); ++itr2)
+                player->SendClearCooldown(itr2->first, pet);
 
-        // actually clear cooldowns
-        pet->m_CreatureSpellCooldowns.clear();
+            // actually clear cooldowns
+            pet->m_CreatureSpellCooldowns.clear();
+        }
     }
 }
 
@@ -149,10 +153,13 @@ void DuelReset::RestoreHealthAfterDuel(Player* player) {
         66233, // Ardent Defender
         25771, // Forbearance - pala
         61987, // Avenging Wrath Marker (server side forbearance) - pala
-        79501, // Forbearance Custom (visual only) - pala
         6788,  // Weakened Soul - Priest
-        79500, // Cheated Death (Custom visual only) - Rogue
-        41425, // Hipothermia - Mage -      // 79503 (Reincarnation - Shaman)
+        41425, // Hipothermia - Mage -
+        79500, // Cheated Death (Custom)
+        79503, // Reincarnation (Custom)
+        79501, // Forbearance (Custom)
+        79504, // Nature's Guardian (Rshaman - Custom)
+        // 57723, // Sated (Bloodlust) / 57724, // Exhaustion (heroism)
 
         // Trinkets:
         71491, 71559, 83098, // Aim of the Iron Dwarves

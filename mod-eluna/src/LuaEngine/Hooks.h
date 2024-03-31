@@ -219,6 +219,7 @@ namespace Hooks
         PLAYER_EVENT_ON_CAN_GROUP_INVITE        =     55,       // (event, player, memberName) - Can return false to prevent inviting
         PLAYER_EVENT_ON_GROUP_ROLL_REWARD_ITEM  =     56,       // (event, player, item, count, voteType, roll)
         PLAYER_EVENT_ON_BG_DESERTION            =     57,       // (event, player, type)
+        PLAYER_EVENT_ON_UNEQUIP                 =     58,       // (event, player, item, slot) // Custom! nao existia evento 58
 
         PLAYER_EVENT_COUNT
     };
