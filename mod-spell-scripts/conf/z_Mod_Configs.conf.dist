@@ -1,0 +1,798 @@
+[worldserver]
+
+###########################
+#  EncounterResetCDs
+###########################
+
+
+###############################################################################
+#
+#   Enable the module? (1: true | 0: false)
+#
+#
+EncounterResetCDs.Enable = 1
+
+
+
+
+###############################################################################
+#
+# Ativar ou desativar Script para resetar CDs e remover alguns debuffs em raids ao matar bosses
+# 0 - Desativado, 1 - Ativado
+
+ResetCDsAoMatarBoss = 1
+
+###############################################################################
+# 
+#
+Arena.FakeWho = 1
+
+
+# Solo 3v3_multiplier de arena points
+
+
+
+###################################           ###############################################################           #########################################################################################################################
+###################################           ###############################################################           #########################################################################################################################
+###################################           ###############################################################           #########################################################################################################################
+###################################           ###############################################################           #########################################################################################################################
+###################################           ###############################################################           #########################################################################################################################
+##
+## Rates:
+
+#
+#    Rate.Skill.Discovery
+#        Description: Multiplier for skill discovery.
+#        Default:     1 ?
+
+Rate.Skill.Discovery = 1
+
+#
+#    Rate.Drop.Item.Poor
+#    Rate.Drop.Item.Normal
+#    Rate.Drop.Item.Uncommon
+#    Rate.Drop.Item.Rare
+#    Rate.Drop.Item.Epic
+#    Rate.Drop.Item.Legendary
+#    Rate.Drop.Item.Artifact
+#    Rate.Drop.Item.Referenced
+#    Rate.Drop.Money
+#        Description: Drop rates for money and items based on quality.
+#        Default:     1 - (Rate.Drop.Item.Poor)
+#                     1 - (Rate.Drop.Item.Normal)
+#                     1 - (Rate.Drop.Item.Uncommon)
+#                     1 - (Rate.Drop.Item.Rare)
+#                     1 - (Rate.Drop.Item.Epic)
+#                     1 - (Rate.Drop.Item.Legendary)
+#                     1 - (Rate.Drop.Item.Artifact)
+#                     1 - (Rate.Drop.Item.Referenced)
+#                     1 - (Rate.Drop.Money)
+
+Rate.Drop.Item.Poor             = 1
+Rate.Drop.Item.Normal           = 1
+Rate.Drop.Item.Uncommon         = 1.3
+Rate.Drop.Item.Rare             = 1.5
+Rate.Drop.Item.Epic             = 1.3
+Rate.Drop.Item.Legendary        = 1.2
+Rate.Drop.Item.Artifact         = 1
+Rate.Drop.Item.Referenced       = 1
+Rate.Drop.Money                 = 1.5
+
+#    Rate.Drop.Item.ReferencedAmount
+#        Description: Multiplier for referenced loot amount. Makes many raid bosses (and others) drop additional loot.
+#        Default:     1 - ? test later
+
+Rate.Drop.Item.ReferencedAmount = 1
+
+#
+#    Rate.Drop.Item.GroupAmount
+#        Description: Multiplier for grouped items. Makes many dungeon bosses (and others) drop additional loot.
+#        Default:     1
+
+Rate.Drop.Item.GroupAmount = 1
+
+#    Rate.RewardBonusMoney
+#        Description: Allows to further tweak the amount of extra money rewarded by quests when the player
+#                     is at MaxPlayerLevel (this amount is specified in quest_template.RewardBonusMoney).
+#                     NOTE: the final amount will also affected by Rate.Drop.Money
+#        Default:     1
+
+Rate.RewardBonusMoney = 1
+
+#
+#    Rate.Pet.LevelXP
+#        Description: Modifies the amount of experience required to level up a pet.
+#       The lower the rate the less experience is required.
+#        Default:     0.05 - 0.025 é metade de 0.05
+#
+
+Rate.Pet.LevelXP = 0.025
+
+#
+#    Rate.XP.Kill
+#    Rate.XP.Quest
+#    Rate.XP.Explore
+#    Rate.XP.Pet
+#        Description: Experience rates (outside battleground)
+#        Default:     1 - (Rate.XP.Kill)
+#                     1 - (Rate.XP.Quest)
+#                     1 - (Rate.XP.Quest.DF) - Dungeon Finder/LFG quests only.
+#                     1 - (Rate.XP.Explore)
+#                     1 - (Rate.XP.Pet)
+
+Rate.XP.Kill      = 2
+Rate.XP.Quest     = 5
+Rate.XP.Quest.DF  = 5
+Rate.XP.Explore   = 3
+Rate.XP.Pet       = 4
+
+#
+#    Rate.XP.BattlegroundKill...
+#        Description: Experience rate for honorable kills in battlegrounds. Not affected by Rate.XP.Kill. Defined for each battleground.
+#                     Only works if Battleground.GiveXPForKills = 1
+#        Default:     1
+
+Rate.XP.BattlegroundKillAV   = 8
+Rate.XP.BattlegroundKillWSG  = 8
+Rate.XP.BattlegroundKillAB   = 8
+Rate.XP.BattlegroundKillEOTS = 8
+Rate.XP.BattlegroundKillSOTA = 8
+Rate.XP.BattlegroundKillIC   = 8
+
+#
+#    Battleground.GiveXPForKills
+#        Description: Give experience for honorable kills in battlegrounds.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.GiveXPForKills = 1
+
+#
+#    Rate.Honor
+#        Description: Honor gain rate.
+#        Default:     1
+
+Rate.Honor = 4
+
+#
+#    Rate.Reputation.Gain
+#        Description: Reputation gain rate.
+#        Default:     1
+
+Rate.Reputation.Gain = 1.5
+
+#
+#    Rate.Reputation.LowLevel.Kill
+#        Description: Reputation gain from killing low level (grey) creatures.
+#        Default:     1
+
+Rate.Reputation.LowLevel.Kill = 1.25
+
+#
+#    Rate.Reputation.LowLevel.Quest
+#        Description: Reputation gain rate.
+#        Default:     1
+
+Rate.Reputation.LowLevel.Quest = 1.25
+
+
+
+#
+#    SkillGain.Crafting
+#    SkillGain.Defense
+#    SkillGain.Gathering
+#    SkillGain.Weapon
+#        Description: Crafting/defense/gathering/weapon skills gain rate.
+#        Default:     1 - (SkillGain.Crafting)
+#                     1 - (SkillGain.Defense)
+#                     1 - (SkillGain.Gathering)
+#                     1 - (SkillGain.Weapon)
+
+SkillGain.Crafting  = 1
+SkillGain.Defense   = 100
+SkillGain.Gathering = 1
+SkillGain.Weapon    = 100
+
+
+#
+#    SkillChance.Orange
+#    SkillChance.Yellow
+#    SkillChance.Green
+#    SkillChance.Grey
+#        Description: Chance to increase skill based on recipe color.
+#        Default:     100 - (SkillChance.Orange)
+#                     75  - (SkillChance.Yellow)
+#                     25  - (SkillChance.Green)
+#                     0   - (SkillChance.Grey)
+
+SkillChance.Orange = 100
+SkillChance.Yellow = 80
+SkillChance.Green  = 30
+SkillChance.Grey   = 0
+
+#
+#    SkillChance.MiningSteps
+#    SkillChance.SkinningSteps
+#        Description: Skinning and Mining chance decreases with skill level.
+#        Default:     0  - (Disabled)
+#                     75 - (In 2 times each 75 skill points)
+
+SkillChance.MiningSteps   = 0
+SkillChance.SkinningSteps = 0
+
+#
+#    Rate.Auction.Time
+#    Rate.Auction.Deposit
+#    Rate.Auction.Cut
+#        Description: Auction rates (auction time, deposit get at auction start,
+#                     auction cut from price at auction end)
+#        Default:     1 - (Rate.Auction.Time)
+#                     1 - (Rate.Auction.Deposit)
+#                     1 - (Rate.Auction.Cut)
+
+Rate.Auction.Time    = 0.5
+Rate.Auction.Deposit = 0.5
+Rate.Auction.Cut     = 0.5
+
+
+
+
+#
+# ARENA CONFIG
+#
+#        (2v2) Arena.2v2.ArenaPointsMulti
+#        Description: Multiplier of Arena Points gained from 2v2.
+#        Default:     1.00f
+
+Arena.2v2.ArenaPointsMulti = 0.9
+
+# 
+#        (3v3) Arena.3v3.ArenaPointsMulti
+#        Description: Multiplier of Arena Points gained from 3v3.
+#        Default:     1.00f
+
+Arena.3v3.ArenaPointsMulti = 1
+
+# 
+#        (5v5) Arena.5v5.ArenaPointsMulti
+#        Description: Multiplier of Arena Points gained from 5v5.
+#        Default:     1.00f
+
+Arena.5v5.ArenaPointsMulti = 1
+
+
+#
+#   Arena.LegacyArenaPoints
+#        Description: If set 1 uses WoW WotLK Classic Arena Points Formula
+#        Default:     1
+
+Arena.WotlkClassicArenaPoints = 1
+
+
+#
+#    Arena.MaxRatingDifference
+#        Description: Maximum rating difference between two teams in rated matches.
+#        Default:     150 - (Enabled)
+#                     0   - (Disabled)
+
+Arena.MaxRatingDifference = 250
+
+#
+#    Arena.RatingDiscardTimer
+#        Description: Time (in milliseconds) after which rating differences are ignored when
+#                     setting up matches.
+#        Default:     600000 - (Enabled, 10 minutes), 120000 = 120 seg (2 minutes)
+#                     0      - (Disabled)
+
+Arena.RatingDiscardTimer = 120000
+
+#
+#    Arena.PreviousOpponentsDiscardTimer
+#        Description: Time (in milliseconds) after which the previous opponents will be ignored.
+#        Default:     120000 - (Enabled, 2 minutes - Blizzlike), - 60000 = 60 sec, 25000 = 25 sec
+#                     0      - (Disabled)
+
+Arena.PreviousOpponentsDiscardTimer = 60000
+
+
+#
+#    Arena.ArenaStartRating
+#        Description: Start rating for new arena teams.
+#        Default:     0
+
+Arena.ArenaStartRating = 1000
+
+#
+#    Arena.ArenaStartPersonalRating
+#        Description: Start personal rating when joining a team.
+#        Default:     0
+
+Arena.ArenaStartPersonalRating = 1000
+
+#
+#    Arena.ArenaStartMatchmakerRating
+#        Description: Start matchmaker rating for players.
+#        Default:     1500
+
+Arena.ArenaStartMatchmakerRating = 1500
+
+#
+#    Arena.ArenaWinRatingModifier1
+#        Description: Modifier of rating addition when winner team rating is less than 1300
+#                     be aware that from 1000 to 1300 it gradually decreases automatically down to the half of it
+#                     (increasing this value will give more rating)
+#        Default:     48
+
+Arena.ArenaWinRatingModifier1 = 96
+
+#
+#    Arena.ArenaWinRatingModifier2
+#        Description: Modifier of rating addition when winner team rating is equal or more than 1300
+#                     (increasing this value will give more rating)
+#        Default:     24
+
+Arena.ArenaWinRatingModifier2 = 48
+
+#
+#    Arena.ArenaLoseRatingModifier
+#        Description: Modifier of rating subtraction for loser team
+#                     (increasing this value will subtract more rating)
+#        Default:     24
+
+Arena.ArenaLoseRatingModifier = 24
+
+#
+#    Arena.ArenaMatchmakerRatingModifier
+#        Description: Modifier of matchmaker rating
+#        Default:     24
+
+Arena.ArenaMatchmakerRatingModifier = 24
+
+
+#
+#     MaxAllowedMMRDrop
+#        Description: Some players continuously lose arena matches to lower their MMR and then fight with weaker opponents.
+#                     This setting prevents lowering MMR too much from max achieved MMR.
+#                     Eg. if max achieved MMR for a character was 2400, with default setting (MaxAllowedMMRDrop = 500) the character can't get below 1900 MMR no matter what.
+#        Default:     500
+
+MaxAllowedMMRDrop = 750
+
+
+
+
+###################################################################################################
+# BATTLEGROUND CONFIG
+#
+
+#
+#    Battleground.PrematureFinishTimer
+#        Description: Time (in milliseconds) before battleground will end prematurely if there are
+#                     not enough players on one team. (Values defined in battleground template)
+#        Default:     300000 - (Enabled, 5 minutes) , 180.000 = 3 min
+#                     0      - (Disabled, Not recommended)
+
+Battleground.PrematureFinishTimer = 180000
+
+#
+#    Battleground.PremadeGroupWaitForMatch
+#        Description: Time (in milliseconds) a pre-made group has to wait for matching group of the
+#                     other faction.
+#        Default:     1800000 - (Enabled, 30 minutes) - 900.000 = 15 min, 300.000 = 5 min, 60.000 = 1 min
+#                     0       - (Disabled, Not recommended)
+
+Battleground.PremadeGroupWaitForMatch = 60000
+
+
+#
+#    Battleground.Random.ResetHour
+#        Description: Hour of the day when the global instance resets occur.
+#        Range:       0-23
+#        Default:     6 - (06:00 AM)
+
+Battleground.Random.ResetHour = 6
+
+#    Battleground.StoreStatistics.Enable
+#        Description: Store Battleground scores in the database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.StoreStatistics.Enable = 1
+
+
+#
+#    Battleground.InvitationType
+#        Description: Set Battleground invitation type.
+#        Default:     0 - (Normal, Invite as much players to battlegrounds as queued,
+#                          Don't bother with balance)
+#                     1 - (Experimental, Don't allow to invite much more players
+#                          of one faction)
+#                     2 - (Experimental, Try to have even teams)
+
+Battleground.InvitationType = 0
+
+#
+#    Battleground.ReportAFK.Timer
+#         Description: After a few minutes that battle started you can report the player.
+#         Default:     4
+
+Battleground.ReportAFK.Timer = 2
+
+#
+#    Battleground.ReportAFK
+#        Description: Number of reports needed to kick someone AFK from Battleground.
+#        Range:       1-9
+#        Default:     3
+
+Battleground.ReportAFK = 3
+
+#    Battleground.DisableQuestShareInBG
+#        Description: Disables the ability to share quests while in a Battleground.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.DisableQuestShareInBG = 1
+
+#
+#    Battleground.DisableReadyCheckInBG
+#        Description: Disables the ability to send a Ready Check survey while in a Battleground.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.DisableReadyCheckInBG = 1
+
+#
+#     Battleground.RewardWinnerHonorFirst
+#     Battleground.RewardWinnerArenaFirst
+#     Battleground.RewardWinnerHonorLast
+#     Battleground.RewardWinnerArenaLast
+#     Battleground.RewardLoserHonorFirst
+#     Battleground.RewardLoserHonorLast
+#        Description: Random Battlegrounds / call to the arms rewards
+#        Default:     30 - Battleground.RewardWinnerHonorFirst
+#                     25 - Battleground.RewardWinnerArenaFirst
+#                     15 - Battleground.RewardWinnerHonorLast
+#                     0  - Battleground.RewardWinnerArenaLast
+#                     5  - Battleground.RewardLoserHonorFirst
+#                     5  - Battleground.RewardLoserHonorLast
+#
+
+Battleground.RewardWinnerHonorFirst = 30
+Battleground.RewardWinnerArenaFirst = 25
+Battleground.RewardWinnerHonorLast  = 15
+Battleground.RewardWinnerArenaLast  = 0
+Battleground.RewardLoserHonorFirst  = 5
+Battleground.RewardLoserHonorLast   = 5
+
+#
+#    Battleground.PlayerRespawn
+#        Description: Battleground player resurrection interval (in seconds).
+#        Default:     30
+
+Battleground.PlayerRespawn = 30
+
+#
+#    Battleground.RestorationBuffRespawn
+#        Description: Battleground restoration buff respawn time (in seconds).
+#        Default:     20 (Recommended 10+)
+
+Battleground.RestorationBuffRespawn = 75
+
+#
+#    Battleground.BerserkingBuffRespawn
+#        Description: Battleground berserking buff respawn time (in seconds).
+#        Default:     120 (Recommended 10+)
+
+Battleground.BerserkingBuffRespawn = 120
+
+#
+#    Battleground.SpeedBuffRespawn
+#        Description: Battleground speed buff respawn time (in seconds).
+#        Default:     150 (Recommended 10+)
+
+Battleground.SpeedBuffRespawn = 150
+
+
+
+#
+###################################################################################################
+
+
+#
+#    PvPToken.Enable
+#        Description: Character will receive a token after defeating another character that yields
+#                     honor.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PvPToken.Enable = 1
+
+#
+#    PvPToken.MapAllowType
+#        Description: Define where characters can receive tokens.
+#        Default:     4 - (All maps)
+#                     3 - (Battlegrounds)
+#                     2 - (FFA areas only like Gurubashi arena)
+#                     1 - (Battlegrounds and FFA areas)
+
+PvPToken.MapAllowType = 3
+
+#
+#    PvPToken.ItemID
+#        Description: Item characters will receive after defeating another character if PvP Token
+#                     system is enabled.
+#        Default:     29434 - (Badge of justice), 20558 = Transmog Token, trocar pro novo token depois (? teste)
+
+PvPToken.ItemID = 20558
+
+#
+#    PvPToken.ItemCount
+#        Description: Number of tokens a character will receive.
+#        Default:     1 - 1 ou 2 ?
+
+PvPToken.ItemCount = 1
+
+
+
+
+
+
+
+
+
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+
+
+
+
+# PvP:
+
+#    vmap.BlizzlikePvPLOS
+#        Description: Check line of sight for battleground and arena gameobjects and other doodads (such as WSG treestumps).
+#        Default:     1 - (Enabled, players will be able to fire spells through treestumps and other objects). gross.
+#                     0 - (Disabled, players will NOT be able to fire spells through treestumps and other objects).
+
+vmap.BlizzlikePvPLOS = 0
+
+
+#
+#    MaxHonorPoints
+#        Description: Maximum honor points a character can have.
+#        Default:     75000
+
+MaxHonorPoints = 150000
+
+#
+#    StartHonorPoints
+#        Description: Amount of honor points that characters have after creation.
+#        Default:     0
+
+StartHonorPoints = 0
+
+#
+#    MaxArenaPoints
+#        Description: Maximum arena points a character can have.
+#        Default:     10000
+
+MaxArenaPoints = 20000
+
+#
+#    StartArenaPoints
+#        Description: Amount of arena points that characters has after creation.
+#        Default:     0
+
+StartArenaPoints = 0
+
+#
+#   Arena.LegacyArenaPoints
+#        Description: If set 1 uses pre-wotlk arena points calculation when season < 6
+#        Default:     1
+# Custom?
+
+# Arena.LegacyArenaPoints = 1
+
+
+#
+#    MinPetitionSigns
+#        Description: Number of required signatures on charters to create a guild.
+#        Range:       0-9
+#        Default:     9
+
+MinPetitionSigns = 0
+
+#
+#    Guild.CharterCost
+#    ArenaTeam.CharterCost.2v2
+#    ArenaTeam.CharterCost.3v3
+#    ArenaTeam.CharterCost.5v5
+#        Description: Amount of money (in Copper) the petitions costs.
+#        Default:     1000 - (10 Silver)
+#                     800000 - (80 Gold) - 100000 (10 Gold)
+#                     1200000 - (120 Gold)
+#                     2000000 - (200 Gold)
+
+Guild.CharterCost = 1000
+ArenaTeam.CharterCost.2v2 = 100000
+ArenaTeam.CharterCost.3v3 = 150000
+ArenaTeam.CharterCost.5v5 = 200000
+
+
+
+#    Battleground.CastDeserter
+#        Description: Cast Deserter spell at players who leave battlegrounds in progress.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Battleground.CastDeserter = 1
+
+#    Battleground.TrackDeserters.Enable
+#        Description: Track deserters of Battlegrounds.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.TrackDeserters.Enable = 1
+
+#
+#    Battleground.QueueAnnouncer.Enable
+#        Description: Announce battleground queue status to chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.QueueAnnouncer.Enable = 1
+
+
+
+#
+#    Arena.AutoDistributePoints
+#        Description: Automatically distribute arena points.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Arena.AutoDistributePoints = 1
+
+#
+#    Arena.AutoDistributeInterval
+#        Description: Time (in days) how often arena points should be distributed if automatic
+#                     distribution is enabled.
+#        Default:     7 - (Weekly)
+
+Arena.AutoDistributeInterval = 7
+
+#
+#    Arena.GamesRequired
+#        Description: Number of arena matches teams must participate in to be eligible for arena point distribution.
+#        Default:     10
+
+Arena.GamesRequired = 8
+
+
+
+
+#
+#    Battleground.QueueAnnouncer.Limit.MinLevel
+#        Description: Limit the QueueAnnouncer starting from a certain level.
+#                     When limited, it announces only if there are at least MinPlayers queued (see below)
+#                     At 80 it only limits RBG, at lower level only limits Warsong Gulch.
+#        Default:     0 - (Disabled, no limits)
+#                     10 - (Enabled for all, because BGs start at 10)
+#                     20 - (Enabled for 20 and higher)
+#                     80 - (Enabled only for 80)
+
+Battleground.QueueAnnouncer.Limit.MinLevel = 0
+
+#
+#    Battleground.QueueAnnouncer.Limit.MinPlayers
+#        Description: When the Battleground.QueueAnnouncer.Limit.MinLevel limit is enabled (not 0)
+#                     only show when at least MinPlayers are queued.
+#        Default:     3 - (Show only when 3 or more players are queued)
+
+Battleground.QueueAnnouncer.Limit.MinPlayers = 3
+
+#
+#    Battleground.QueueAnnouncer.SpamProtection.Delay
+#        Description: Show announce if player rejoined in queue after sec
+#        Default:     30
+#
+
+Battleground.QueueAnnouncer.SpamProtection.Delay = 15
+
+
+
+
+#
+#    Battleground.QueueAnnouncer.Timed
+#        Description: Enabled battleground queue announcements based on timer
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled - Set Arena.QueueAnnouncer.Timer)
+#
+
+Battleground.QueueAnnouncer.Timed = 0
+
+#
+#    Battleground.QueueAnnouncer.Timer
+#        Description: Set timer for queue announcements
+#        Default:     30000 (30 sec)
+#
+
+Battleground.QueueAnnouncer.Timer = 15000
+
+
+#
+#    Battleground.QueueAnnouncer.PlayerOnly
+#        Description: Battleground queue announcement type.
+#        Default:     0 - (System message, Anyone can see it)
+#                     1 - (Private, Only queued players can see it)
+
+Battleground.QueueAnnouncer.PlayerOnly = 0
+
+#
+#    Battleground.QueueAnnouncer.PlayerOnly
+#        Description: Battleground queue announcement type.
+#        Default:     0 - (System message, Anyone can see it)
+#                     1 - (Private, Only queued players can see it)
+#
+
+Arena.QueueAnnouncer.PlayerOnly = 0
+
+
+#    Arena.QueueAnnouncer.Enable
+#        Description: Announce arena queue status to chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Arena.QueueAnnouncer.Enable = 1
+
+
+#
+#    Arena.ArenaSeason.ID
+#        Description: Current arena season id shown in clients.
+#        Default:     8
+
+Arena.ArenaSeason.ID = 8
+
+
+#
+#    Arena.ArenaSeason.InProgress
+#        Description: State of current arena season.
+#        Default:     1 - (Active)
+#                     0 - (Finished)
+
+Arena.ArenaSeason.InProgress = 1
+
+
+
+
+
+
+############################
+#  PvE / Creatures
+#
+#
+#
+
+#    Rate.MissChanceMultiplier.Creature
+#    Rate.MissChanceMultiplier.Player
+#    Rate.MissChanceMultiplier.OnlyAffectsPlayer
+#
+#        Description: When the target is 3 or more level higher than the player,
+#                     the chance to hit is determined by the formula: 94 - (levelDiff - 2) * Rate.MissChanceMultiplier
+#                     The higher the Rate.MissChanceMultiplier constant, the higher is the chance to miss.
+#
+#                     Note: this does not affect when the player is less than 3 levels different than the target,
+#                     where this (linear) formula is used instead to calculate the hit chance: 96 - levelDiff.
+#                     You can set Rate.MissChanceMultiplier.OnlyAffectsPlayer to 1 if you only want to affect the MissChance
+#                     for player casters only. This way you won't be affecting creature missing chance.
+#
+#                     Example: if you want the chance to keep growing linearly, use 1.
+#
+#        Default:     Rate.MissChanceMultiplier.TargetCreature = 11
+#                     Rate.MissChanceMultiplier.TargetPlayer = 7
+#                     Rate.MissChanceMultiplier.OnlyAffectsPlayer = 0
+#
+
+Rate.MissChanceMultiplier.TargetCreature = 11
+Rate.MissChanceMultiplier.TargetPlayer = 0
+Rate.MissChanceMultiplier.OnlyAffectsPlayer = 0

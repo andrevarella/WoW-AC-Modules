@@ -1,0 +1,532 @@
+[worldserver]
+
+Arena.MaxRatingDifference = 250
+
+
+
+#
+#    Instance.GMSummonPlayer
+#        Description: Allow GM to summon players or only other GM accounts inside instances.
+#        Default:     0 - (Disabled, Only GM accounts can be summoned by GM) Mudar ?
+#                     1 - (Enabled, GM and Player accounts can be summoned by GM)
+
+Instance.GMSummonPlayer = 0
+
+
+#
+#    GM.WhisperingTo
+#        Description: Is GM accepting whispers from player by default or not.
+#        Default:     2 - (Last save state)
+#                     0 - (Disable)
+#                     1 - (Enable)
+
+# GM.WhisperingTo = 0
+
+
+#    Event.Announce
+#        Description: Announce events.
+#        Default:     0 - (Disabled) ?
+#                     1 - (Enabled)
+
+Event.Announce = 0
+
+#
+#    AllFlightPaths
+#        Description: Character knows all flight paths (of both factions) after creation.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllFlightPaths = 1
+
+#
+#    InstantFlightPaths
+#        Description: Flight paths will take players to their destination instantly instead
+#                     of making them wait while flying.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+#                     2 - (Enabled, but the player can toggle instant flight off or on at each flight master)
+
+InstantFlightPaths = 0
+
+#
+#    PlayerStart.MapsExplored
+#        Description: Characters start with all maps explored.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PlayerStart.MapsExplored = 1
+
+#
+#     LevelReq.Trade
+#        Description: Level requirement for characters to be able to trade.
+#        Default:     1
+
+LevelReq.Trade = 1
+
+#
+#     LevelReq.Ticket
+#        Description: Level requirement for characters to be able to write tickets.
+#        Default:     1
+
+LevelReq.Ticket = 1
+
+#
+#     LevelReq.Auction
+#        Description: Level requirement for characters to be able to use the auction house.
+#        Default:     1
+
+LevelReq.Auction = 1
+
+#
+#     LevelReq.Mail
+#        Description: Level requirement for characters to be able to send and receive mails.
+#        Default:     1
+
+LevelReq.Mail = 1
+
+
+
+#
+#    SkipCinematics
+#        Description: Disable cinematic intro at first login after character creation.
+#                     Prevents buggy intros in case of custom start location coordinates.
+#        Default:     0 - (Show intro for each new character)
+#                     1 - (Show intro only for first character of selected race)
+#                     2 - (Disable intro for all classes)
+
+SkipCinematics = 1
+
+
+#
+#    InstantLogout
+#        Description: Required security level for instantly logging out everywhere.
+#                     Does not work while in combat, dueling or falling.
+#        Default:     1  - (Enabled, Mods/GMs/Admins)
+#                     0  - (Enabled, Everyone)
+#                     2  - (Enabled, GMs/Admins)
+#                     3  - (Enabled, Admins)
+#                     4  - (Disabled)
+
+InstantLogout = 0
+
+#
+#    PreventAFKLogout
+#        Description: Prevent players AFK from being logged out
+#        Default:     0  - (Disabled)
+#                     1  - (Enabled, prevent players AFK from being logged out in Sanctuary zones)
+#                     2  - (Enabled, prevent players AFK from being logged out in all zones)
+
+PreventAFKLogout = 0
+
+#
+#    ActivateWeather
+#        Description: Activate the weather system.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+ActivateWeather = 1
+
+
+#
+#    ChangeWeatherInterval
+#        Description: Time (in milliseconds) for weather update interval.
+#        Default:     600000 - (10 min) - Mudar ?
+
+ChangeWeatherInterval = 600000
+
+
+
+#
+#    NoResetTalentsCost
+#        Description: Resetting talents doesn't cost anything.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+NoResetTalentsCost = 1
+
+#
+#    StartPlayerMoney
+#        Description: Amount of money (in Copper) that a character has after creation.
+#        Default:     0
+#                     100 - (1 Silver), 10000 = 1g, 100000 = 10g 
+
+StartPlayerMoney = 100000
+
+#
+#    StartHeroicPlayerMoney
+#        Description: Amount of money (in Copper) that heroic class characters have after creation.
+#        Default:     2000
+#                     2000 - (20 Silver), 100000 = 10g
+
+StartHeroicPlayerMoney = 100000
+
+
+
+#
+# Instance.SharedNormalHeroicId
+#  Description:  Forces ICC and RS Normal and Heroic to share lockouts.  ToC is uneffected and Normal and Heroic will be separate.
+#  Default:  1 - Enable
+#      0 - Disable
+#
+
+Instance.SharedNormalHeroicId = 0
+
+
+#
+#     Guild.AllowMultipleGuildMaster
+#        Description: Allow more than one guild master. Additional Guild Masters must be set using
+#                     the ".guild rank" command.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Guild.AllowMultipleGuildMaster = 0
+
+#
+#     Guild.BankInitialTabs
+#        Description: Changes the amounts of available tabs of the guild bank on guild creation
+#        Default:     0   (no tabs given for free)
+#                     1-6 (amount of tabs of the guild bank at guild creation)
+
+Guild.BankInitialTabs = 1
+
+#
+#     EnablePlayerSettings
+#        Description: Enables the usage of character specific settings.
+#        Default:     0 - Disabled
+#                     1 - Enabled
+
+EnablePlayerSettings = 1
+
+#
+#    LFG.Location.All
+#
+#     Includes satellite to search for work elsewhere LFG
+#        Default: 0 - Disable
+#                 1 - Enable
+#
+
+LFG.Location.All = 1
+
+
+#
+#     JoinBGAndLFG.Enable
+#        Description: Allow queueing for BG and LFG at the same time.
+#        Default:     0 - Disabled
+#                     1 - Enabled
+
+JoinBGAndLFG.Enable = 1
+
+
+#
+#   LeaveGroupOnLogout.Enabled
+#        Description: Should the player leave their group when they log out?
+#                     (It does not affect raids or dungeon finder groups)
+#
+#        Default:     1 - (Enabled)
+
+LeaveGroupOnLogout.Enabled = 0
+
+
+#
+#     ChangeFaction.MaxMoney
+#        Description: Maximum amount of gold allowed on the character to perform a faction change.
+#        Default:     0 - Disabled
+#                     > 0 - Enabled (money in copper)
+#        Example:     If set to 10000, the maximum amount of money allowed on the character would be 1 gold. - 2200000000 = 220k (214k é o limite)
+
+ChangeFaction.MaxMoney = 2200000000
+
+
+#
+#    CharacterCreating.Disabled.ClassMask
+#        Description: Mask of classes which cannot be created by players.
+#        Example:     288 - (32 + 256, Death Knight and Warlock classes are disabled)
+#        Default:     0    - (Enabled, All classes are allowed)
+#                     1    - (Disabled, Warrior)
+#                     2    - (Disabled, Paladin)
+#                     4    - (Disabled, Hunter)
+#                     8    - (Disabled, Rogue)
+#                     16   - (Disabled, Priest)
+#                     32   - (Disabled, Death Knight)
+#                     64   - (Disabled, Shaman)
+#                     128  - (Disabled, Mage)
+#                     256  - (Disabled, Warlock)
+#                     1024 - (Disabled, Druid)
+
+CharacterCreating.Disabled.ClassMask = 0
+
+#
+#    HeroicCharactersPerRealm
+#        Description: Limit number of heroic class characters per account on this realm.
+#        Range:       1-10
+#        Default:     1
+
+HeroicCharactersPerRealm = 10
+
+
+
+#
+#    AlwaysMaxWeaponSkill
+#        Description: Players will automatically gain max weapon/defense skill when logging in,
+#                     or leveling.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AlwaysMaxWeaponSkill = 1
+
+#
+#    AlwaysMaxSkillForLevel
+#        Description: Players will automatically gain max skill level when logging in or leveling
+#                     up.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AlwaysMaxSkillForLevel = 1
+
+
+
+#
+#    Rate.Rest.InGame
+#    Rate.Rest.Offline.InTavernOrCity
+#    Rate.Rest.Offline.InWilderness
+#        Description: Resting points grow rates.
+#        Default:     1 - (Rate.Rest.InGame)
+#                     1 - (Rate.Rest.Offline.InTavernOrCity)
+#                     1 - (Rate.Rest.Offline.InWilderness)
+
+Rate.Rest.InGame                 = 2
+Rate.Rest.Offline.InTavernOrCity = 2
+Rate.Rest.Offline.InWilderness   = 2
+
+#
+#    DurabilityLoss.OnDeath
+#        Description: Durability loss percentage on death.
+#        Note:        On 3.3.5 client always shows log message "Your items have lost 10% durability"
+#        Default:     10
+
+DurabilityLoss.OnDeath = 5
+
+
+
+
+#
+#    DurabilityLossChance.Damage
+#        Description: Chance to lose durability on one equipped item from damage.
+#        Default:     0.5 - (100/0.5 = 200, Each 200 damage one equipped item will use durability)
+
+DurabilityLossChance.Damage = 0.4
+
+#
+#    DurabilityLossChance.Absorb
+#        Description: Chance to lose durability on one equipped armor item when absorbing damage.
+#        Default:     0.5 - (100/0.5 = 200, Each 200 absorbed damage one equipped item will lose
+#                           durability)
+
+DurabilityLossChance.Absorb = 0.4
+
+#
+#    DurabilityLossChance.Parry
+#        Description: Chance to lose durability on main weapon when parrying attacks.
+#        Default:     0.05 - (100/0.05 = 2000, Each 2000 parried damage the main weapon will lose
+#                            durability)
+
+DurabilityLossChance.Parry = 0.04
+
+#
+#    DurabilityLossChance.Block
+#        Description: Chance to lose durability on shield when blocking attacks.
+#        Default:     0.05 - (100/0.05 = 2000, Each 2000 blocked damage the shield will lose
+#                            durability)
+
+DurabilityLossChance.Block = 0.04
+
+
+#
+#    Rate.Reputation.RecruitAFriendBonus
+#        Description: Reputation bonus rate for recruit-a-friend.
+#        Default:     0.1
+
+Rate.Reputation.RecruitAFriendBonus = 0.1
+
+#
+#    RecruitAFriend.MaxLevel
+#        Description: Highest level up to which a character can benefit from the Recruit-A-Friend
+#                     experience multiplier.
+#        Default:     60 ?
+
+#RecruitAFriend.MaxLevel = 79
+
+#
+#    RecruitAFriend.MaxDifference
+#        Description: Highest level difference between linked Recruiter and Friend benefit from
+#                     the Recruit-A-Friend experience multiplier.
+#        Default:     4
+
+#RecruitAFriend.MaxDifference = 6
+
+#
+#    MaxRecruitAFriendBonusDistance
+#        Description: Max distance between character and and group to gain the Recruit-A-Friend
+#                     XP multiplier.
+#        Default:     100
+
+MaxRecruitAFriendBonusDistance = 100
+
+
+#
+#    MaxGroupXPDistance
+#        Description: Max distance to creature for group member to get experience at creature
+#                     death.
+#        Default:     74
+
+MaxGroupXPDistance = 74
+
+
+
+
+
+#
+#    Instance.ResetTimeHour
+#        Description: Hour of the day when the global instance reset occurs.
+#        Range:       0-23
+#        Default:     4 - (04:00 AM)
+
+Instance.ResetTimeHour = 6
+
+#
+#    Quests.IgnoreRaid
+#        Description: Allow non-raid quests to be completed while in a raid group.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Quests.IgnoreRaid = 1
+
+#
+#    MailDeliveryDelay
+#        Description: Time (in seconds) mail delivery is delayed when sending items.
+#        Default:     3600 - (1 hour), 360 = 6 min, 5 = 5 seconds
+
+MailDeliveryDelay = 2
+
+
+
+
+
+###################################################################################################
+# PLAYER INTERACTION
+#
+#    AllowTwoSide.Accounts
+#        Description: Allow creating characters of both factions on the same account.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AllowTwoSide.Accounts = 1
+
+#
+#    AllowTwoSide.Interaction.Calendar
+#        Description: Allow calendar invites between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Calendar = 1
+
+#
+#    AllowTwoSide.Interaction.Chat
+#        Description: Allow say chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Chat = 1
+
+#
+#    AllowTwoSide.Interaction.Emote
+#        Description: Allow emote messages between factions (e.g. "/e looks into the sky")
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Emote = 1
+
+#
+#    AllowTwoSide.Interaction.Channel
+#        Description: Allow channel chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Channel = 1
+
+#
+#    AllowTwoSide.Interaction.Group
+#        Description: Allow group joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Group = 1
+
+#
+#    AllowTwoSide.Interaction.Guild
+#        Description: Allow guild joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Guild = 1
+
+#
+#    AllowTwoSide.Interaction.Arena
+#        Description: Allow joining arena teams between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Arena = 1
+
+
+#
+#    AllowTwoSide.Interaction.Auction
+#        Description: Allow auctions between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Auction = 1
+
+#
+#    AllowTwoSide.Interaction.Mail
+#        Description: Allow sending mails between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Mail = 1
+
+#
+#    AllowTwoSide.WhoList
+#        Description: Show characters from both factions in the /who list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.WhoList = 1
+
+#
+#    AllowTwoSide.AddFriend
+#        Description: Allow adding friends from other faction the friends list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.AddFriend = 1
+
+#
+#    AllowTwoSide.Trade
+#        Description: Allow trading between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Trade = 1
+
+#
+#    TalentsInspecting
+#        Description: Allow inspecting characters from the opposing faction.
+#                     Doesn't affect characters in gamemaster mode.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+TalentsInspecting = 1
+
+#
+###################################################################################################

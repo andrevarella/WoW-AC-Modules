@@ -57,6 +57,26 @@ public:
             spellInfo->AuraInterruptFlags |= AURA_INTERRUPT_FLAG_CHANGE_MAP;
         });
 
+        /* - n funciona (Weakened Soul n stackar com diferentes casters)
+        ApplySpellFix({ 6788 }, [](SpellInfo* spellInfo) // Weakened Soul
+        {
+                spellInfo->AttributesEx3 |= SPELL_ATTR3_DOT_STACKING_RULE;
+        });*/
+
+        // Spells / Procs nao dao combat mais (supress_target_procs fixou o bug do Cower q msm com no_threat e 
+        ApplySpellFix
+        ({
+            48542, // Revitalize (rdruid)
+            12654, // Ignite dot
+        }, [](SpellInfo* spellInfo)
+        {
+            spellInfo->AttributesEx |= SPELL_ATTR1_NO_THREAT;               // Does not generate threat DESCRIPTION Also does not cause target to engage
+            spellInfo->AttributesEx2 |= SPELL_ATTR2_NO_INITIAL_THREAD;      // Unknown attribute 22@Attr2 DESCRIPTION Ambush, Backstab, Cheap Shot, Death Grip, Garrote, Judgements, Mutilate, Pounce, Ravage, Shiv, Shred
+            spellInfo->AttributesEx3 |= SPELL_ATTR3_SUPRESS_TARGET_PROCS;   // No initial aggro
+            //spellInfo->AttributesEx3 |= SPELL_ATTR3_SUPRESS_CASTER_PROCS; // Cannot trigger procs (?? n sei pra q isso)
+        });
+
+
         // Pra poderem usar sob efeito de BoP
         ApplySpellFix
         ({

@@ -1,0 +1,635 @@
+[worldserver]
+
+
+#
+#    Visibility.Distance.Continents
+#    Visibility.Distance.Instances
+#    Visibility.Distance.BGArenas
+#        Description: Visibility distance to see other players or gameobjects.
+#                     Visibility on continents on retail ~90 yards. In BG/Arenas ~180.
+#                     For instances default ~120.
+#                     Max limited by active player zone: ~ 333
+#                     Min limit is max aggro radius (45) * Rate.Creature.Aggro
+#        Default:     90  - (Visibility.Distance.Continents)
+#                     120 - (Visibility.Distance.Instances)
+#                     180 - (Visibility.Distance.BGArenas)
+
+Visibility.Distance.Continents = 125
+Visibility.Distance.Instances = 170
+Visibility.Distance.BGArenas = 533
+
+
+#
+#    UpdateUptimeInterval
+#        Description: Update realm uptime period (in minutes).
+#        Default:     10 - (10 minutes)
+#                     1+
+
+UpdateUptimeInterval = 1
+
+#
+#    SocketTimeOutTime
+#        Description: Time (in milliseconds) after which a connection being idle on the character
+#                     selection screen is disconnected.
+#        Default:     900000 - (15 minutes)
+
+SocketTimeOutTime = 900000
+
+#
+#    MinWorldUpdateTime
+#        Description: Minimum time (milliseconds) between world update ticks (for mostly idle servers).
+#        Default:     1 - (0.001 second)
+
+MinWorldUpdateTime = 1
+
+#
+#    MapUpdateInterval
+#        Description: Time (milliseconds) for map update interval.
+#        Default:     10 - (0.01 second) - tava 100 na core antiga (ano passado)
+
+MapUpdateInterval = 10
+
+#
+#    PlayerSaveInterval
+#        Description: Time (in milliseconds) for player save interval.
+#        Default:     900000 - (15 min), 300.000 = 5min, 60.000 = 1min, 30.000 = 30s 
+
+PlayerSaveInterval = 45000
+
+
+#
+#     RecordUpdateTimeDiffInterval
+#        Description: Time (in milliseconds) update time diff is written to the log file.
+#                     Update diff can be used as a performance indicator. Diff < 300: good
+#                     performance. Diff > 600 bad performance, may be caused by high CPU usage.
+#        Default:     300000 - (Enabled, 5 minutes)
+#                     0      - (Disabled)
+
+RecordUpdateTimeDiffInterval = 300000
+
+#
+#
+#     MinRecordUpdateTimeDiff
+#        Description: Only record update time diff which is greater than this value.
+#        Default:     100
+
+MinRecordUpdateTimeDiff = 100
+
+
+#
+#    PlayerSave.Stats.SaveOnlyOnLogout
+#        Description: Save player stats only on logout.
+#        Default:     1 - (Enabled, Only save on logout) - mudar p 0 ?
+#                     0 - (Disabled, Save on every player save)
+
+PlayerSave.Stats.SaveOnlyOnLogout = 1
+
+###################################################################################################
+
+
+
+###################################################################################################
+# CHARACTER DELETE OPTIONS
+#
+#    CharDelete.Method
+#        Description: Character deletion behavior.
+#        Default:     0 - (Completely remove character from the database)
+#                     1 - (Unlink the character from account and free up the name, Appears as
+#                         deleted ingame)
+
+CharDelete.Method = 1
+
+#
+#    CharDelete.MinLevel
+#        Description: Required level to use the unlinking method if enabled.
+#        Default:     0  - (Same method for every level)
+#                     1+ - (Only characters with the specified level will use the unlinking method)
+
+CharDelete.MinLevel = 0
+
+#
+#    CharDelete.KeepDays
+#        Description: Time (in days) before unlinked characters will be removed from the database.
+#        Default:     30 - (Enabled)
+#                     0  - (Disabled, Don't delete any characters)
+
+CharDelete.KeepDays = 30
+
+#
+###################################################################################################
+
+###################################################################################################
+# ITEM DELETE OPTIONS
+#
+#    ItemDelete.Method
+#        Description: Item deletion behavior.
+#        Default:     0 - (Completely remove item from the database)
+#                     1 - (Save Item to database)
+
+ItemDelete.Method = 0
+
+#
+#    ItemDelete.Vendor
+#        Description: Saving items into database when the player sells items to vendor
+#        Default:     0 (disabled)
+#                     1 (enabled)
+#
+
+ItemDelete.Vendor = 0
+
+#
+#    ItemDelete.Quality
+#        Description: Saving items into database that have quality greater or equal to ItemDelete.Quality
+#
+#        ID | Color | Quality
+#        0  | Grey  | Poor
+#        1  | White | Common
+#        2  | Green | Uncommon
+#        3  | Blue  | Rare
+#        4  | Purple| Epic
+#        5  | Orange| Legendary
+#        6  | Red   | Artifact
+#        7  | Gold  | Bind to Account
+#
+#        Default:     3
+#
+
+ItemDelete.Quality = 3
+
+#
+#    ItemDelete.ItemLevel
+#        Description: Saving items into database that are Item Levels greater or equal to ItemDelete.ItemLevel
+#        Default:     80
+#
+
+ItemDelete.ItemLevel = 80
+
+#
+###################################################################################################
+
+
+
+
+###################################################################################################
+# SERVER SETTINGS
+#
+#    GameType
+#        Description: Server realm type.
+#        Default:     0  - (NORMAL)
+#                     1  - (PVP)
+#                     4  - (NORMAL)
+#                     6  - (RP)
+#                     8  - (RPPVP)
+#                     16 - (FFA_PVP, Free for all PvP mode like arena PvP in all zones except rest
+#                          activated places and sanctuaries)
+
+GameType = 1
+
+#
+#    RealmZone
+#        Description: Server realm zone. Set allowed alphabet in character, etc. names.
+#        Default      1  - (Development   - any language)
+#                     2  - (United States - extended-Latin)
+#                     3  - (Oceanic       - extended-Latin)
+#                     4  - (Latin America - extended-Latin)
+#                     5  - (Tournament    - basic-Latin at create, any at login)
+#                     6  - (Korea         - East-Asian)
+#                     7  - (Tournament    - basic-Latin at create, any at login)
+#                     8  - (English       - extended-Latin)
+#                     9  - (German        - extended-Latin)
+#                     10 - (French        - extended-Latin)
+#                     11 - (Spanish       - extended-Latin)
+#                     12 - (Russian       - Cyrillic)
+#                     13 - (Tournament    - basic-Latin at create, any at login)
+#                     14 - (Taiwan        - East-Asian)
+#                     15 - (Tournament    - basic-Latin at create, any at login)
+#                     16 - (China         - East-Asian)
+#                     17 - (CN1           - basic-Latin at create, any at login)
+#                     18 - (CN2           - basic-Latin at create, any at login)
+#                     19 - (CN3           - basic-Latin at create, any at login)
+#                     20 - (CN4           - basic-Latin at create, any at login)
+#                     21 - (CN5           - basic-Latin at create, any at login)
+#                     22 - (CN6           - basic-Latin at create, any at login)
+#                     23 - (CN7           - basic-Latin at create, any at login)
+#                     24 - (CN8           - basic-Latin at create, any at login)
+#                     25 - (Tournament    - basic-Latin at create, any at login)
+#                     26 - (Test Server   - any language)
+#                     27 - (Tournament    - basic-Latin at create, any at login)
+#                     28 - (QA Server     - any language)
+#                     29 - (CN9           - basic-Latin at create, any at login)
+
+RealmZone = 1
+
+#
+#    World.RealmAvailability
+#        Description: If enabled, players will enter the realm normally.
+#                     Character creation will still be possible even when realm is disabled.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+World.RealmAvailability = 1
+
+#
+#   StrictNames.Reserved
+#       Description: Use the Reserved Filter from DBC.
+#                    Prevents Player, Pet & Charter names from containing reserved names.
+#       Default:     1 - Enabled
+#                    0 - Disabled
+
+StrictNames.Reserved = 0
+
+#
+#   StrictNames.Profanity
+#       Description: Use the Profanity Filter from DBC.
+#                    Prevents Player, Pet & Charter names from containing profanity.
+#       Default:     1 - Enabled
+#                    0 - Disabled
+
+StrictNames.Profanity = 1
+
+#
+#    StrictPlayerNames
+#        Description: Limit player name to language specific symbol set. Prevents character
+#                     creation and forces rename request if not allowed symbols are used
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictPlayerNames = 0
+
+#
+#    StrictCharterNames
+#        Description: Limit guild/arena team charter names to language specific symbol set.
+#                     Prevents charter creation if not allowed symbols are used.
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictCharterNames = 0
+
+#
+#    StrictPetNames
+#        Description: Limit pet names to language specific symbol set.
+#                     Prevents pet naming if not allowed symbols are used.
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictPetNames = 0
+
+#
+#    MinPlayerName
+#        Description: Minimal player name length.
+#        Range:       1-12
+#        Default:     2 hmm
+
+MinPlayerName = 2
+
+#
+#    MinCharterName
+#        Description: Minimal charter name length.
+#        Range:       1-24
+#        Default:     2 hmm
+
+MinCharterName = 2
+
+#
+#    MinPetName
+#        Description: Minimal pet name length.
+#        Range:       1-12
+#        Default:     2 hmm
+
+MinPetName = 2
+
+
+###################################################################################################
+# AUTO BROADCAST
+#
+#    AutoBroadcast.On
+#        Description: Enable auto broadcast.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled) ? Teste
+
+AutoBroadcast.On = 1
+
+#
+#    AutoBroadcast.Center
+#        Description: Auto broadcasting display method.
+#        Default:     0 - (Announce)
+#                     1 - (Notify)
+#                     2 - (Both)
+
+AutoBroadcast.Center = 0
+
+#
+#    AutoBroadcast.Timer
+#        Description: Timer (in milliseconds) for auto broadcasts.
+#        Default:     60000 - (60 seconds)
+
+AutoBroadcast.Timer = 60000
+
+#
+#    AutoBroadcast.MinDisableLevel
+#        Description: Minimum level required to disable autobroadcast announcements if EnablePlayerSettings option is enabled.
+#        Default:     0 - (Not allowed to disable it)
+
+AutoBroadcast.MinDisableLevel = 0
+
+#
+###################################################################################################
+
+
+
+###################################################################################################
+# WARDEN SETTINGS
+#
+#    Warden.Enabled
+#        Description: Enable Warden anti-cheat system.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.Enabled = 1
+
+#
+#    Warden.NumMemChecks
+#        Description: Number of Warden memory checks that are sent to the client each cycle.
+#        Default:     3 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.NumMemChecks = 3
+
+#
+#    Warden.NumLuaChecks
+#        Description: Number of Warden LUA checks that are sent to the client each cycle.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.NumLuaChecks = 1
+
+#
+#    Warden.NumOtherChecks
+#        Description: Number of Warden checks other than memory checks that are added to request
+#                     each checking cycle.
+#        Default:     7 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.NumOtherChecks = 7
+
+#
+#    Warden.ClientResponseDelay
+#        Description: Time (in seconds) before client is getting disconnecting for not responding.
+#        Default:     600 - (10 Minutes)
+#                     0 - (Disabled, client won't be kicked) - Da DC pra quem fica AFK(acho q AFK), mudei p 0
+
+Warden.ClientResponseDelay = 0
+
+#
+#    Warden.ClientCheckHoldOff
+#        Description: Time (in seconds) to wait before sending the next check request to the client.
+#                     A low number increases traffic and load on client and server side.
+#        Default:     30 - (30 Seconds)
+#                     0  - (Send check as soon as possible)
+
+Warden.ClientCheckHoldOff = 30
+
+#
+#    Warden.ClientCheckFailAction
+#        Description: Default action being taken if a client check failed. Actions can be
+#                     overwritten for each single check via warden_action table in characters
+#                     database.
+#        Default:     0 - (Disabled, Logging only)
+#                     1 - (Kick)
+#                     2 - (Ban)
+
+Warden.ClientCheckFailAction = 1
+
+#
+#    Warden.BanDuration
+#        Description: Time (in seconds) an account will be banned if ClientCheckFailAction is set
+#                     to ban.
+#        Default:     86400 - (24 hours), 259200 = 72 Hours (3 Dias)
+#                     0     - (Permanent ban) 
+
+Warden.BanDuration = 259200
+
+#
+###################################################################################################
+
+
+###################################################################################################
+# CONNECTIONS AND DIRECTORIES
+#
+#    RealmID
+#        Description: ID of the Realm using this config.
+#        Important:   RealmID must match the realmlist inside the auth database.
+#        Default:     1
+
+RealmID = 1
+
+#
+#    DataDir
+#        Description: Data directory setting.
+#        Important:   DataDir needs to be quoted, as the string might contain space characters.
+#        Example:     "@prefix@\home\youruser\azerothcore\data"
+#        Default:     "."
+
+DataDir = "C:\WoW_Stuff\GDrive\Server\AzerothBuild\bin\RelWithDebInfo\data"
+
+#
+#    LogsDir
+#        Description: Logs directory setting.
+#        Important:   LogsDir needs to be quoted, as the string might contain space characters.
+#                     Logs directory must exists, or log file creation will be disabled.
+#        Example:     "/home/youruser/azerothcore/logs"
+#        Default:     "" - (Log files will be stored in the current path)
+
+LogsDir = "C:\WoW_Stuff\GDrive\Server\AzerothBuild\bin\RelWithDebInfo\Logs\World"
+
+#
+#    TempDir
+#        Description: Temp directory setting.
+#        Important:   TempDir needs to be quoted, as the string might contain space characters.
+#                     TempDir directory must exists, or the server can't work properly
+#        Example:     "/home/youruser/azerothcore/temp"
+#        Default:     "" - (Temp files will be stored in the current path)
+
+TempDir = ""
+
+#
+#    LoginDatabaseInfo
+#    WorldDatabaseInfo
+#    CharacterDatabaseInfo
+#        Description: Database connection settings for the world server.
+#        Example:     "hostname;port;username;password;database"
+#                     ".;somenumber;username;password;database" - (Use named pipes on Windows
+#                                                                 "enable-named-pipe" to [mysqld]
+#                                                                 section my.ini)
+#                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
+#                                                                           Unix/Linux)
+#        Default:     "127.0.0.1;3306;acore;acore;acore_auth"       - (LoginDatabaseInfo)
+#                     "127.0.0.1;3306;acore;acore;acore_world"      - (WorldDatabaseInfo)
+#                     "127.0.0.1;3306;acore;acore;acore_characters" - (CharacterDatabaseInfo)
+
+LoginDatabaseInfo     = "127.0.0.1;3306;root;adrx123;acore_auth"
+WorldDatabaseInfo     = "127.0.0.1;3306;root;adrx123;acore_world"
+CharacterDatabaseInfo = "127.0.0.1;3306;root;adrx123;acore_characters"
+
+#
+#    Database.Reconnect.Seconds
+#    Database.Reconnect.Attempts
+#
+#        Description: How many seconds between every reconnection attempt
+#                     and how many attempts will be performed in total
+#        Default:     20 attempts every 15 seconds
+#
+
+Database.Reconnect.Seconds = 15
+Database.Reconnect.Attempts = 20
+
+#
+#    LoginDatabase.WorkerThreads
+#    WorldDatabase.WorkerThreads
+#    CharacterDatabase.WorkerThreads
+#        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
+#                     statements. Each worker thread is mirrored with its own connection to the
+#                     MySQL server and their own thread on the MySQL server.
+#        Default:     1 - (LoginDatabase.WorkerThreads)
+#                     1 - (WorldDatabase.WorkerThreads)
+#                     1 - (CharacterDatabase.WorkerThreads)
+
+LoginDatabase.WorkerThreads     = 1
+WorldDatabase.WorkerThreads     = 1
+CharacterDatabase.WorkerThreads = 1
+
+
+#
+#    BuildDirectory
+#        Description: The path to your build directory.
+#                     If the path is left empty, the built-in CMAKE_BINARY_DIR is used.
+#        Example:     "../AzerothCore"
+#        Default:     ""
+
+BuildDirectory = "C:\WoW_Stuff\GDrive\Server\AzerothBuild"
+
+#
+#    SourceDirectory
+#        Description: The path to your AzerothCore source directory.
+#                     If the path is left empty, the built-in CMAKE_SOURCE_DIR is used.
+#        Example:     "../AzerothCore"
+#        Default:     ""
+
+SourceDirectory = "C:\WoW_Stuff\GDrive\Server\AzerothCore"
+
+
+###################################################################################################
+# PERFORMANCE SETTINGS
+#
+#    UseProcessors
+#        Description: Processors mask for Windows and Linux based multi-processor systems.
+#        Example:  For a computer with 3 CPUs:
+#                     1 - 1st CPU only
+#                     2 - 2nd CPU only
+#                     4 - 3rd CPU only
+#                     6 - 2nd + 3rd CPUs, because "2 | 4" -> 6
+#        Default:     0  - (Selected by OS)
+#                     1+ - (Bit mask value of selected processors)
+
+UseProcessors = 0
+
+#
+#    PlayerLimit
+#        Description: Maximum number of players in the world. Excluding Mods, GMs and Admins.
+#          Important: If you want to block players and only allow Mods, GMs or Admins to join the
+#                     server, use the DB field "auth.realmlist.allowedSecurityLevel".
+#            Default: 1000 - (Enabled)
+#                     1+   - (Enabled)
+#                     0    - (Disabled, No limit)
+
+PlayerLimit = 1000
+
+#
+#    MaxOverspeedPings
+#        Description: Maximum overspeed ping count before character is disconnected.
+#        Default:     2  - (Enabled, Minimum value)
+#                     3+ - (Enabled, More checks before kick)
+#                     0  - (Disabled)
+
+MaxOverspeedPings = 2
+
+###############
+
+
+###################################################################################################
+# UPDATE SETTINGS
+#
+#    Updates.EnableDatabases
+#        Description: A mask that describes which databases shall be updated.
+#
+#        Following flags are available
+#           DATABASE_LOGIN     = 1, // Auth database
+#           DATABASE_CHARACTER = 2, // Character database
+#           DATABASE_WORLD     = 4, // World database
+#
+#        Default:     7  - (All enabled)
+#                     4  - (Enable world only)
+#                     0  - (All disabled)
+
+Updates.EnableDatabases = 0
+
+
+#
+#    FlashAtStart
+#        Description: Flashes in taskbar when the world server finished starting. (Works on Windows only)
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+FlashAtStart = 0
+
+
+
+
+
+
+#
+#     ShowKickInWorld
+#        Description: Determines whether a message is broadcast to the entire server when a
+#                     player gets kicked
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowKickInWorld = 1
+
+#
+#     ShowMuteInWorld
+#        Description: Determines whether a message is broadcast to the entire server when a
+#                     player gets muted.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowMuteInWorld = 0
+
+#
+#     ShowBanInWorld
+#        Description: Determines whether a message is broadcast to the entire server when a
+#                     player gets banned.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowBanInWorld = 1
+
+
+
+#######################################################################################################################################
+#######################################################################################################################################

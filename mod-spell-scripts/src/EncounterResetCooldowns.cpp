@@ -2,13 +2,17 @@
 #include "Player.h"
 #include "Pet.h"
 #include "Config.h"
-#include "Formulas.h"
-#include "Chat.h"
+#include "Configuration/Config.h"
 #include "Group.h"
 #include "Unit.h"
 #include "World.h"
 #include "WorldPacket.h"
-#include "Configuration/Config.h"
+
+//#include "Formulas.h"
+//#include "Chat.h"
+
+/*
+*/
 
 bool EncounterResetCDsEnable = true;
 
@@ -222,6 +226,12 @@ public:
 
     void OnCreatureKill(Player * player, Creature * killed)  //override
     {
+        if (!killed || killed->IsPlayer())
+            return;
+
+        if (!IsBossNPCFromList(killed) || player->InArena() || player->InBattleground())
+            return;
+
         if (sConfigMgr->GetOption<bool>("EncounterResetCDs.Enable", true))
         {
             TriggerResetPlayerCDs(player, killed);
@@ -229,6 +239,13 @@ public:
     }
     void OnCreatureKilledByPet(Player * player, Creature * killed) //override
     {
+        // Fix Crash vs Players (nao proca vs pet de players tbm)
+        if (!killed || killed->IsPlayer()) // Verifica se killed não é nulo e se não é um jogador / Adiciona verificação para garantir que killed não é um jogador
+            return;
+
+        if (!IsBossNPCFromList(killed) || player->InArena() || player->InBattleground())
+            return;
+
         if (sConfigMgr->GetOption<bool>("EncounterResetCDs.Enable", true))
         {
             TriggerResetPlayerCDs(player, killed);
@@ -239,10 +256,11 @@ public:
     {
         // Remove auras e reseta cooldowns ao matar o boss
         player->ResetPlayerCDonDeath(true);
-        player->RemoveAurasDueToSpell(57723); // Sated
-        player->RemoveAurasDueToSpell(57724); // Exhaustion
+        player->RemoveAurasDueToSpell(57723); // Sated (Bloodlust)
+        player->RemoveAurasDueToSpell(57724); // Exhaustion (Heroism)
+        player->RemoveAurasDueToSpell(25771); // Forbearance
         player->RemoveAurasDueToSpell(41425); // Hipothermia
-        player->RemoveAurasDueToSpell(66233); // Ardent Defender - pala
+        player->RemoveAurasDueToSpell(66233); // Ardent Defender (Prot paladin)
         player->RemoveAurasDueToSpell(61987); // Avenging Wrath Marker (server side forbearance) - pala
         player->RemoveAurasDueToSpell(79501); // Custom - Forbearance Custom (visual only) - pala
         player->RemoveAurasDueToSpell(79500); // Custom - Cheated Death (Custom visual only) - Rogue
@@ -252,9 +270,6 @@ public:
 
     void TriggerResetPlayerCDs(Player* player, Creature* killed)
     {
-        if ((!EncounterResetCDsEnable || !IsBossNPCFromList(killed)))
-            return;
-
         const int groupsize = GetNumInGroup(player); // Determine if it was a raid beatdown
 
         if (player->GetGroup())

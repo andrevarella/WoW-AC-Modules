@@ -1,57 +1,336 @@
 
-/*
-SpellCorrections:
-#include "ScriptMgr.h"
-#include "SpellInfo.h"
-#include "SpellMgr.h"
-#include "Spell.h"
-#include "SpellAuraDefines.h"
-#include "SpellAuras.h"
-#include "Player.h"
-#include "DBCStores.h"
-
-
-spell_generic:
-#include "Battlefield.h"
-#include "BattlefieldMgr.h"
-#include "Battleground.h"
-#include "BattlegroundMgr.h"
-#include "Cell.h"
-#include "CellImpl.h"
-#include "Chat.h"
-#include "GameTime.h"
-#include "GridNotifiers.h"
-#include "Group.h"
-#include "InstanceScript.h"
-#include "Pet.h"
-#include "ReputationMgr.h"
-#include "ScriptMgr.h"
-#include "SkillDiscovery.h"
-#include "SpellAuraEffects.h"
-#include "SpellScript.h"
-#include "Unit.h"
-#include "Vehicle.h"
-#include <array>
-/// @todo: this import is not necessary for compilation and marked as unused by the IDE
-//  however, for some reasons removing it would cause a damn linking issue
-//  there is probably some underlying problem with imports which should properly addressed
-//  see: https://github.com/azerothcore/azerothcore-wotlk/issues/9766
-#include "GridNotifiersImpl.h"
-*/
-
-
-
 #include "SpellScripts_loader.h"
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "SpellScript.h"
-//#include "Config.h"
-//#include "Chat.h"
-
 #include "SpellMgr.h"
 #include "SpellAuraEffects.h"
-#include "Containers.h"
-#include "GridNotifiers.h"
+#include "Spell.h"
+#include "SpellAuraDefines.h"
+
+/*
+SpellCorrections:
+#include "SpellInfo.h"
+#include "SpellAuras.h"
+#include "Player.h"
+#include "DBCStores.h"
+
+*/
+
+/*
+//#include "Chat.h"
+//#include "MapMgr.h"
+//#include "Group.h"
+//#include "GroupMgr.h"
+//#include "Battleground.h"
+//#include "BattlegroundMgr.h"
+//#include "Config.h"
+//#include "Configuration/Config.h"
+//#include "World.h"
+//#include "Pet.h"
+//#include "SpellAuras.h"
+*/
+
+
+
+class BattlebornRealm : public PlayerScript
+{
+public:
+    BattlebornRealm() : PlayerScript("BattlebornRealm") {}
+
+    /*
+    void OnCreate(Player* player) override
+    {
+        if (something here)
+        {
+            player->setCinematic(1);
+            player->SetLevel(80);
+
+            WorldLocation startLoc;
+            startLoc.m_positionX = 4718.45f;
+            startLoc.m_positionY = -1974.84f;
+            startLoc.m_positionZ = 1086.91f;
+            startLoc.m_orientation = 0.06f;
+            startLoc.m_mapId  = 1;
+
+            player->Relocate(&startLoc);
+            player->ResetMap();
+            player->SetMap(sMapMgr->CreateMap(1, player));
+
+            player->SaveToDB(false,false);
+        }
+    }
+    */
+
+    // Primeiro login do char
+    void OnFirstLogin(Player* player) override
+    {
+        player->LearnDefaultSkills();
+        /*
+            player->learnSpell(204);	// Defense
+            player->learnSpell(264);	// Bows
+            player->learnSpell(5011);	// Crossbow
+            player->learnSpell(674);	// Dual Wield
+            player->learnSpell(15590);	// Fists
+            player->learnSpell(266);	// Guns
+            player->learnSpell(196);	// Axes
+            player->learnSpell(198);	// Maces
+            player->learnSpell(201);	// Swords
+            player->learnSpell(750);	// Plate Mail
+            player->learnSpell(200);	// PoleArms
+            player->learnSpell(9116);	// Shields
+            player->learnSpell(197);	// 2H Axe
+            player->learnSpell(199);	// 2H Mace
+            player->learnSpell(202);	// 2H Sword
+            player->learnSpell(227);	// Staves
+            player->learnSpell(2567);	// Thrown
+            //player->learnSpell(750);	// Plate Mail (platemail ou plate?)
+            // Mail
+        */
+
+        switch (player->getClass())
+        {   // Backpack tem 16 slots (14 com Fishing pole e hearthstone). -4 das bags, sobra 10.
+
+            case CLASS_PRIEST:
+                player->AddItem(1179, 20); // Drink lvl 5
+                player->AddItem(1205, 20); // Drink lvl 15
+                player->AddItem(414, 20);  // Food lvl 5
+                player->AddItem(422, 20);  // Food lvl 15
+
+                player->learnSpell(57987);  // Glyph of Levitate
+                break;
+
+            case CLASS_MAGE:
+                player->AddItem(1179, 20); // Drink lvl 5
+                player->AddItem(1205, 20); // Drink lvl 15
+                player->AddItem(414, 20);  // Food lvl 5
+                player->AddItem(422, 20);  // Food lvl 15
+                player->AddItem(17031, 50); // 17031 Rune of Teleportation
+                player->AddItem(17032, 20); // Rune of Portals
+
+                player->learnSpell(58661); // Conjure Refreshment Table
+                player->learnSpell(57925); // Glyph of Slow Fall
+                break;
+
+            case CLASS_WARLOCK:
+                player->AddItem(6265, 1000); // Soul Shard
+                player->AddItem(1179, 20);  // Drink lvl 5
+                player->AddItem(1205, 20);  // Drink lvl 15
+                player->AddItem(414, 20);   // Food lvl 5
+                player->AddItem(422, 20);   // Food lvl 15
+
+                player->learnSpell(61993);  // Ritual of Summoning
+                break;
+
+            case CLASS_ROGUE:
+                player->AddItem(414, 20);    // Food lvl 5
+                player->AddItem(422, 20);    // Food lvl 15
+                player->AddItem(3775, 1000); // Crippling Poison
+                player->AddItem(5237, 1000); // Mind Numbing Poison 
+                player->AddItem(6947, 200);  // Instant Poison Rank1 (level 20) - Deadly Poison e Wound só level 30/32
+
+                // Glyph?
+                break;
+
+            case CLASS_DRUID:
+                player->AddItem(1179, 20);  // Drink lvl 5
+                player->AddItem(1205, 20);  // Drink lvl 15
+                player->AddItem(414, 20);   // Food lvl 5
+                player->AddItem(422, 20);   // Food lvl 15
+
+                player->learnSpell(54824);  // Glyph of Swiftmend
+                player->learnSpell(57857);  // Glyph of Unburdened Rebirth (minor)
+                break;
+
+            case CLASS_HUNTER:
+                player->AddItem(1179, 20);  // Drink lvl 5
+                player->AddItem(1205, 20);  // Drink lvl 15
+                player->AddItem(414, 20);   // Food lvl 5
+                player->AddItem(422, 20);   // Food lvl 15
+                player->AddItem(2512, 800); // Rough Arrow (lvl 5)
+                player->AddItem(3464, 3000);// Feathered Arrow
+
+                player->learnSpell(57870);  // Glyph of Mend Pet
+                break;
+
+            case CLASS_SHAMAN:
+                player->AddItem(46978, 1); // Totem of Earthen Ring
+                player->AddItem(1179, 20); // Drink lvl 5
+                player->AddItem(1205, 20); // Drink lvl 15
+                player->AddItem(414, 20);  // Food lvl 5
+                player->AddItem(422, 20);  // Food lvl 15
+
+                player->learnSpell(58059); // glyph of Renewed Life (incarnation)
+                player->learnSpell(58057); // glyph of Water Walking
+                break;
+
+            case CLASS_WARRIOR:
+                player->AddItem(414, 20);  // Food lvl 5
+                player->AddItem(422, 20);  // Food lvl 15
+
+                player->learnSpell(58096);  // Glyph of bloodrage
+                break;
+
+            case CLASS_PALADIN:
+                player->AddItem(1179, 20); // Drink lvl 5
+                player->AddItem(1205, 20); // Drink lvl 15
+                player->AddItem(414, 20);  // Food lvl 5
+                player->AddItem(422, 20);  // Food lvl 15
+                break;
+
+            case CLASS_DEATH_KNIGHT:
+                player->learnSpell(58680);  // Glyph of Horn of Winter (minor)
+                player->learnSpell(60200);  // Glyph of Raise Dead (minor)
+                break;
+
+            // Da para todas as classes que nao estejam acima
+            default: 
+                //player->AddItem(43345, 1); // Dragon Hide Bag (22 slots)
+                break;
+        }
+
+        // Learn dual spec
+        player->CastSpell(player, 63680, true, NULL, NULL, player->GetGUID());
+        player->CastSpell(player, 63624, true, NULL, NULL, player->GetGUID());
+
+        // Learn Secondary Profs
+        player->learnSpell(3273);  // First Aid
+        player->learnSpell(2550);  // Cooking
+        player->learnSpell(7620);  // Fishing
+        player->AddItem(45120, 1); // Basic Fishing Pole
+    }
+
+    void OnLevelChanged(Player* player, uint8 oldLevel) override
+    {
+        // Dwarf/Tauren Paladin Mounts
+        if (oldLevel < 40 && player->getLevel() == 40)
+        {
+            switch (player->GetTeamId())
+            {
+                case TEAM_ALLIANCE:
+                    if (player->getRace() == RACE_DWARF && player->getClass() == CLASS_PALADIN)
+                    {
+                        player->learnSpell(85147); // Summon Dawnforge Ram (Dwarf Paladin Mount)
+                    }
+                    break;
+
+                case TEAM_HORDE:
+                    if (player->getRace() == RACE_TAUREN && player->getClass() == CLASS_PALADIN)
+                    {
+                        player->learnSpell(85145); // Summon Great Sunwalker Kodo (Tauren Paladin Mount)
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Learn Create Soulwell Warlock
+        if (oldLevel < 69 && player->getLevel() == 69)
+        {
+            switch (player->getClass())
+            {
+                case CLASS_WARLOCK:
+                    player->learnSpell(58889);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Congrats on 80 + 500g
+        if (oldLevel < 80 && player->getLevel() == 80)
+        {
+            std::ostringstream ss;
+            ss << "|cffFFFF00[ |cffFFFF00P|cffFFFF00A|cffFFFF00R|cffFFFF00A|cffFFFF00B|cffFFFF00E|cffFFFF00N|cffFFFF00S|cffFFFF00! |cffFFFF00] : " << player->GetName() << " |cffFFFFFFalcançou o |cff4CFF00Level 80|cffFFFFFF!";
+            sWorld->SendServerMessage(SERVER_MSG_STRING, ss.str().c_str());
+
+            // Mandar 500g para o jogador
+            player->ModifyMoney(500 * GOLD);
+
+            // Mensagem adicional para o jogador que atingiu o nível 80
+            std::ostringstream ss2;
+            ss2 << "Parabéns por alcançar o nível 80, " << player->GetName() << "!";
+            ss2 << "Você ganhou 500 gold";
+            player->GetSession()->SendNotification(SERVER_MSG_STRING, ss2.str().c_str());
+        }
+    }
+
+    void OnLogin(Player* player) override
+    {
+        switch (player->getClass())
+        {
+            case CLASS_WARRIOR:
+            {
+                uint32 battlestance = 2457;
+                uint32 defensivestance = 71;
+                uint32 berserkerstance = 2458;
+                uint32 mortalstrike = 47486;
+                uint32 bloodthirst = 23881;
+                uint32 shockwave = 46968;
+
+                if (!player->HasAura(battlestance) && !player->HasAura(defensivestance) && !player->HasAura(berserkerstance))
+                {
+                    if (player->HasSpell(mortalstrike))
+                       player->AddAura(battlestance, player);
+                    else if (player->HasSpell(bloodthirst))
+                       player->AddAura(berserkerstance, player);
+                    else if (player->HasSpell(shockwave))
+                       player->AddAura(defensivestance, player);
+                }
+                break;
+            }
+            case CLASS_DEATH_KNIGHT:
+            {
+                uint32 bloodpresence = 48266;
+                uint32 frostpresence = 48263;
+                uint32 unholypresence = 48265;
+                uint32 heartstrike = 55050;
+                uint32 froststrike = 55268;
+                uint32 scourgestrike = 55271;
+
+                if (!player->HasAura(bloodpresence) && !player->HasAura(frostpresence) && !player->HasAura(unholypresence))
+                {
+                    if (player->HasSpell(heartstrike))
+                        player->AddAura(frostpresence, player);
+                    else if (player->HasSpell(froststrike) || player->HasSpell(scourgestrike))
+                        player->AddAura(unholypresence, player);
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+
+    // Pedra/Refreshment table ao entrar em arena
+    void OnMapChanged(Player* player) override
+    {
+        if (!player)
+            return;
+
+        MapEntry const* mEntry = sMapStore.LookupEntry(player->GetMapId());
+
+        if (player->InArena() && mEntry->IsBattleArena() && !player->IsSpectator())
+        {
+            switch (player->getClass())
+            {
+                case CLASS_WARLOCK:
+                    player->CastSpell(player, 58889, TRIGGERED_FULL_MASK); // warlock soulwell in arena
+                    break;
+                case CLASS_MAGE:
+                    player->CastSpell(player, 58661, TRIGGERED_FULL_MASK); // mage refreshment table in arena
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+};
+
 
 enum Spells
 {
@@ -159,6 +438,30 @@ class spell_druid_wild_charge : public SpellScript
     void Register() override
     {
         OnCheckCast += SpellCheckCastFn(spell_druid_wild_charge::CheckCast);
+    }
+};
+
+// 47994 - Cleave (Felguard)
+class spell_warl_cleave_mortalwound : public SpellScript
+{
+    PrepareSpellScript(spell_warl_cleave_mortalwound);
+
+    SpellCastResult CheckCast()
+    {
+        Unit* caster = GetCaster();
+        Unit* target = GetExplTargetUnit();
+
+        if (target->IsPlayer() || (target->GetOwner() && target->GetOwner()->IsPlayer())) // Verifica se o alvo é um jogador ou o pet de um jogador
+        {
+            caster->CastSpell(target, 25646, true); // Mortal Wound (15% redução de cura, acumula 2x)
+        }
+
+        return SPELL_CAST_OK;
+    }
+
+    void Register() override
+    {
+        OnCheckCast += SpellCheckCastFn(spell_warl_cleave_mortalwound::CheckCast);
     }
 };
 
@@ -344,9 +647,11 @@ class spell_warr_shattering_throw_module : public SpellScript
     {
         PreventHitDefaultEffect(effIndex);
 
-        if (Unit* caster = GetCaster()) {
+        if (Unit* caster = GetCaster())
+        {
             // Check if the caster has the spell 83296 (Glyph of Shattering Throw)
-            if (caster->HasAura(83296)) {
+            if (caster->HasAura(83296))
+            {
                 // Do not remove shields, but still display "immune to damage" part
                 return;
             }
@@ -603,27 +908,19 @@ class spell_gen_lava_burst_cd_reset : public SpellScript
     }
 };
 
-void AddSpellScriptsScripts()
-{
-    // novos:
-    RegisterSpellScript(spell_druid_glyph_omen_of_clarity);
-    RegisterSpellScript(spell_druid_wild_charge);
-    RegisterSpellScript(spell_druid_skull_bash);
-    RegisterSpellScript(spell_druid_balance_starfall_custom_cdreduction);
-    RegisterSpellScript(spell_gen_remove_slow_impairing_auras);
-    RegisterSpellScript(spell_sha_item_enhance_custom_bonus);
-    RegisterSpellScript(spell_gen_lava_burst_cd_reset);
-
-    // mudanças em scripts atuais:
-    RegisterSpellScript(spell_dru_omen_of_clarity_module);
-    RegisterSpellScript(spell_dru_berserk_module);
-    RegisterSpellScript(spell_warr_shattering_throw_module);
-    RegisterSpellScript(spell_pal_seal_of_righteousness_module);
-    RegisterSpellScript(spell_pri_mind_control_module);
-    RegisterSpellScript(spell_pri_shadowfiend_scaling_module);
-}
 
 
+
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 /*
 
@@ -687,16 +984,12 @@ void RemoveSlowImpairingAuras(bool withSnare);
 
 */
 
-
-
-
-
-
-
-
-
-
-
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+// ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 /*
 Scripts Spells Cataclysm (Cataclysm Preservation)
@@ -934,3 +1227,31 @@ public:
 };
 
 */
+
+
+
+
+void AddSpellScriptsScripts()
+{
+    // Battleborn Realm (OnLogin / OnFirstLogin etc)
+    new BattlebornRealm();
+
+    // novos:
+    RegisterSpellScript(spell_druid_glyph_omen_of_clarity);
+    RegisterSpellScript(spell_druid_wild_charge);
+    RegisterSpellScript(spell_druid_skull_bash);
+    RegisterSpellScript(spell_druid_balance_starfall_custom_cdreduction);
+    RegisterSpellScript(spell_gen_remove_slow_impairing_auras);
+    RegisterSpellScript(spell_sha_item_enhance_custom_bonus);
+    RegisterSpellScript(spell_gen_lava_burst_cd_reset);
+    RegisterSpellScript(spell_warl_cleave_mortalwound);
+
+    // mudanças em scripts atuais:
+    RegisterSpellScript(spell_dru_omen_of_clarity_module);
+    RegisterSpellScript(spell_dru_berserk_module);
+    RegisterSpellScript(spell_warr_shattering_throw_module);
+    RegisterSpellScript(spell_pal_seal_of_righteousness_module);
+    RegisterSpellScript(spell_pri_mind_control_module);
+    RegisterSpellScript(spell_pri_shadowfiend_scaling_module);
+
+}
