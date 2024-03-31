@@ -342,7 +342,8 @@ private:
         }
         else
         {
-            if (Pet* pet = player->GetPet())
+            Pet* pet = player->GetPet();
+            if (pet && pet->IsInWorld()) // possivel prevençao vs crash
             {
                 switch (pet->GetUInt32Value(UNIT_CREATED_BY_SPELL))
                 {
@@ -401,6 +402,7 @@ private:
             {
                 sorry = true;
             }
+
         }
 
         if (sorry)

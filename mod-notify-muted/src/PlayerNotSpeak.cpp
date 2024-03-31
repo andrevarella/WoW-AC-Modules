@@ -35,12 +35,13 @@ public:
 	}
 };
 
+/*
 class Faction_Icon_Chat : public PlayerScript
 {
 public:
     Faction_Icon_Chat() : PlayerScript("Faction_Icon_Chat") {}
 
-    void OnChat(Player* player, uint32 /*type*/, uint32 /*lang*/, std::string& msg, Channel* channel) override
+    void OnChat(Player* player, uint32 /*type*, uint32, std::string& msg, Channel* channel) override
     {
         if (!sConfigMgr->GetOption<bool>("CHANNEL_ICON_FACTION_ENABLE", true))
             return;
@@ -61,10 +62,10 @@ public:
         ssMsg << ((player->GetTeamId() == TEAM_HORDE) ? IconHorge : IconAlliance) << msg;
         msg = ssMsg.str();
     }
-};
+}; */
 
 void AddPlayerNotSpeakScripts()
 {
     new KargatumSC_PlayerNotSpeak();
-    new Faction_Icon_Chat;
+    //new Faction_Icon_Chat;
 }

@@ -1,29 +1,32 @@
-#include "Battlefield.h"
+#include "SpellMountScripts_loader.h"
+#include "GridNotifiers.h"
+#include "ScriptMgr.h"
+#include "SpellScript.h"
 #include "BattlefieldMgr.h"
+#include "Battlefield.h"
 #include "Battleground.h"
 #include "BattlegroundMgr.h"
-#include "Cell.h"
-#include "CellImpl.h"
-#include "Chat.h"
-#include "GameTime.h"
-#include "GridNotifiers.h"
-#include "Group.h"
+
+
+
+/*
 #include "InstanceScript.h"
-#include "Pet.h"
-#include "ReputationMgr.h"
-#include "ScriptMgr.h"
-#include "SkillDiscovery.h"
 #include "SpellAuraEffects.h"
-#include "SpellScript.h"
 #include "Unit.h"
 #include "Vehicle.h"
+
+// parecem ser inuteis
 #include <array>
-/// @todo: this import is not necessary for compilation and marked as unused by the IDE
-//  however, for some reasons removing it would cause a damn linking issue
-//  there is probably some underlying problem with imports which should properly addressed
-//  see: https://github.com/azerothcore/azerothcore-wotlk/issues/9766
+#include "GameTime.h"
 #include "GridNotifiersImpl.h"
-#include "SpellMountScripts_loader.h"
+#include "Chat.h"
+#include "ReputationMgr.h"
+#include "SkillDiscovery.h"
+#include "Cell.h"
+#include "CellImpl.h"
+#include "Group.h"
+#include "Pet.h"
+*/
 
 enum Mounts
 {

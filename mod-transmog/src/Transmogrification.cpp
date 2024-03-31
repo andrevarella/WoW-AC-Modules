@@ -299,6 +299,9 @@ void Transmogrification::SetFakeEntry(Player* player, uint32 newEntry, uint8 /*s
     dataMap[itemGUID] = player->GetGUID();
     CharacterDatabase.Execute("REPLACE INTO custom_transmogrification (GUID, FakeEntry, Owner) VALUES ({}, {}, {})", itemGUID.GetCounter(), newEntry, player->GetGUID().GetCounter());
     UpdateItem(player, itemTransmogrified);
+
+    // Necessario para triggar o evento Lua.
+    //player->CastSpell(player, 5697, true);
 }
 
 bool Transmogrification::AddCollectedAppearance(uint32 accountId, uint32 itemId)
